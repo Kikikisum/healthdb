@@ -9,6 +9,7 @@ import com.example.healthdb.model.entity.User;
 import com.example.healthdb.model.request.identityRequest;
 import com.example.healthdb.model.request.loginRequest;
 import com.example.healthdb.model.request.updateAvatarRequest;
+import com.example.healthdb.model.request.updateOtherRequest;
 import com.example.healthdb.model.vo.loginVo;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.utils.*;
@@ -86,9 +87,36 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
-    public void updateInformation() {
+    public void updateInformation(updateOtherRequest request) {
+        User user=getById(request.getId());
+        if (user!=null)
+        {
+            // 只更新不为空的内容
+            if (request.getPassword()!=null&&!request.getPassword().isEmpty()&&request.getPassword().length()!=0&&
+                    PasswordUtil.checkPasswordRule(request.getPassword()))
+            {
+                user.setPassword(PasswordUtil.getPassword(request.getPassword()));
+            }
+            if (request.getNickname()!=null&&!request.getNickname().isEmpty()&&request.getNickname().length()!=0)
+            {
+                user.setNickname(request.getNickname());
+            }
+            if (request.getAge()!=null)
+            {
+                user.setAge(request.getAge());
+            }
+            if (request.getGender()!=null)
+            {
+                user.setGender(request.getGender());
+            }
+            updateById(user);
+        }
+        else {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
 
     }
+
 
     @Override
     public void identify(identityRequest request) {

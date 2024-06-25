@@ -4,6 +4,7 @@ import com.example.healthdb.model.entity.User;
 import com.example.healthdb.model.request.identityRequest;
 import com.example.healthdb.model.request.loginRequest;
 import com.example.healthdb.model.request.updateAvatarRequest;
+import com.example.healthdb.model.request.updateOtherRequest;
 import com.example.healthdb.model.vo.loginVo;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.common.BaseResponse;
@@ -35,13 +36,14 @@ public class UserController {
     @PostMapping("/update/avatar")
     public BaseResponse<Void> updateAvatar(@RequestBody updateAvatarRequest updateAvatarRequest)
     {
-
+        userService.updateAvatar(updateAvatarRequest);
         return ResultUtils.success(null);
     }
 
     @PostMapping("/update/other")
-    public BaseResponse<Void> updateInformation(@RequestBody updateAvatarRequest updateAvatarRequest)
+    public BaseResponse<Void> updateInformation(@RequestBody updateOtherRequest request)
     {
+        userService.updateInformation(request);
         return ResultUtils.success(null);
     }
     @PostMapping("/identify")

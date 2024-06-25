@@ -5,6 +5,7 @@ import com.example.healthdb.model.entity.User;
 import com.example.healthdb.model.request.identityRequest;
 import com.example.healthdb.model.request.loginRequest;
 import com.example.healthdb.model.request.updateAvatarRequest;
+import com.example.healthdb.model.request.updateOtherRequest;
 import com.example.healthdb.model.vo.loginVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +30,11 @@ public interface UserService extends IService<User> {
      */
     void updateAvatar(updateAvatarRequest avatarRequest);
 
-
-    void updateInformation();
+    /**
+     * 更新除用户头像和身份证信息外的信息
+     * @param request
+     */
+    void updateInformation(updateOtherRequest request);
 
     /**
      * 身份证和姓名检验
