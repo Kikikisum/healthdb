@@ -1,13 +1,12 @@
 package com.example.healthdb.controller;
 
-import com.example.healthdb.entity.mew;
-import com.example.healthdb.service.mewService;
+import com.example.healthdb.model.request.loginRequest;
+import com.example.healthdb.model.vo.loginVo;
+import com.example.healthdb.service.UserService;
+import com.example.healthdb.utils.BaseResponse;
 import com.example.healthdb.utils.BaseResult;
 import com.example.healthdb.utils.ResultUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -15,12 +14,20 @@ import javax.annotation.Resource;
 @RequestMapping("/user")
 public class UserController {
     @Resource
-    private mewService mewService;
+    private UserService userService;
 
-    @GetMapping("/mew")
-    public BaseResult<mew> getMew(String name)
+    @PostMapping("/login")
+    public BaseResponse<loginVo> getMew(@RequestBody loginRequest loginRequest)
     {
-        return ResultUtils.success(mewService.getByName(name));
+        return ResultUtils.success(userService.login(loginRequest));
     }
+
+    @PostMapping("/register")
+    public BaseResponse<Void> register(@RequestBody loginRequest loginRequest)
+    {
+        userService.register(loginRequest);
+        return ResultUtils.success(null);
+    }
+
 
 }
