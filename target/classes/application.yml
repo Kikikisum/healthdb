@@ -1,0 +1,115 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为80
+  port: 7073
+  servlet:
+    # 应用的访问路径
+    context-path: /
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 200MB
+  #数据源
+  datasource:
+    username: sinodbms
+    password: sinodbms
+    url: jdbc:informix-sqli://47.113.97.12:8081/testdb:INFORMIXSERVER=ol_sinodb1210;INFORMIXCONTIME=3;LOGINTIMEOUT=3000;IFX_LOCK_MODE_WAIT=15;NEWCODESET=utf8,8859-1,819;CLIENT_LOCALE=en_US.utf8;DB_LOCALE=en_US.819;
+    driver-class-name: com.informix.jdbc.IfxDriver
+    #type: com.alibaba.druid.pool.DruidDataSource
+    #type: org.apache.commons.dbcp2.BasicDataSource
+
+    hikari:
+      ## 最小空闲连接数量
+      minimum-idle: 5
+      ## 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      ## 连接池最大连接数，默认是10
+      maximum-pool-size: 20
+      ## 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1 FROM  systables where tabid < 100
+      ##此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+
+      #druid:
+      # 初始连接数
+      #  initialSize: 5
+      # 最小连接池数量
+      #  minIdle: 5
+      # 最大连接池数量
+      #  maxActive: 20
+      # 配置获取连接等待超时的时间
+      #  maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      #  timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      #  minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      #  maxEvictableIdleTimeMillis: 900000
+      # 配置检测连接是否有效
+    #  validationQuery: SELECT 1 FROM systables WHERE tabid < 100
+    #  testWhileIdle: true
+
+    #dbcp2:
+    #  initial-size: 5
+    #  min-idle: 5
+    #  max-wait-millis: 60000
+    #  time-between-eviction-runs-millis: 60000
+    #  validation-query: SELECT 1 FROM systables WHERE tabid < 100
+    #  test-while-idle: true
+    #  max-total: 20
+
+  flyway:
+    # 是否启用flyway
+    enabled: false
+    # 编码格式，默认UTF-8
+    encoding: utf-8
+    # 迁移sql脚本文件存放路径，默认db/migration
+    locations: classpath:db/migration
+    # 迁移sql脚本文件名称的前缀，默认V
+    sql-migration-prefix: V
+    # 迁移sql脚本文件名称的分隔符，默认2个下划线__
+    sql-migration-separator: __
+    # 迁移sql脚本文件名称的后缀
+    sql-migration-suffixes: .sql
+    # 迁移时是否进行校验，默认true
+    validate-on-migrate: false
+    # 如果没有 flyway_schema_history 这个 metadata 表， 在执行 flyway migrate 命令之前, 必须先执行 flyway baseline 命令
+    # 设置为 true 后 flyway 将在需要 baseline 的时候, 自动执行一次 baseline。
+    baseline-on-migrate: true
+    # 指定 baseline 的版本号,默认值为 1, 低于该版本号的 SQL 文件, migrate 时会被忽略
+    baseline-version: 1
+
+mybatis-plus:
+  # 实体扫描，多个package用逗号或者分号分隔
+  #typeAliasesPackage: com.yibo.essyncclient.*.entity
+  global-config:
+    # 数据库相关配置
+    db-config:
+      # 主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      # 字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: NOT_NULL
+      # 驼峰下划线转换
+      column-underline: false
+      # 逻辑删除
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      # 数据库类型
+      db-type: other
+    banner: false
+  # mybatis原生配置
+  configuration:
+    map-underscore-to-camel-case: false
+    cache-enabled: false
+    call-setters-on-nulls: true
+
+logging:
+  #日志配置路径
+  config: classpath:log.xml
+  #日志级别 指定目录级别
+  level:
+    root: INFO
