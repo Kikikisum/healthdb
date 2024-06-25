@@ -1,6 +1,9 @@
 package com.example.healthdb.utils;
 
 
+import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.common.ErrorCode;
+
 /**
  * 返回工具类
  *

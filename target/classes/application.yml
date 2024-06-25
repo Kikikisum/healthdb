@@ -1,7 +1,7 @@
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 7073
+  port: 9001
   servlet:
     # 应用的访问路径
     context-path: /
@@ -16,7 +16,7 @@ spring:
   datasource:
     username: sinodbms
     password: sinodbms
-    url: jdbc:informix-sqli://47.113.97.12:8081/testdb:INFORMIXSERVER=ol_sinodb1210;INFORMIXCONTIME=3;LOGINTIMEOUT=3000;IFX_LOCK_MODE_WAIT=15;NEWCODESET=utf8,8859-1,819;CLIENT_LOCALE=en_US.utf8;DB_LOCALE=en_US.819;
+    url: jdbc:informix-sqli://8.138.10.18:8081/testdb:INFORMIXSERVER=ol_sinodb1210;INFORMIXCONTIME=3;LOGINTIMEOUT=3000;IFX_LOCK_MODE_WAIT=15;NEWCODESET=utf8,8859-1,819;CLIENT_LOCALE=en_US.utf8;DB_LOCALE=en_US.819;
     driver-class-name: com.informix.jdbc.IfxDriver
     #type: com.alibaba.druid.pool.DruidDataSource
     #type: org.apache.commons.dbcp2.BasicDataSource

@@ -1,6 +1,7 @@
-package com.example.healthdb.utils;
+package com.example.healthdb.common;
 
 
+import com.example.healthdb.common.ErrorCode;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.example.healthdb.utils;
+package com.example.healthdb.common;
 
 /**
  * 错误码

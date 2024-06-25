@@ -41,12 +41,20 @@ public class JwtUtils {
     }
 
     /**
-     * 获取token信息方法
+     * 获取token中的id
      */
-    /*public static DecodedJWT getTokenInfo(String token){
-        DecodedJWT verify = JWT.require(Algorithm.HMAC256(SING)).build().verify(token);
-        return verify;
-    }*/
+    public static String getIdFromToken(String token) {
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SING)).build().verify(token);
+        return decodedJWT.getClaim("id").asString();
+    }
+
+    /**
+     * 获取token中的role
+     */
+    public static String getRoleFromToken(String token) {
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SING)).build().verify(token);
+        return decodedJWT.getClaim("role").asString();
+    }
 }
 
 
