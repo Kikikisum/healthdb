@@ -1,4 +1,4 @@
-package com.example.healthdb.model.handler;
+package com.example.healthdb.handler;
 
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;

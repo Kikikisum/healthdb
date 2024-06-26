@@ -45,4 +45,57 @@ public class IDNumberValidator {
         return idCard.charAt(ID_CARD_LENGTH - 1) == validationCode;
     }
 
+    /**
+     * 对身份证的除前三位和后4位的以外替换成*
+     * @param identity
+     * @return
+     */
+    public static String getEncryption(String identity)
+    {
+        int length = identity.length();
+        StringBuilder maskedPhoneNumber = new StringBuilder(identity);
+        for (int i = 3; i < length - 4; i++) {
+            maskedPhoneNumber.setCharAt(i, '*');
+        }
+
+        return maskedPhoneNumber.toString();
+    }
+
+    /**
+     * 对姓名加密
+     * @param name
+     * @return
+     */
+    public static String getName(String name)
+    {
+        int length = name.length();
+        StringBuilder maskName=new StringBuilder(name);
+        if (length == 2)
+        {
+            maskName.setCharAt(1,'*');
+        }
+        else {
+            for (int i=1;i < length -1;i++)
+            {
+                maskName.setCharAt(i,'*');
+            }
+        }
+        return maskName.toString();
+    }
+
+    /**
+     * 对电话进行加密
+     * @param telephone
+     * @return
+     */
+    public static String getNumber(String telephone)
+    {
+        int length = telephone.length();
+        StringBuilder maskedPhoneNumber = new StringBuilder(telephone);
+        for (int i = 3; i < length - 2; i++) {
+            maskedPhoneNumber.setCharAt(i, '*');
+        }
+
+        return maskedPhoneNumber.toString();
+    }
 }

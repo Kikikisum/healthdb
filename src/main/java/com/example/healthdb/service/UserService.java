@@ -1,6 +1,9 @@
 package com.example.healthdb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.healthdb.dao.UserDao;
+import com.example.healthdb.model.dto.UserDTO;
+import com.example.healthdb.model.entity.Hospital;
 import com.example.healthdb.model.entity.User;
 import com.example.healthdb.model.request.IdentityRequest;
 import com.example.healthdb.model.request.LoginRequest;
@@ -39,11 +42,18 @@ public interface UserService extends IService<User> {
     /**
      * 身份证和姓名检验
      */
-    void identify(IdentityRequest request);
+    void identify(IdentityRequest request) throws Exception;
 
     /**
      * 通过token获取个人信息
      * @return
      */
-    User getInformation(HttpServletRequest request);
+    UserDTO getInformation(HttpServletRequest request) throws Exception;
+
+    /**
+     * 把user类型转换成userdto类型
+     * @param user
+     * @return
+     */
+    UserDTO changeFromUserToDto(User user) throws Exception;
 }

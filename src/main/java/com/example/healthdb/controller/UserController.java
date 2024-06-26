@@ -1,6 +1,6 @@
 package com.example.healthdb.controller;
 
-import com.example.healthdb.model.entity.User;
+import com.example.healthdb.model.dto.UserDTO;
 import com.example.healthdb.model.request.IdentityRequest;
 import com.example.healthdb.model.request.LoginRequest;
 import com.example.healthdb.model.request.UpdateAvatarRequest;
@@ -48,13 +48,21 @@ public class UserController {
     @PostMapping("/identify")
     public BaseResponse<Void> indentify(@RequestBody IdentityRequest request)
     {
-        userService.identify(request);
+        try {
+            userService.identify(request);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return ResultUtils.success(null);
     }
 
     @GetMapping("/information")
-    public BaseResponse<User> getInformation(HttpServletRequest request)
+    public BaseResponse<UserDTO> getInformation(HttpServletRequest request)
     {
-        return ResultUtils.success(userService.getInformation(request));
+        try {
+            return ResultUtils.success(userService.getInformation(request));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
