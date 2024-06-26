@@ -112,5 +112,20 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         }
     }
 
+    @Override
+    public void checkOverTime() {
+        LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.lt(Orders::getEndTime,new Date());
+        List<Orders> list=list(lambdaQueryWrapper);
+        for (Orders order:list)
+        {
+            order.setIsFinished(1);
+        }
+        for (Orders order:list)
+        {
+            updateById(order);
+        }
+    }
+
 
 }

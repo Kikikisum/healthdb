@@ -5,12 +5,13 @@ import com.example.healthdb.dao.OrdersAndEscortDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 
+import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrderAndEscortRequest;
 import com.example.healthdb.model.request.DeleteOrdersAndEscortRequest;
 
+import com.example.healthdb.service.EscortService;
 import com.example.healthdb.service.OrdersAndEscortService;
-import com.example.healthdb.service.OrdersService;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
     @Resource
     SnowFlakeUtils snowFlakeUtils;
 
+    @Resource
+    EscortService escortService;
+
     /**
      * 下单
      * @param request
@@ -36,8 +40,10 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
     public void addOrdersAndEscort(AddOrderAndEscortRequest request) {
         OrdersAndEscort ordersAndEscort = new OrdersAndEscort();
         Long id = snowFlakeUtils.nextId();
-        ordersAndEscort.setId(id.intValue());
-        //TODO 根据用户id得到陪诊师id
+        ordersAndEscort.setId(Math.abs(id.intValue()));
+        // 根据用户id得到陪诊师id
+        Escort escort = escortService.getById(request.getUid());
+        ordersAndEscort.setEid(escort.getId());
         ordersAndEscort.setOid(request.getOid());
         ordersAndEscort.setCreateTime(new Date());
         ordersAndEscort.setUpdateTime(new Date());
@@ -63,7 +69,5 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
     }
-
-
 
 }

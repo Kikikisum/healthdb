@@ -1,7 +1,6 @@
 package com.example.healthdb.service;
 
 import com.example.healthdb.model.entity.Orders;
-import com.example.healthdb.model.entity.Patient;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
@@ -36,7 +35,12 @@ public interface OrdersService {
 
     /**
      * 更新订单完成状态
-     * @param id
+     * @param request
      */
     void updateOrders(UpdateOrdersRequest request);
+
+    /**
+     * 检查订单是否已经完成
+     */
+    void checkOverTime();
 }
