@@ -3,6 +3,10 @@ package com.example.healthdb.utils;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+
 public class PasswordUtil {
 
     /**
@@ -42,4 +46,19 @@ public class PasswordUtil {
         return !newPassword.matches("^[0-9]*$") && !newPassword.matches("^[a-zA-Z]*$");
     }
 
+
+    private static final String AES = "AES";
+
+    // 加密方法
+    public static String encrypt(String plainText) {
+        // 使用Base64进行编码
+        return Base64.getEncoder().encodeToString(plainText.getBytes());
+    }
+
+    // 解密方法
+    public static String decrypt(String encryptedText) {
+        // 使用Base64进行解码
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
+        return new String(decodedBytes);
+    }
 }

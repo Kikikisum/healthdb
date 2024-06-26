@@ -2,6 +2,7 @@ package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.model.entity.Hospital;
+import com.example.healthdb.model.request.AddHospitalRequest;
 import com.example.healthdb.service.HospitalService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
@@ -42,10 +43,16 @@ public class HospitalController {
      * @param name
      * @return
      */
-    @GetMapping("/query/name/{name}")
-    public BaseResponse<List<Hospital>> queryByName(@PathVariable String name)
-    {
+    @GetMapping("/query/name")
+    public BaseResponse<List<Hospital>> queryByName(@RequestParam String name) {
         return ResultUtils.success(hospitalService.getByName(name));
     }
-    
+
+    @PostMapping("/add")
+    public BaseResponse<Void> addHospital(@RequestBody AddHospitalRequest request)
+    {
+        hospitalService.addHospital(request);
+        return ResultUtils.success(null);
+    }
+
 }

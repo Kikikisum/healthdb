@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.dao.UserDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
+import com.example.healthdb.model.dto.UserDTO;
 import com.example.healthdb.model.entity.User;
 import com.example.healthdb.model.request.IdentityRequest;
 import com.example.healthdb.model.request.LoginRequest;
@@ -129,7 +130,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
 
     @Override
-    public void identify(IdentityRequest request) {
+    public void identify(IdentityRequest request){
         if (IDNumberValidator.isValid(request.getIdentity()))
         {
             // 校验身份证信息
@@ -137,7 +138,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             if (user != null) {
                 // 更新用户信息
                 user.setRealname(request.getName());
-                user.setIdNumber(request.getIdentity());
+                try {
+                    user.setIdNumber(PasswordUtil.encrypt(request.getIdentity()));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 user.setUpdateTime(new Date());
                 // 执行更新操作
                 userDao.updateById(user);
@@ -151,9 +156,24 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
-    public User getInformation(HttpServletRequest request) {
+    public UserDTO getInformation(HttpServletRequest request) throws Exception {
         String token = request.getHeader("token");
         Integer userId = Integer.valueOf(JwtUtils.getIdFromToken(token));
-        return userDao.selectById(userId);
+        return changeFromUserToDto(userDao.selectById(userId));
+    }
+
+    @Override
+    public UserDTO changeFromUserToDto(User user) throws Exception {
+        UserDTO userDTO=new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setAvatar(user.getAvatar());
+        userDTO.setNickname(user.getNickname());
+        userDTO.setGender(user.getGender());
+        userDTO.setAge(user.getAge());
+        userDTO.setStatus(user.getStatus());
+        userDTO.setIdNumber(IDNumberValidator.getEncryption(PasswordUtil.decrypt(user.getIdNumber())));
+        userDTO.setTelephone(IDNumberValidator.getNumber(user.getTelephone()));
+        userDTO.setRealname(IDNumberValidator.getName(user.getRealname()));
+        return userDTO;
     }
 }

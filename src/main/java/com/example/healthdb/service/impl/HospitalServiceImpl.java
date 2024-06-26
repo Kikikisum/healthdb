@@ -6,6 +6,7 @@ import com.example.healthdb.dao.HospitalDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.entity.Hospital;
+import com.example.healthdb.model.request.AddHospitalRequest;
 import com.example.healthdb.service.HospitalService;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,10 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
         LambdaQueryWrapper<Hospital> hospitalLambdaQueryWrapper=new LambdaQueryWrapper<>();
         hospitalLambdaQueryWrapper.like(Hospital::getName,name);
         return list(hospitalLambdaQueryWrapper);
+    }
+
+    @Override
+    public void addHospital(AddHospitalRequest request) {
+        ;
     }
 }
