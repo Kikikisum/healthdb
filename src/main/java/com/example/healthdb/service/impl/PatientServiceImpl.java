@@ -2,13 +2,13 @@ package com.example.healthdb.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.healthdb.dao.patientDao;
+import com.example.healthdb.dao.PatientDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.entity.Patient;
-import com.example.healthdb.model.request.addPatientRequest;
-import com.example.healthdb.model.request.deletePatientRequest;
-import com.example.healthdb.service.patientService;
+import com.example.healthdb.model.request.AddPatientRequest;
+import com.example.healthdb.model.request.DeletePatientRequest;
+import com.example.healthdb.service.PatientService;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,13 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class patientServiceImpl extends ServiceImpl<patientDao, Patient> implements patientService {
+public class PatientServiceImpl extends ServiceImpl<PatientDao, Patient> implements PatientService {
 
     @Resource
     SnowFlakeUtils snowFlakeUtils;
 
     @Override
-    public void addPatient(addPatientRequest request) {
+    public void addPatient(AddPatientRequest request) {
         Patient patient = new Patient();
         Long id = snowFlakeUtils.nextId();
         patient.setId(id.intValue());
@@ -40,7 +40,7 @@ public class patientServiceImpl extends ServiceImpl<patientDao, Patient> impleme
     }
 
     @Override
-    public void deletePatient(deletePatientRequest request) {
+    public void deletePatient(DeletePatientRequest request) {
         Patient patient = getById(request.getId());
         if (patient!=null)
         {

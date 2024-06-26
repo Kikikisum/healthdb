@@ -6,11 +6,11 @@ import com.example.healthdb.dao.UserDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.entity.User;
-import com.example.healthdb.model.request.identityRequest;
-import com.example.healthdb.model.request.loginRequest;
-import com.example.healthdb.model.request.updateAvatarRequest;
-import com.example.healthdb.model.request.updateOtherRequest;
-import com.example.healthdb.model.vo.loginVo;
+import com.example.healthdb.model.request.IdentityRequest;
+import com.example.healthdb.model.request.LoginRequest;
+import com.example.healthdb.model.request.UpdateAvatarRequest;
+import com.example.healthdb.model.request.UpdateOtherRequest;
+import com.example.healthdb.model.vo.LoginVo;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.utils.*;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     SnowFlakeUtils snowFlakeUtils;
 
     @Override
-    public loginVo login(loginRequest loginRequest) {
+    public LoginVo login(LoginRequest loginRequest) {
         // 先查询电话信息是否正确
         LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getTelephone,loginRequest.getTelephone());
@@ -52,7 +52,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             {
                 is_companion=1;
             }
-            loginVo loginVo=new loginVo(JwtUtils.getToken(map),user.getId(),is_companion);
+            LoginVo loginVo=new LoginVo(JwtUtils.getToken(map),user.getId(),is_companion);
             return loginVo;
         }
         else {
@@ -65,7 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
      * @param loginRequest
      */
     @Override
-    public void register(loginRequest loginRequest) {
+    public void register(LoginRequest loginRequest) {
         // 检查密码规则，检查电话是否正确
         if (!PasswordUtil.checkPasswordRule(loginRequest.getPassword())||loginRequest.getTelephone().length()!=11)
         {
@@ -91,12 +91,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
-    public void updateAvatar(updateAvatarRequest avatarRequest) {
+    public void updateAvatar(UpdateAvatarRequest avatarRequest) {
 
     }
 
     @Override
-    public void updateInformation(updateOtherRequest request) {
+    public void updateInformation(UpdateOtherRequest request) {
         User user=getById(request.getId());
         if (user!=null&&user.getStatus()!=1)
         {
@@ -129,7 +129,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
 
     @Override
-    public void identify(identityRequest request) {
+    public void identify(IdentityRequest request) {
         if (IDNumberValidator.isValid(request.getIdentity()))
         {
             // 校验身份证信息

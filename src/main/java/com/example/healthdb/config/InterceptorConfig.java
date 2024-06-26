@@ -1,6 +1,6 @@
 package com.example.healthdb.config;
 
-import com.example.healthdb.handler.JWTInterceptoers;
+import com.example.healthdb.model.handler.JWTInterceptoers;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

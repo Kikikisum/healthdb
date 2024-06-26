@@ -1,11 +1,11 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.model.entity.User;
-import com.example.healthdb.model.request.identityRequest;
-import com.example.healthdb.model.request.loginRequest;
-import com.example.healthdb.model.request.updateAvatarRequest;
-import com.example.healthdb.model.request.updateOtherRequest;
-import com.example.healthdb.model.vo.loginVo;
+import com.example.healthdb.model.request.IdentityRequest;
+import com.example.healthdb.model.request.LoginRequest;
+import com.example.healthdb.model.request.UpdateAvatarRequest;
+import com.example.healthdb.model.request.UpdateOtherRequest;
+import com.example.healthdb.model.vo.LoginVo;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.utils.ResultUtils;
@@ -21,33 +21,33 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public BaseResponse<loginVo> login(@RequestBody loginRequest loginRequest)
+    public BaseResponse<LoginVo> login(@RequestBody LoginRequest loginRequest)
     {
         return ResultUtils.success(userService.login(loginRequest));
     }
 
     @PostMapping("/register")
-    public BaseResponse<Void> register(@RequestBody loginRequest loginRequest)
+    public BaseResponse<Void> register(@RequestBody LoginRequest loginRequest)
     {
         userService.register(loginRequest);
         return ResultUtils.success(null);
     }
 
     @PostMapping("/update/avatar")
-    public BaseResponse<Void> updateAvatar(@RequestBody updateAvatarRequest updateAvatarRequest)
+    public BaseResponse<Void> updateAvatar(@RequestBody UpdateAvatarRequest updateAvatarRequest)
     {
         userService.updateAvatar(updateAvatarRequest);
         return ResultUtils.success(null);
     }
 
     @PostMapping("/update/other")
-    public BaseResponse<Void> updateInformation(@RequestBody updateOtherRequest request)
+    public BaseResponse<Void> updateInformation(@RequestBody UpdateOtherRequest request)
     {
         userService.updateInformation(request);
         return ResultUtils.success(null);
     }
     @PostMapping("/identify")
-    public BaseResponse<Void> indentify(@RequestBody identityRequest request)
+    public BaseResponse<Void> indentify(@RequestBody IdentityRequest request)
     {
         userService.identify(request);
         return ResultUtils.success(null);

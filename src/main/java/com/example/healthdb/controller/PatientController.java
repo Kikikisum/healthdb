@@ -2,9 +2,9 @@ package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.model.entity.Patient;
-import com.example.healthdb.model.request.addPatientRequest;
-import com.example.healthdb.model.request.deletePatientRequest;
-import com.example.healthdb.service.patientService;
+import com.example.healthdb.model.request.AddPatientRequest;
+import com.example.healthdb.model.request.DeletePatientRequest;
+import com.example.healthdb.service.PatientService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +16,17 @@ import java.util.List;
 public class PatientController {
 
     @Resource
-    private patientService patientService;
+    private PatientService patientService;
 
     @PostMapping("/add")
-    public BaseResponse<Void> addPatient(@RequestBody addPatientRequest request)
+    public BaseResponse<Void> addPatient(@RequestBody AddPatientRequest request)
     {
         patientService.addPatient(request);
         return ResultUtils.success(null);
     }
 
     @PostMapping("/delete")
-    public BaseResponse<Void> deletePatient(@RequestBody deletePatientRequest request)
+    public BaseResponse<Void> deletePatient(@RequestBody DeletePatientRequest request)
     {
         patientService.deletePatient(request);
         return ResultUtils.success(null);

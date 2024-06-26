@@ -1,4 +1,4 @@
-package com.example.healthdb.handler;
+package com.example.healthdb.model.handler;
 
 
 import com.example.healthdb.exception.BusinessException;

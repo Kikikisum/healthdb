@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class loginVo {
+public class LoginVo {
     private String token;
 
     private Integer id;

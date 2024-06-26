@@ -3,7 +3,7 @@ package com.example.healthdb.model.request;
 import lombok.Data;
 
 @Data
-public class addPatientRequest {
+public class AddPatientRequest {
     private Integer uid;
 
     private String name;
