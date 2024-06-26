@@ -15,6 +15,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/patient/*")
                 .addPathPatterns("/hospital/*")
                 .addPathPatterns("/orders/*")
+                .addPathPatterns("/escort/*")
+                .addPathPatterns("/admin/*")
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register");
     }

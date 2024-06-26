@@ -37,14 +37,14 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         User user = userService.getById(request.getUid());
         if (user==null)
         {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.ID_WRONG);
         }
         // 检查电话是否正确
         if (request.getTelephone().length()!=11)
         {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.TELEPHONE_WRONG);
         }
-        if (user.getIdNumber()==null)
+        if (user.getIdNumber()!=null)
         {
             // 校验身份证信息
             if (IDNumberValidator.isValid(request.getIdentity()))
@@ -59,14 +59,6 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
                 throw new BusinessException(ErrorCode.PARAMS_ERROR);
             }
         }
-        if (request.getGender()!=null)
-        {
-            user.setGender(user.getGender());
-        }
-        if (request.getAge()!=null)
-        {
-            user.setAge(request.getAge());
-        }
         userService.updateById(user);
         // 陪诊师信息插入
         Escort escort = new Escort();
@@ -77,7 +69,17 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         escort.setAvatar(request.getAvatar());
         escort.setIsPassed(0);
         escort.setWorkSection(request.getWorkSection());
-        escort.setIsMedicalWorker(request.getIsMedicalWorker());
+        if (request.getIsMedicalWorker()==1)
+        {
+            escort.setIsMedicalWorker(request.getIsMedicalWorker());
+        }
+        escort.setAge(request.getAge());
+        escort.setGender(request.getGender());
+        escort.setCreateTime(new Date());
+        escort.setIsDelete(0);
+        escort.setUpdateTime(new Date());
+        escort.setCity(request.getCity());
+        save(escort);
     }
 
     @Override
@@ -92,7 +94,13 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        escort.setIsPassed(1);
+        escort.setIsPassed(request.getIsPassed());
+        if (escort.getIsPassed()==1)
+        {
+            User user=userService.getById(escort.getUid());
+            user.setStatus(2);
+            userService.updateById(user);
+        }
         updateById(escort);
     }
 

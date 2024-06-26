@@ -25,4 +25,6 @@ public class AddEscortRequest {
     private String name;
 
     private String identity;
+
+    private String city;
 }

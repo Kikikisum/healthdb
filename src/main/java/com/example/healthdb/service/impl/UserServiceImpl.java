@@ -70,16 +70,20 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public void register(LoginRequest loginRequest) {
         // 检查密码规则，检查电话是否正确
-        if (!PasswordUtil.checkPasswordRule(loginRequest.getPassword())||loginRequest.getTelephone().length()!=11)
+        if (!PasswordUtil.checkPasswordRule(loginRequest.getPassword()))
         {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.PASSWORD_WRONG);
+        }
+        if (loginRequest.getTelephone().length()!=11)
+        {
+            throw new BusinessException(ErrorCode.TELEPHONE_WRONG);
         }
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getTelephone,loginRequest.getTelephone());
         User is = getOne(lambdaQueryWrapper);
         if (is!=null)
         {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.ID_WRONG);
         }
         User user=new User();
         Long userId = snowFlakeUtils.nextId();
@@ -90,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         user.setUpdateTime(new Date());
         user.setIsDelete(0);
         user.setTelephone(loginRequest.getTelephone());
-        user.setMoney(0.);
+        user.setMoney(0.f);
         save(user);
     }
 
@@ -113,14 +117,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             if (request.getNickname()!=null&&!request.getNickname().isEmpty()&&request.getNickname().length()!=0)
             {
                 user.setNickname(request.getNickname());
-            }
-            if (request.getAge()!=null)
-            {
-                user.setAge(request.getAge());
-            }
-            if (request.getGender()!=null)
-            {
-                user.setGender(request.getGender());
             }
             user.setUpdateTime(new Date());
             updateById(user);
@@ -171,8 +167,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         userDTO.setId(user.getId());
         userDTO.setAvatar(user.getAvatar());
         userDTO.setNickname(user.getNickname());
-        userDTO.setGender(user.getGender());
-        userDTO.setAge(user.getAge());
         userDTO.setStatus(user.getStatus());
         userDTO.setIdNumber(IDNumberValidator.getEncryption(PasswordUtil.decrypt(user.getIdNumber())));
         userDTO.setTelephone(IDNumberValidator.getNumber(user.getTelephone()));
@@ -187,7 +181,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        Double newMoney = user.getMoney();
+        Float newMoney = user.getMoney();
         user.setMoney(newMoney+request.getMoney());
         updateById(user);
     }

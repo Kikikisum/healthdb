@@ -15,7 +15,11 @@ public enum ErrorCode {
 
     NOT_LOGIN(40100, "未登录", ""),
     NO_AUTH(40101, "无权限", ""),
+    PASSWORD_WRONG(40002,"密码错误",""),
+    TELEPHONE_WRONG(40003,"电话号码错误",""),
+    ID_WRONG(40004,"id参数错误","")
     ;
+
 
     private final int code;
 

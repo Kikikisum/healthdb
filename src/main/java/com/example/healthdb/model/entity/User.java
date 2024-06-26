@@ -19,10 +19,6 @@ public class User extends BaseEntity{
 
     private String realname;
 
-    private Integer gender;
-
-    private Integer age;
-
     @TableField("id_number")
     private String idNumber;
 
@@ -32,5 +28,6 @@ public class User extends BaseEntity{
 
     private String telephone;
 
-    private Double money;
+    @TableField("money")
+    private Float money;
 }

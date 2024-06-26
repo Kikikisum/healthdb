@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class RechargeRequest {
     private Integer id;
-    private Double money;
+    private Float money;
 }

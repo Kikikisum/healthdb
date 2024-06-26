@@ -18,16 +18,21 @@ public class Escort extends BaseEntity{
      */
     private String avatar;
 
-    @TableField("")
+    @TableField("telephone_number")
     private String telephone;
 
-    @TableField("is_medical_work")
+    @TableField("is_medical_worker")
     private Integer isMedicalWorker;
 
     @TableField("work_section")
     private String workSection;
 
+    private String city;
+
     @TableField("is_passed")
     private Integer isPassed;
 
+    private Integer gender;
+
+    private Integer age;
 }
