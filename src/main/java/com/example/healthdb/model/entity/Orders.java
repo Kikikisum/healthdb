@@ -28,8 +28,11 @@ public class Orders extends BaseEntity{
 
     private Integer pid;
 
-    @TableField("clinic_time")
-    private Date clinicTime;
+    @TableField("start_time")
+    private Date startTime;
+
+    @TableField("end_time")
+    private Date endTime;
 
     @TableField("telephone_number")
     private String telephoneNumber;

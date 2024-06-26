@@ -18,7 +18,9 @@ public class AddOrdersRequest {
 
     private Integer pid;
 
-    private String clinicTime;
+    private String startTime;
+
+    private String endTime;
 
     private String telephone;
 
