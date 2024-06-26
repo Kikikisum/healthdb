@@ -31,4 +31,6 @@ public class User extends BaseEntity{
     private Integer status;
 
     private String telephone;
+
+    private Double money;
 }

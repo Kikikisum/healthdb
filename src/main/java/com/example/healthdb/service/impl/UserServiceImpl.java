@@ -7,10 +7,7 @@ import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.UserDTO;
 import com.example.healthdb.model.entity.User;
-import com.example.healthdb.model.request.IdentityRequest;
-import com.example.healthdb.model.request.LoginRequest;
-import com.example.healthdb.model.request.UpdateAvatarRequest;
-import com.example.healthdb.model.request.UpdateOtherRequest;
+import com.example.healthdb.model.request.*;
 import com.example.healthdb.model.vo.LoginVo;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.utils.*;
@@ -93,6 +90,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         user.setUpdateTime(new Date());
         user.setIsDelete(0);
         user.setTelephone(loginRequest.getTelephone());
+        user.setMoney(0.);
         save(user);
     }
 
@@ -180,5 +178,17 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         userDTO.setTelephone(IDNumberValidator.getNumber(user.getTelephone()));
         userDTO.setRealname(IDNumberValidator.getName(user.getRealname()));
         return userDTO;
+    }
+
+    @Override
+    public void recharge(RechargeRequest request) {
+        User user = getById(request.getId());
+        if (user==null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Double newMoney = user.getMoney();
+        user.setMoney(newMoney+request.getMoney());
+        updateById(user);
     }
 }

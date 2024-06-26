@@ -15,6 +15,8 @@ public class JwtUtils {
      */
     private static final String SING = "HEALDB_SINODB";
 
+    public static final String ADMIN = "admin";
+
     public static String getToken(Map<String, String> map) {
 
         Calendar instance = Calendar.getInstance();

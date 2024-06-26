@@ -27,7 +27,7 @@ public class Escort extends BaseEntity{
     @TableField("work_section")
     private String workSection;
 
-    @TableField("")
-    private Integer isPass;
+    @TableField("is_passed")
+    private Integer isPassed;
 
 }

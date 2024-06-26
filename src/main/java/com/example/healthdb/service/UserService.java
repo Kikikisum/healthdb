@@ -5,10 +5,7 @@ import com.example.healthdb.dao.UserDao;
 import com.example.healthdb.model.dto.UserDTO;
 import com.example.healthdb.model.entity.Hospital;
 import com.example.healthdb.model.entity.User;
-import com.example.healthdb.model.request.IdentityRequest;
-import com.example.healthdb.model.request.LoginRequest;
-import com.example.healthdb.model.request.UpdateAvatarRequest;
-import com.example.healthdb.model.request.UpdateOtherRequest;
+import com.example.healthdb.model.request.*;
 import com.example.healthdb.model.vo.LoginVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,4 +53,10 @@ public interface UserService extends IService<User> {
      * @return
      */
     UserDTO changeFromUserToDto(User user) throws Exception;
+
+    /**
+     * 用户充值
+     * @param request
+     */
+    void recharge(RechargeRequest request);
 }

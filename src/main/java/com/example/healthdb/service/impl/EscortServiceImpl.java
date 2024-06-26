@@ -1,5 +1,6 @@
 package com.example.healthdb.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.dao.EscortDao;
 import com.example.healthdb.exception.BusinessException;
@@ -11,12 +12,15 @@ import com.example.healthdb.model.request.AudictEscortRequest;
 import com.example.healthdb.service.EscortService;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.utils.IDNumberValidator;
+import com.example.healthdb.utils.JwtUtils;
 import com.example.healthdb.utils.PasswordUtil;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements EscortService {
@@ -26,6 +30,7 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
 
     @Resource
     private SnowFlakeUtils snowFlakeUtils;
+
 
     @Override
     public void addEscort(AddEscortRequest request) {
@@ -70,13 +75,36 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         escort.setUid(request.getUid());
         escort.setTelephone(request.getTelephone());
         escort.setAvatar(request.getAvatar());
-        escort.setIsPass(0);
+        escort.setIsPassed(0);
         escort.setWorkSection(request.getWorkSection());
         escort.setIsMedicalWorker(request.getIsMedicalWorker());
     }
 
     @Override
-    public void audictEscort(AudictEscortRequest request) {
-        
+    public void audictEscort(AudictEscortRequest request,String token) {
+        // 检查权限
+        if (!JwtUtils.getRoleFromToken(token).equals(JwtUtils.ADMIN))
+        {
+            throw new BusinessException(ErrorCode.NO_AUTH);
+        }
+        Escort escort=getById(request.getId());
+        if (escort==null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        escort.setIsPassed(1);
+        updateById(escort);
+    }
+
+    @Override
+    public List<Escort> queryAll(HttpServletRequest request) {
+        // 检查权限
+        if (!JwtUtils.getRoleFromToken(request.getHeader("token")).equals(JwtUtils.ADMIN))
+        {
+            throw new BusinessException(ErrorCode.NO_AUTH);
+        }
+        LambdaQueryWrapper<Escort> lambdaQueryWrapper =new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Escort::getIsPassed,0);
+        return list(lambdaQueryWrapper);
     }
 }

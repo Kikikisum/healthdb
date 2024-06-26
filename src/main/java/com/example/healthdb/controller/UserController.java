@@ -1,10 +1,7 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.model.dto.UserDTO;
-import com.example.healthdb.model.request.IdentityRequest;
-import com.example.healthdb.model.request.LoginRequest;
-import com.example.healthdb.model.request.UpdateAvatarRequest;
-import com.example.healthdb.model.request.UpdateOtherRequest;
+import com.example.healthdb.model.request.*;
 import com.example.healthdb.model.vo.LoginVo;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.common.BaseResponse;
@@ -45,6 +42,7 @@ public class UserController {
         userService.updateInformation(request);
         return ResultUtils.success(null);
     }
+
     @PostMapping("/identify")
     public BaseResponse<Void> indentify(@RequestBody IdentityRequest request)
     {
@@ -64,5 +62,12 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/recharge")
+    public BaseResponse<Void> recharge(@RequestBody RechargeRequest request)
+    {
+        userService.recharge(request);
+        return ResultUtils.success(null);
     }
 }
