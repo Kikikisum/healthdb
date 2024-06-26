@@ -81,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         }
         User user=new User();
         Long userId = snowFlakeUtils.nextId();
-        user.setId(userId.intValue());
+        user.setId(Math.abs(userId.intValue()));
         user.setPassword(PasswordUtil.getPassword(loginRequest.getPassword()));
         user.setStatus(0);
         user.setCreateTime(new Date());

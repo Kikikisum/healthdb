@@ -8,12 +8,18 @@ import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.entity.Hospital;
 import com.example.healthdb.model.request.AddHospitalRequest;
 import com.example.healthdb.service.HospitalService;
+import com.example.healthdb.utils.SnowFlakeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> implements HospitalService{
+
+    @Autowired
+    private SnowFlakeUtils snowFlakeUtils;
 
     @Override
     public Hospital getByID(Integer id) {
@@ -42,6 +48,18 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
 
     @Override
     public void addHospital(AddHospitalRequest request) {
-        ;
+        Hospital hospital=new Hospital();
+        Long id = snowFlakeUtils.nextId();
+        hospital.setId(Math.abs(id.intValue()));
+        hospital.setHospitalLevel(request.getHospitalLevel());
+        hospital.setHospitalType(request.getHospitalType());
+        hospital.setName(request.getName());
+        hospital.setIntroduction(request.getIntroduction());
+        hospital.setDetailAddress(request.getDetailAddress());
+        hospital.setAreaCode(request.getAreaCode());
+        hospital.setCreateTime(new Date());
+        hospital.setUpdateTime(new Date());
+        hospital.setIsDelete(0);
+        save(hospital);
     }
 }

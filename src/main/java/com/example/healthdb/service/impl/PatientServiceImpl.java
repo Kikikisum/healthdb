@@ -26,7 +26,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientDao, Patient> impleme
     public void addPatient(AddPatientRequest request) {
         Patient patient = new Patient();
         Long id = snowFlakeUtils.nextId();
-        patient.setId(id.intValue());
+        patient.setId(Math.abs(id.intValue()));
         patient.setUid(request.getUid());
         patient.setName(request.getName());
         patient.setGender(request.getGender());
