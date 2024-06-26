@@ -37,6 +37,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientDao, Patient> impleme
         patient.setUpdateTime(new Date());
         patient.setIsDelete(0);
         save(patient);
+
     }
 
     @Override

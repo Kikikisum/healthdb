@@ -1,7 +1,12 @@
 package com.example.healthdb.service;
 
+import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.model.entity.Patient;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
+import com.example.healthdb.model.request.UpdateOrdersRequest;
+
+import java.util.List;
 
 /**
  * @author xwb
@@ -14,9 +19,24 @@ public interface OrdersService {
      */
     void addOrders(AddOrdersRequest request);
 
+
     /**
      * 删除订单
      * @param request
      */
     void deleteOrders(DeleteOrdersRequest request);
+
+
+    /**
+     * 根据订单状态查询
+     * @param isFinished
+     * @return
+     */
+    List<Orders> queryByIsFinished(Integer isFinished);
+
+    /**
+     * 更新订单完成状态
+     * @param id
+     */
+    void updateOrders(UpdateOrdersRequest request);
 }

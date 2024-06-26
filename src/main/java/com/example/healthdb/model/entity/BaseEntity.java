@@ -3,6 +3,7 @@ package com.example.healthdb.model.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import org.apache.ibatis.annotations.Delete;
 
 import java.io.Serializable;
 import java.util.Date;
