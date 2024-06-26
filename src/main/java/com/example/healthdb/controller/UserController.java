@@ -39,7 +39,6 @@ public class UserController {
         userService.updateAvatar(updateAvatarRequest);
         return ResultUtils.success(null);
     }
-
     @PostMapping("/update/other")
     public BaseResponse<Void> updateInformation(@RequestBody UpdateOtherRequest request)
     {
