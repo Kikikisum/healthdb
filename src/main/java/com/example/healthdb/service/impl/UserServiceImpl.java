@@ -27,6 +27,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Resource
     private UserDao userDao;
 
+    @Resource
+    SnowFlakeUtils snowFlakeUtils;
+
     @Override
     public loginVo login(loginRequest loginRequest) {
         // 先查询电话信息是否正确
@@ -68,10 +71,16 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        SnowFlakeUtils snowFlakeUtils=new SnowFlakeUtils(1,1,1);
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getTelephone,loginRequest.getTelephone());
+        User is = getOne(lambdaQueryWrapper);
+        if (is!=null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
         User user=new User();
-        long userId = snowFlakeUtils.nextId();
-        user.setId(userId);
+        Long userId = snowFlakeUtils.nextId();
+        user.setId(userId.intValue());
         user.setPassword(PasswordUtil.getPassword(loginRequest.getPassword()));
         user.setStatus(0);
         user.setCreateTime(new Date());
@@ -89,7 +98,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public void updateInformation(updateOtherRequest request) {
         User user=getById(request.getId());
-        if (user!=null)
+        if (user!=null&&user.getStatus()!=1)
         {
             // 只更新不为空的内容
             if (request.getPassword()!=null&&!request.getPassword().isEmpty()&&request.getPassword().length()!=0&&
@@ -109,6 +118,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             {
                 user.setGender(request.getGender());
             }
+            user.setUpdateTime(new Date());
             updateById(user);
         }
         else {
@@ -128,6 +138,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
                 // 更新用户信息
                 user.setRealname(request.getName());
                 user.setIdNumber(request.getIdentity());
+                user.setUpdateTime(new Date());
                 // 执行更新操作
                 userDao.updateById(user);
             } else {

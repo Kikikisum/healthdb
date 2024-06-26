@@ -3,12 +3,14 @@ package com.example.healthdb.handler;
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.healthdb.utils.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +22,13 @@ public class JWTInterceptoers implements HandlerInterceptor {
         String token = request.getHeader("token");
         try {
             // 验证令牌
-            JwtUtils.verify(token);
+            DecodedJWT jwt =JwtUtils.verify(token);
+
+            // 检查是否过期
+            if (jwt.getExpiresAt().before(new Date())) {
+                throw new Exception("Token已过期");
+            }
+
             return true;  // 放行请求
 
         } catch (SignatureVerificationException e) {

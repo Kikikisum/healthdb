@@ -11,7 +11,7 @@ import lombok.Data;
 public class User extends BaseEntity{
 
     @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
+    private Integer id;
 
     private String avatar;
 

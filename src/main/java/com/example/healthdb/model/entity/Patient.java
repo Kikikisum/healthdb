@@ -15,10 +15,9 @@ import lombok.Data;
 public class Patient extends BaseEntity{
 
     @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
+    private Integer id;
 
-    @TableField("user_id")
-    private Integer userId;
+    private Integer uid;
 
     private String name;
 
@@ -30,7 +29,5 @@ public class Patient extends BaseEntity{
     private String telephoneNumber;
 
     private String relationship;
-
-    private Integer status;
 
 }

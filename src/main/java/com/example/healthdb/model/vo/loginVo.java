@@ -8,7 +8,7 @@ import lombok.Data;
 public class loginVo {
     private String token;
 
-    private Long id;
+    private Integer id;
 
     private Integer isCompanion;
 }
