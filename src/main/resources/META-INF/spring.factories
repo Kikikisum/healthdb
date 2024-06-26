@@ -1,0 +1,5 @@
+# Enable auto-configuration for custom configurations
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.example.healthdb.config.InterceptorConfig,\
+com.example.healthdb.config.SnowFlakeConfig,\
+com.example.healthdb.config.WebConfig

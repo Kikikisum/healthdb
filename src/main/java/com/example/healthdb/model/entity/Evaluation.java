@@ -12,6 +12,8 @@ public class Evaluation extends BaseEntity{
 
     private Integer hid;
 
+    private Integer uid;
+
     @TableField("star_level")
     private Integer starLevel;
 

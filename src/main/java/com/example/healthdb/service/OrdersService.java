@@ -1,5 +1,6 @@
 package com.example.healthdb.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * @author xwb
  */
-public interface OrdersService {
+public interface OrdersService extends IService<Orders> {
 
     /**
      * 添加订单
