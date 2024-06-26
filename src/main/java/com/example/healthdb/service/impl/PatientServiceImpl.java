@@ -23,7 +23,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientDao, Patient> impleme
     SnowFlakeUtils snowFlakeUtils;
 
     @Override
-    public void addPatient(AddPatientRequest request) {
+    public Integer addPatient(AddPatientRequest request) {
         Patient patient = new Patient();
         Long id = snowFlakeUtils.nextId();
         patient.setId(Math.abs(id.intValue()));
@@ -37,7 +37,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientDao, Patient> impleme
         patient.setUpdateTime(new Date());
         patient.setIsDelete(0);
         save(patient);
-
+        return Math.abs(id.intValue());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.model.entity.Patient;
 import com.example.healthdb.model.request.AddPatientRequest;
 import com.example.healthdb.model.request.DeletePatientRequest;
+import com.example.healthdb.model.vo.AddPatientVo;
 import com.example.healthdb.service.PatientService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,10 @@ public class PatientController {
     private PatientService patientService;
 
     @PostMapping("/add")
-    public BaseResponse<Void> addPatient(@RequestBody AddPatientRequest request)
+    public BaseResponse<AddPatientVo> addPatient(@RequestBody AddPatientRequest request)
     {
-        patientService.addPatient(request);
-        return ResultUtils.success(null);
+        Integer id = patientService.addPatient(request);
+        return ResultUtils.success(new AddPatientVo(id));
     }
 
     @PostMapping("/delete")

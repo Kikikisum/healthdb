@@ -13,7 +13,7 @@ public interface PatientService extends IService<Patient> {
      * 增加一个陪诊人
      * @param request
      */
-    void addPatient(AddPatientRequest request);
+    Integer addPatient(AddPatientRequest request);
 
     /**
      * 软删除一个陪诊人

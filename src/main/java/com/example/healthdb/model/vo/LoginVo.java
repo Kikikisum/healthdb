@@ -11,4 +11,9 @@ public class LoginVo {
     private Integer id;
 
     private Integer isCompanion;
+
+    /**
+     * 是否实名
+     */
+    private Integer isIdentified;
 }

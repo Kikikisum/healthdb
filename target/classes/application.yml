@@ -1,9 +1,9 @@
-# ¿ª·¢»·¾³ÅäÖÃ
+# å¼€å‘ç¯å¢ƒé…ç½®
 server:
-  # ·şÎñÆ÷µÄHTTP¶Ë¿Ú£¬Ä¬ÈÏÎª80
+  # æœåŠ¡å™¨çš„HTTPç«¯å£ï¼Œé»˜è®¤ä¸º80
   port: 9001
   servlet:
-    # Ó¦ÓÃµÄ·ÃÎÊÂ·¾¶
+    # åº”ç”¨çš„è®¿é—®è·¯å¾„
     context-path: /
 
 spring:
@@ -12,7 +12,7 @@ spring:
       enabled: true
       max-file-size: 20MB
       max-request-size: 200MB
-  #Êı¾İÔ´
+  #æ•°æ®æº
   datasource:
     username: sinodbms
     password: sinodbms
@@ -22,34 +22,34 @@ spring:
     #type: org.apache.commons.dbcp2.BasicDataSource
 
     hikari:
-      ## ×îĞ¡¿ÕÏĞÁ¬½ÓÊıÁ¿
+      ## æœ€å°ç©ºé—²è¿æ¥æ•°é‡
       minimum-idle: 5
-      ## ¿ÕÏĞÁ¬½Ó´æ»î×î´óÊ±¼ä£¬Ä¬ÈÏ600000£¨10·ÖÖÓ£©
+      ## ç©ºé—²è¿æ¥å­˜æ´»æœ€å¤§æ—¶é—´ï¼Œé»˜è®¤600000ï¼ˆ10åˆ†é’Ÿï¼‰
       idle-timeout: 180000
-      ## Á¬½Ó³Ø×î´óÁ¬½ÓÊı£¬Ä¬ÈÏÊÇ10
+      ## è¿æ¥æ± æœ€å¤§è¿æ¥æ•°ï¼Œé»˜è®¤æ˜¯10
       maximum-pool-size: 20
-      ## Êı¾İ¿âÁ¬½Ó³¬Ê±Ê±¼ä,Ä¬ÈÏ30Ãë£¬¼´30000
+      ## æ•°æ®åº“è¿æ¥è¶…æ—¶æ—¶é—´,é»˜è®¤30ç§’ï¼Œå³30000
       connection-timeout: 30000
       connection-test-query: SELECT 1 FROM  systables where tabid < 100
-      ##´ËÊôĞÔ¿ØÖÆ³ØÖĞÁ¬½ÓµÄ×î³¤ÉúÃüÖÜÆÚ£¬Öµ0±íÊ¾ÎŞÏŞÉúÃüÖÜÆÚ£¬Ä¬ÈÏ1800000¼´30·ÖÖÓ
+      ##æ­¤å±æ€§æ§åˆ¶æ± ä¸­è¿æ¥çš„æœ€é•¿ç”Ÿå‘½å‘¨æœŸï¼Œå€¼0è¡¨ç¤ºæ— é™ç”Ÿå‘½å‘¨æœŸï¼Œé»˜è®¤1800000å³30åˆ†é’Ÿ
       max-lifetime: 1800000
 
       #druid:
-      # ³õÊ¼Á¬½ÓÊı
+      # åˆå§‹è¿æ¥æ•°
       #  initialSize: 5
-      # ×îĞ¡Á¬½Ó³ØÊıÁ¿
+      # æœ€å°è¿æ¥æ± æ•°é‡
       #  minIdle: 5
-      # ×î´óÁ¬½Ó³ØÊıÁ¿
+      # æœ€å¤§è¿æ¥æ± æ•°é‡
       #  maxActive: 20
-      # ÅäÖÃ»ñÈ¡Á¬½ÓµÈ´ı³¬Ê±µÄÊ±¼ä
+      # é…ç½®è·å–è¿æ¥ç­‰å¾…è¶…æ—¶çš„æ—¶é—´
       #  maxWait: 60000
-      # ÅäÖÃ¼ä¸ô¶à¾Ã²Å½øĞĞÒ»´Î¼ì²â£¬¼ì²âĞèÒª¹Ø±ÕµÄ¿ÕÏĞÁ¬½Ó£¬µ¥Î»ÊÇºÁÃë
+      # é…ç½®é—´éš”å¤šä¹…æ‰è¿›è¡Œä¸€æ¬¡æ£€æµ‹ï¼Œæ£€æµ‹éœ€è¦å…³é—­çš„ç©ºé—²è¿æ¥ï¼Œå•ä½æ˜¯æ¯«ç§’
       #  timeBetweenEvictionRunsMillis: 60000
-      # ÅäÖÃÒ»¸öÁ¬½ÓÔÚ³ØÖĞ×îĞ¡Éú´æµÄÊ±¼ä£¬µ¥Î»ÊÇºÁÃë
+      # é…ç½®ä¸€ä¸ªè¿æ¥åœ¨æ± ä¸­æœ€å°ç”Ÿå­˜çš„æ—¶é—´ï¼Œå•ä½æ˜¯æ¯«ç§’
       #  minEvictableIdleTimeMillis: 300000
-      # ÅäÖÃÒ»¸öÁ¬½ÓÔÚ³ØÖĞ×î´óÉú´æµÄÊ±¼ä£¬µ¥Î»ÊÇºÁÃë
+      # é…ç½®ä¸€ä¸ªè¿æ¥åœ¨æ± ä¸­æœ€å¤§ç”Ÿå­˜çš„æ—¶é—´ï¼Œå•ä½æ˜¯æ¯«ç§’
       #  maxEvictableIdleTimeMillis: 900000
-      # ÅäÖÃ¼ì²âÁ¬½ÓÊÇ·ñÓĞĞ§
+      # é…ç½®æ£€æµ‹è¿æ¥æ˜¯å¦æœ‰æ•ˆ
     #  validationQuery: SELECT 1 FROM systables WHERE tabid < 100
     #  testWhileIdle: true
 
@@ -63,53 +63,53 @@ spring:
     #  max-total: 20
 
   flyway:
-    # ÊÇ·ñÆôÓÃflyway
+    # æ˜¯å¦å¯ç”¨flyway
     enabled: false
-    # ±àÂë¸ñÊ½£¬Ä¬ÈÏUTF-8
+    # ç¼–ç æ ¼å¼ï¼Œé»˜è®¤UTF-8
     encoding: utf-8
-    # Ç¨ÒÆsql½Å±¾ÎÄ¼ş´æ·ÅÂ·¾¶£¬Ä¬ÈÏdb/migration
+    # è¿ç§»sqlè„šæœ¬æ–‡ä»¶å­˜æ”¾è·¯å¾„ï¼Œé»˜è®¤db/migration
     locations: classpath:db/migration
-    # Ç¨ÒÆsql½Å±¾ÎÄ¼şÃû³ÆµÄÇ°×º£¬Ä¬ÈÏV
+    # è¿ç§»sqlè„šæœ¬æ–‡ä»¶åç§°çš„å‰ç¼€ï¼Œé»˜è®¤V
     sql-migration-prefix: V
-    # Ç¨ÒÆsql½Å±¾ÎÄ¼şÃû³ÆµÄ·Ö¸ô·û£¬Ä¬ÈÏ2¸öÏÂ»®Ïß__
+    # è¿ç§»sqlè„šæœ¬æ–‡ä»¶åç§°çš„åˆ†éš”ç¬¦ï¼Œé»˜è®¤2ä¸ªä¸‹åˆ’çº¿__
     sql-migration-separator: __
-    # Ç¨ÒÆsql½Å±¾ÎÄ¼şÃû³ÆµÄºó×º
+    # è¿ç§»sqlè„šæœ¬æ–‡ä»¶åç§°çš„åç¼€
     sql-migration-suffixes: .sql
-    # Ç¨ÒÆÊ±ÊÇ·ñ½øĞĞĞ£Ñé£¬Ä¬ÈÏtrue
+    # è¿ç§»æ—¶æ˜¯å¦è¿›è¡Œæ ¡éªŒï¼Œé»˜è®¤true
     validate-on-migrate: false
-    # Èç¹ûÃ»ÓĞ flyway_schema_history Õâ¸ö metadata ±í£¬ ÔÚÖ´ĞĞ flyway migrate ÃüÁîÖ®Ç°, ±ØĞëÏÈÖ´ĞĞ flyway baseline ÃüÁî
-    # ÉèÖÃÎª true ºó flyway ½«ÔÚĞèÒª baseline µÄÊ±ºò, ×Ô¶¯Ö´ĞĞÒ»´Î baseline¡£
+    # å¦‚æœæ²¡æœ‰ flyway_schema_history è¿™ä¸ª metadata è¡¨ï¼Œ åœ¨æ‰§è¡Œ flyway migrate å‘½ä»¤ä¹‹å‰, å¿…é¡»å…ˆæ‰§è¡Œ flyway baseline å‘½ä»¤
+    # è®¾ç½®ä¸º true å flyway å°†åœ¨éœ€è¦ baseline çš„æ—¶å€™, è‡ªåŠ¨æ‰§è¡Œä¸€æ¬¡ baselineã€‚
     baseline-on-migrate: true
-    # Ö¸¶¨ baseline µÄ°æ±¾ºÅ,Ä¬ÈÏÖµÎª 1, µÍÓÚ¸Ã°æ±¾ºÅµÄ SQL ÎÄ¼ş, migrate Ê±»á±»ºöÂÔ
+    # æŒ‡å®š baseline çš„ç‰ˆæœ¬å·,é»˜è®¤å€¼ä¸º 1, ä½äºè¯¥ç‰ˆæœ¬å·çš„ SQL æ–‡ä»¶, migrate æ—¶ä¼šè¢«å¿½ç•¥
     baseline-version: 1
 
 mybatis-plus:
-  # ÊµÌåÉ¨Ãè£¬¶à¸öpackageÓÃ¶ººÅ»òÕß·ÖºÅ·Ö¸ô
+  # å®ä½“æ‰«æï¼Œå¤šä¸ªpackageç”¨é€—å·æˆ–è€…åˆ†å·åˆ†éš”
   #typeAliasesPackage: com.yibo.essyncclient.*.entity
   global-config:
-    # Êı¾İ¿âÏà¹ØÅäÖÃ
+    # æ•°æ®åº“ç›¸å…³é…ç½®
     db-config:
-      # Ö÷¼üÀàĞÍ  AUTO:"Êı¾İ¿âID×ÔÔö", INPUT:"ÓÃ»§ÊäÈëID", ID_WORKER:"È«¾ÖÎ¨Ò»ID (Êı×ÖÀàĞÍÎ¨Ò»ID)", UUID:"È«¾ÖÎ¨Ò»ID UUID";
+      # ä¸»é”®ç±»å‹  AUTO:"æ•°æ®åº“IDè‡ªå¢", INPUT:"ç”¨æˆ·è¾“å…¥ID", ID_WORKER:"å…¨å±€å”¯ä¸€ID (æ•°å­—ç±»å‹å”¯ä¸€ID)", UUID:"å…¨å±€å”¯ä¸€ID UUID";
       id-type: AUTO
-      # ×Ö¶Î²ßÂÔ IGNORED:"ºöÂÔÅĞ¶Ï",NOT_NULL:"·Ç NULL ÅĞ¶Ï"),NOT_EMPTY:"·Ç¿ÕÅĞ¶Ï"
+      # å­—æ®µç­–ç•¥ IGNORED:"å¿½ç•¥åˆ¤æ–­",NOT_NULL:"é NULL åˆ¤æ–­"),NOT_EMPTY:"éç©ºåˆ¤æ–­"
       field-strategy: NOT_NULL
-      # ÍÕ·åÏÂ»®Ïß×ª»»
+      # é©¼å³°ä¸‹åˆ’çº¿è½¬æ¢
       column-underline: false
-      # Âß¼­É¾³ı
+      # é€»è¾‘åˆ é™¤
       logic-delete-value: 0
       logic-not-delete-value: 1
-      # Êı¾İ¿âÀàĞÍ
+      # æ•°æ®åº“ç±»å‹
       db-type: other
     banner: false
-  # mybatisÔ­ÉúÅäÖÃ
+  # mybatisåŸç”Ÿé…ç½®
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
     call-setters-on-nulls: true
 
 logging:
-  #ÈÕÖ¾ÅäÖÃÂ·¾¶
+  #æ—¥å¿—é…ç½®è·¯å¾„
   config: classpath:log.xml
-  #ÈÕÖ¾¼¶±ğ Ö¸¶¨Ä¿Â¼¼¶±ğ
+  #æ—¥å¿—çº§åˆ« æŒ‡å®šç›®å½•çº§åˆ«
   level:
     root: INFO
