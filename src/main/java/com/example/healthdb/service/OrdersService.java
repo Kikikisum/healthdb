@@ -1,6 +1,8 @@
 package com.example.healthdb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.healthdb.model.dto.OrdersAndEscortDTO;
+import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
@@ -32,7 +34,7 @@ public interface OrdersService extends IService<Orders> {
      * @param isFinished
      * @return
      */
-    List<Orders> queryByIsFinished(Integer isFinished);
+    List<OrdersDTO> queryByIsFinished(Integer isFinished);
 
     /**
      * 更新订单完成状态
@@ -44,4 +46,11 @@ public interface OrdersService extends IService<Orders> {
      * 检查订单是否已经完成
      */
     void checkOverTime();
+
+    /**
+     * 根据id查询订单
+     * @param id
+     * @return
+     */
+    OrdersAndEscortDTO queryById(Integer id);
 }

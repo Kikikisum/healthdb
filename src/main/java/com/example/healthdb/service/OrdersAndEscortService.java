@@ -1,7 +1,6 @@
 package com.example.healthdb.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrderAndEscortRequest;
 import com.example.healthdb.model.request.DeleteOrdersAndEscortRequest;
@@ -9,7 +8,7 @@ import com.example.healthdb.model.request.DeleteOrdersAndEscortRequest;
 /**
  * @author xwb
  */
-public interface OrdersAndEscortService extends IService<OrdersAndEscort> {
+public interface OrdersAndEscortService {
 
     /**
      * 添加订单与陪诊人
@@ -25,4 +24,11 @@ public interface OrdersAndEscortService extends IService<OrdersAndEscort> {
      */
     void deleteOrders(DeleteOrdersAndEscortRequest request);
 
+
+    /**
+     * 根据订单id查询陪诊人
+     * @param oid
+     * @return
+     */
+    OrdersAndEscort queryByOid(Integer oid);
 }
