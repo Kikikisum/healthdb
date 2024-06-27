@@ -3,14 +3,17 @@ package com.example.healthdb.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.dao.OrdersDao;
+import com.example.healthdb.dao.UserDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
+import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
@@ -23,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -36,6 +41,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
     @Resource
     SnowFlakeUtils snowFlakeUtils;
 
+
+    @Resource
+    OrdersDao ordersDao;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -54,8 +62,6 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
     @Resource
     private EscortService escortService;
 
-    @Resource
-    private OrdersDao ordersDao;
 
 
 
@@ -185,7 +191,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
         ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
         //TODO 根据订单查询服务类型
-        //ordersDTO.setServerType(orders.get);
+        // ordersDTO.setServerType(orders.get);
         ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
         ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
         ordersAndEscortDTO.setAge(patientService.getById(orders.getPid()).getAge());
@@ -222,6 +228,76 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
             ordersDTOList.add(ordersDTO);
+        }
+        return ordersDTOList;
+    }
+
+    @Override
+    public List<OrdersAndEscortDTO> queryByMutipleConditions(MutipleQueryOrdersRequest request) {
+        LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Orders::getUid,request.getUid());
+        List<Orders> ordersList2=ordersDao.selectList(lambdaQueryWrapper);
+        Date startTime = null;
+        try {
+            startTime = simpleDateFormat.parse(request.getStartTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Date endTime=null;
+        try {
+            endTime = simpleDateFormat.parse(request.getEndTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        if (startTime!=null&&endTime!=null)
+        {
+            lambdaQueryWrapper.between(Orders::getStartTime,startTime,endTime);
+            lambdaQueryWrapper.between(Orders::getEndTime,startTime,endTime);
+        }
+        List<Orders> ordersList1=ordersDao.selectList(lambdaQueryWrapper);
+        if (request.getSort()!=null)
+        {
+            if (request.getSort()==1)
+            {
+                lambdaQueryWrapper.orderByDesc(Orders::getStartTime);
+            }
+            else {
+                lambdaQueryWrapper.orderByAsc(Orders::getStartTime);
+            }
+        }
+        List<Orders> ordersList=ordersDao.selectList(lambdaQueryWrapper);
+        List<OrdersAndEscortDTO> ordersDTOList = new ArrayList<>();
+
+        for (Orders orders : ordersList){
+            OrdersAndEscortDTO ordersAndEscortDTO=new OrdersAndEscortDTO();
+            BeanUtils.copyProperties(orders,ordersAndEscortDTO);
+            ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
+            ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersAndEscortDTO.setEname(userService.getById(orders.getUid()).getRealname());
+            ordersAndEscortDTO.setOid(orders.getId());
+            // 查询陪诊师
+            LambdaQueryWrapper<Escort> escortLambdaQueryWrapper=new LambdaQueryWrapper<>();
+            escortLambdaQueryWrapper.eq(Escort::getUid,orders.getUid());
+            Escort escort=escortService.getOne(escortLambdaQueryWrapper);
+            if (escort!=null)
+            {
+                ordersAndEscortDTO.setGender(escort.getGender());
+                ordersAndEscortDTO.setAge(escort.getAge());
+            }
+            ordersDTOList.add(ordersAndEscortDTO);
+        }
+        if (request.getName()!=null)
+        {
+            // 就诊人名字模糊查询
+            Pattern p = Pattern.compile(".*"+request.getName()+".*");
+            for (OrdersAndEscortDTO ordersDTO:ordersDTOList)
+            {
+                Matcher m = p.matcher(ordersDTO.getPname());
+                if (!m.matches())
+                {
+                    ordersDTOList.remove(ordersDTO);
+                }
+            }
         }
         return ordersDTOList;
     }

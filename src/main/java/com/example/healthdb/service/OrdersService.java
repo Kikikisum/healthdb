@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
+import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 
 import java.util.List;
@@ -61,4 +63,11 @@ public interface OrdersService extends IService<Orders> {
      * @return
      */
     List<OrdersDTO> queryAvailableOrders(Integer uid);
+
+    /**
+     * 多条件查询订单信息
+     * @param request
+     * @return
+     */
+    List<OrdersAndEscortDTO> queryByMutipleConditions(MutipleQueryOrdersRequest request);
 }

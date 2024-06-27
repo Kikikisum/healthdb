@@ -22,8 +22,6 @@ public class ConstantPropertiesUtil implements InitializingBean {
     @Value("${aliyun.oss.urlPrefix}")
     private String urlPrefix;
 
-    @Value("${aes.secret-key}")
-    private String encryptStrSecretKey;
 
     public static String END_POINT;
     public static String ACCESS_KEY_ID;
@@ -42,6 +40,5 @@ public class ConstantPropertiesUtil implements InitializingBean {
         ACCESS_KEY_SECRET = accessKeySecret;
         BUCKET_NAME = bucketname;
         URL_PREFIX = urlPrefix;
-        ENCRYPT_STR_SECRET_KEY = encryptStrSecretKey;
     }
 }

@@ -73,7 +73,7 @@ public class OrdersController {
      * @return
      */
    @PostMapping("/query/multiple")
-   public BaseResponse<OrdersAndEscortDTO> queryByMultipleQuery(@RequestBody MutipleQueryOrdersRequest request)
+   public BaseResponse<List<OrdersAndEscortDTO>> queryByMultipleQuery(@RequestBody MutipleQueryOrdersRequest request)
    {
         return ResultUtils.success(ordersService.queryByMutipleConditions(request));
    }

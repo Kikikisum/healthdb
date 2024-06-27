@@ -9,9 +9,9 @@ public class MutipleQueryOrdersRequest {
 
     private Integer uid;
 
-    private Date startTime;
+    private String startTime;
 
-    private Date endTime;
+    private String endTime;
 
     /**
      * 就诊人名字
