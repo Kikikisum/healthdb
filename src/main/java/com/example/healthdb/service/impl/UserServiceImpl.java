@@ -55,7 +55,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             {
                 isIdentified=1;
             }
-            LoginVo loginVo=new LoginVo(JwtUtils.getToken(map),user.getId(),is_companion,isIdentified);
+            LoginVo loginVo=new LoginVo(JwtUtils.getToken(map),user.getId(),user.getNickname(),is_companion,isIdentified);
             return loginVo;
         }
         else {

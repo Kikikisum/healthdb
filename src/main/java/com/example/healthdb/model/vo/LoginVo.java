@@ -10,6 +10,8 @@ public class LoginVo {
 
     private Integer id;
 
+    private String nickname;
+
     private Integer isCompanion;
 
     /**
