@@ -6,7 +6,6 @@ import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
-import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public interface OrdersService extends IService<Orders> {
      * @param isFinished
      * @return
      */
-    List<OrdersDTO> queryByIsFinished(Integer isFinished);
+    List<OrdersDTO> queryByIsFinished(Integer isFinished,Integer uid);
 
     /**
      * 更新订单完成状态
@@ -55,10 +54,11 @@ public interface OrdersService extends IService<Orders> {
      */
     OrdersAndEscortDTO queryById(Integer id);
 
+
     /**
-     * 多条件查询
-     * @param request
+     * 查询陪诊师可接单的订单
+     * @param uid
      * @return
      */
-    OrdersAndEscortDTO queryByMutipleConditions(MutipleQueryOrdersRequest request);
+    List<OrdersDTO> queryAvailableOrders(Integer uid);
 }

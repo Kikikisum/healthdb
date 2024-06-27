@@ -7,10 +7,10 @@ import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
+import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
-import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * @author xwb
  */
@@ -34,6 +35,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
 
     @Resource
     SnowFlakeUtils snowFlakeUtils;
+
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -112,10 +114,13 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
      * @return
      */
     @Override
-    public List<OrdersDTO> queryByIsFinished(Integer isFinished) {
+    public List<OrdersDTO> queryByIsFinished(Integer isFinished, Integer uid) {
+
         LambdaQueryWrapper<Orders> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Orders::getIsFinished,isFinished)
-                .eq(Orders::getIsDelete,0);
+                .eq(Orders::getIsDelete,0)
+                .eq(Orders::getUid,uid);
+
         List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper);
         List<OrdersDTO> ordersDTOList = new ArrayList<>();
         for (Orders orders : ordersList){
@@ -193,10 +198,32 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         return ordersAndEscortDTO;
     }
 
+    /**
+     * 查询陪诊师可接单订单
+     * @param uid
+     * @return
+     */
     @Override
-    public OrdersAndEscortDTO queryByMutipleConditions(MutipleQueryOrdersRequest request) {
+    public List<OrdersDTO> queryAvailableOrders(Integer uid) {
+        LambdaQueryWrapper<Escort> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Escort::getUid,uid);
+        Escort escort = escortService.getOne(lambdaQueryWrapper);
+        LambdaQueryWrapper<Orders> lambdaQueryWrapper1 = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper1.eq(Orders::getAreaCode,escort.getAreaCode())
+                .eq(Orders::getIsFinished,0)
+                .eq(Orders::getIsDelete,0);
 
-        return null;
+        List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper1);
+        List<OrdersDTO> ordersDTOList = new ArrayList<>();
+
+        for (Orders orders : ordersList){
+            OrdersDTO ordersDTO = new OrdersDTO();
+            BeanUtils.copyProperties(orders,ordersDTO);
+            ordersDTO.setPname(patientService.getById(orders.getPid()).getName());
+            ordersDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersDTOList.add(ordersDTO);
+        }
+        return ordersDTOList;
     }
 
 

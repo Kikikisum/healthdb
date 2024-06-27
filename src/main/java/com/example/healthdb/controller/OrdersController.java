@@ -52,9 +52,9 @@ public class OrdersController {
      * @param isFinished
      * @return
      */
-    @GetMapping("/{isFinished}")
-   public BaseResponse<List<OrdersDTO>> queryByIsFinished(@PathVariable Integer isFinished){
-       return ResultUtils.success(ordersService.queryByIsFinished(isFinished));
+    @GetMapping("/isFinished")
+   public BaseResponse<List<OrdersDTO>> queryByIsFinished(@RequestParam("isFinished") Integer isFinished,@RequestParam("uid") Integer uid){
+       return ResultUtils.success(ordersService.queryByIsFinished(isFinished,uid));
    }
 
     /**
