@@ -24,8 +24,8 @@ public class OrdersAndEscortDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date endTime;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private Date endTime;
 
     private String hname;
 
@@ -36,9 +36,6 @@ public class OrdersAndEscortDTO {
     private Integer isFinished;
 
     private String ename;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
