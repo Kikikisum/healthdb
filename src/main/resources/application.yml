@@ -84,6 +84,7 @@ spring:
     # 指定 baseline 的版本号,默认值为 1, 低于该版本号的 SQL 文件, migrate 时会被忽略
     baseline-version: 1
 
+
 mybatis-plus:
   # 实体扫描，多个package用逗号或者分号分隔
   #typeAliasesPackage: com.yibo.essyncclient.*.entity
