@@ -18,7 +18,7 @@ public class Evaluation extends BaseEntity{
     @TableField("process_level")
     private Integer processLevel;
 
-    @TableField("sever_level")
+    @TableField("server_level")
     private Integer serverLevel;
 
     private String content;

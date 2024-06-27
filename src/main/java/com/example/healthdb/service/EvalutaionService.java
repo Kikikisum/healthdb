@@ -5,6 +5,8 @@ import com.example.healthdb.model.entity.Evaluation;
 import com.example.healthdb.model.request.AddEvaluationRequest;
 import com.example.healthdb.model.request.DeleteEvaluationRequest;
 
+import java.util.List;
+
 public interface EvalutaionService extends IService<Evaluation> {
 
     /**
@@ -18,4 +20,18 @@ public interface EvalutaionService extends IService<Evaluation> {
      * @param request
      */
     void deleteEvaluation(DeleteEvaluationRequest request);
+
+    /**
+     * 查询用户自身所做出的评价
+     * @param uid
+     * @return
+     */
+    List<Evaluation> queryMyEvaluation(Integer uid);
+
+    /**
+     * 查询医院对应的评价
+     * @param hid
+     * @return
+     */
+    List<Evaluation> queryByHospital(Integer hid);
 }

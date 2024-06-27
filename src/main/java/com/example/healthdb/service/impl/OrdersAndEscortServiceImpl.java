@@ -51,7 +51,6 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         ordersAndEscort.setCreateTime(new Date());
         ordersAndEscort.setUpdateTime(new Date());
         ordersAndEscort.setIsDelete(0);
-
         save(ordersAndEscort);
     }
 

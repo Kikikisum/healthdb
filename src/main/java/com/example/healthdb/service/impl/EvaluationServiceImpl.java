@@ -1,5 +1,6 @@
 package com.example.healthdb.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.config.SnowFlakeConfig;
 import com.example.healthdb.dao.EvaluationDao;
@@ -15,7 +16,9 @@ import com.example.healthdb.utils.SnowFlakeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation> implements EvalutaionService {
@@ -43,6 +46,7 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         {
             throw new BusinessException(ErrorCode.NO_AUTH);
         }
+        //todo 重复评论的检查
         Evaluation evaluation = new Evaluation();
         Long id = snowFlakeUtils.nextId();
         evaluation.setId(Math.abs(id.intValue()));
@@ -74,5 +78,45 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         evaluation.setIsDelete(1);
         evaluation.setUpdateTime(new Date());
         updateById(evaluation);
+    }
+
+    @Override
+    public List<Evaluation> queryMyEvaluation(Integer uid) {
+        List<Evaluation> evaluations=new ArrayList<>();
+        LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        ordersLambdaQueryWrapper.eq(Orders::getUid,uid);
+        ordersLambdaQueryWrapper.eq(Orders::getIsFinished,1);
+        List<Orders> ordersList =ordersService.list(ordersLambdaQueryWrapper);
+        for (Orders orders:ordersList)
+        {
+            LambdaQueryWrapper<Evaluation> evaluationLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            evaluationLambdaQueryWrapper.eq(Evaluation::getOid,orders.getId());
+            Evaluation evaluation=getOne(evaluationLambdaQueryWrapper);
+            if (evaluation!=null)
+            {
+                evaluations.add(evaluation);
+            }
+        }
+        return evaluations;
+    }
+
+    @Override
+    public List<Evaluation> queryByHospital(Integer hid) {
+        List<Evaluation> evaluations=new ArrayList<>();
+        LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        ordersLambdaQueryWrapper.eq(Orders::getHid,hid);
+        ordersLambdaQueryWrapper.eq(Orders::getIsFinished,1);
+        List<Orders> ordersList =ordersService.list(ordersLambdaQueryWrapper);
+        for (Orders orders:ordersList)
+        {
+            LambdaQueryWrapper<Evaluation> evaluationLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            evaluationLambdaQueryWrapper.eq(Evaluation::getOid,orders.getId());
+            Evaluation evaluation=getOne(evaluationLambdaQueryWrapper);
+            if (evaluation!=null)
+            {
+                evaluations.add(evaluation);
+            }
+        }
+        return evaluations;
     }
 }
