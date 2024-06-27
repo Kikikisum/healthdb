@@ -6,6 +6,7 @@ import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
+import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.service.OrdersService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,14 @@ public class OrdersController {
         return ResultUtils.success(ordersService.queryById(id));
    }
 
-
-
+    /**
+     * 根据多条件对订单进行查询
+     * @param request
+     * @return
+     */
+   @PostMapping("/query/multiple")
+   public BaseResponse<OrdersAndEscortDTO> queryByMultipleQuery(@RequestBody MutipleQueryOrdersRequest request)
+   {
+        return ResultUtils.success(ordersService.queryByMutipleConditions(request));
+   }
 }

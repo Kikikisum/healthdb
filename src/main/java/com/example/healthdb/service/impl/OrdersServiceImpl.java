@@ -10,6 +10,7 @@ import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
+import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
@@ -190,6 +191,12 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         ordersAndEscortDTO.setOid(orders.getId());
         ordersAndEscortDTO.setRequirement(orders.getRequirement());
         return ordersAndEscortDTO;
+    }
+
+    @Override
+    public OrdersAndEscortDTO queryByMutipleConditions(MutipleQueryOrdersRequest request) {
+
+        return null;
     }
 
 

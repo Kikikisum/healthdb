@@ -6,6 +6,7 @@ import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
+import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 
 import java.util.List;
@@ -53,4 +54,11 @@ public interface OrdersService extends IService<Orders> {
      * @return
      */
     OrdersAndEscortDTO queryById(Integer id);
+
+    /**
+     * 多条件查询
+     * @param request
+     * @return
+     */
+    OrdersAndEscortDTO queryByMutipleConditions(MutipleQueryOrdersRequest request);
 }
