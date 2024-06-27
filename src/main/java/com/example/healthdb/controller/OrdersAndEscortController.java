@@ -1,6 +1,8 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrderAndEscortRequest;
 import com.example.healthdb.model.request.DeleteOrdersAndEscortRequest;
 import com.example.healthdb.service.OrdersAndEscortService;
@@ -23,6 +25,11 @@ public class OrdersAndEscortController {
     @Resource
     private OrdersService ordersService;
 
+    /**
+     * 陪诊师接单
+     * @param request
+     * @return
+     */
     @PostMapping("/add")
     public BaseResponse<Void> addOrdersAndEscort(@RequestBody AddOrderAndEscortRequest request)
     {
@@ -32,11 +39,18 @@ public class OrdersAndEscortController {
     }
 
 
+    /**
+     * 根据id删除陪诊师订单
+     * @param request
+     * @return
+     */
     @PostMapping("/delete")
     public BaseResponse<Void> deleteOrdersAndEscort(@RequestBody DeleteOrdersAndEscortRequest request){
         ordersService.checkOverTime();
         ordersAndEscortService.deleteOrders(request);
         return ResultUtils.success(null);
     }
+
+
 
 }

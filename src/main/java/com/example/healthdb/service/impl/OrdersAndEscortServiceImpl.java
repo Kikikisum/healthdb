@@ -1,11 +1,14 @@
 package com.example.healthdb.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.dao.OrdersAndEscortDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 
 import com.example.healthdb.model.entity.Escort;
+import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrderAndEscortRequest;
 import com.example.healthdb.model.request.DeleteOrdersAndEscortRequest;
@@ -68,6 +71,20 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         }else {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+    }
+
+
+    /**
+     * 根据订单id查询陪诊人订单
+     * @param oid
+     * @return
+     */
+    @Override
+    public OrdersAndEscort queryByOid(Integer oid) {
+        LambdaQueryWrapper<OrdersAndEscort> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(OrdersAndEscort::getOid,oid);
+        OrdersAndEscort ordersAndEscort = getOne(lambdaQueryWrapper);
+        return ordersAndEscort;
     }
 
 }

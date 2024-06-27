@@ -5,17 +5,21 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.dao.OrdersDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
+import com.example.healthdb.model.dto.OrdersAndEscortDTO;
+import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
-import com.example.healthdb.service.OrdersService;
+import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +35,26 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
     SnowFlakeUtils snowFlakeUtils;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    @Resource
+    private PatientService patientService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private HospitalService hospitalService;
+
+    @Resource
+    private OrdersAndEscortService ordersAndEscortService;
+
+    @Resource
+    private EscortService escortService;
+
+    @Resource
+    private OrdersDao ordersDao;
+
+
 
     /**
      * 下单
@@ -87,11 +111,22 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
      * @return
      */
     @Override
-    public List<Orders> queryByIsFinished(Integer isFinished) {
+    public List<OrdersDTO> queryByIsFinished(Integer isFinished) {
         LambdaQueryWrapper<Orders> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Orders::getIsFinished,isFinished)
                 .eq(Orders::getIsDelete,0);
-        return list(lambdaQueryWrapper);
+        List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper);
+        List<OrdersDTO> ordersDTOList = new ArrayList<>();
+        for (Orders orders : ordersList){
+            OrdersDTO ordersDTO = new OrdersDTO();
+            BeanUtils.copyProperties(orders,ordersDTO);
+            ordersDTO.setPname(patientService.getById(orders.getPid()).getName());
+            ordersDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersDTOList.add(ordersDTO);
+        }
+
+        return ordersDTOList;
+
     }
 
 
@@ -112,6 +147,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         }
     }
 
+    /**
+     * 超时自动完成
+     */
     @Override
     public void checkOverTime() {
         LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
@@ -125,6 +163,33 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         {
             updateById(order);
         }
+    }
+
+    /**
+     * 根据订单id查询订单
+     * @param id
+     * @return
+     */
+    @Override
+    public OrdersAndEscortDTO queryById(Integer id) {
+        Orders orders = getById(id);
+        OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
+
+        ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
+        ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
+        ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+        //TODO 根据订单查询服务类型
+        //ordersDTO.setServerType(orders.get);
+        ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
+        ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
+        ordersAndEscortDTO.setAge(patientService.getById(orders.getPid()).getAge());
+        ordersAndEscortDTO.setTelephoneNumber(patientService.getById(orders.getPid()).getTelephoneNumber());
+        ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
+        ordersAndEscortDTO.setStartTime(orders.getStartTime());
+        ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+        ordersAndEscortDTO.setOid(orders.getId());
+        ordersAndEscortDTO.setRequirement(orders.getRequirement());
+        return ordersAndEscortDTO;
     }
 
 

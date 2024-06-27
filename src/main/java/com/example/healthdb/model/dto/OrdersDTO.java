@@ -1,27 +1,18 @@
-package com.example.healthdb.model.entity;
+package com.example.healthdb.model.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 /**
  * @author xwb
  */
-
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName("orders")
-public class Orders extends BaseEntity{
-    @TableId(type = IdType.ASSIGN_ID)
+public class OrdersDTO {
     private Integer id;
 
     private Integer uid;
@@ -29,6 +20,10 @@ public class Orders extends BaseEntity{
     private Integer hid;
 
     private Integer pid;
+
+    private String pname;
+
+    private String hname;
 
     @TableField("start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
