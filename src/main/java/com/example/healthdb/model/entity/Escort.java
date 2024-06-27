@@ -27,7 +27,8 @@ public class Escort extends BaseEntity{
     @TableField("work_section")
     private String workSection;
 
-    private String city;
+    @TableField("area_code")
+    private Integer areaCode;
 
     @TableField("is_passed")
     private Integer isPassed;
@@ -35,4 +36,5 @@ public class Escort extends BaseEntity{
     private Integer gender;
 
     private Integer age;
+
 }

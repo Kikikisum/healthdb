@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class DeleteEvaluationRequest {
     private Integer evaluation_id;
+    private Integer uid;
 }

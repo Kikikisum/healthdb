@@ -27,4 +27,6 @@ public class Hospital extends BaseEntity{
 
     @TableField("detail_address")
     private String detailAddress;
+
+    private String photo;
 }

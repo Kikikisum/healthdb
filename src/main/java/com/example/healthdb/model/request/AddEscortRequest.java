@@ -26,5 +26,5 @@ public class AddEscortRequest {
 
     private String identity;
 
-    private String city;
+    private Integer area_code;
 }

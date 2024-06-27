@@ -41,7 +41,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         try {
             Orders orders= new Orders();
             Long id = snowFlakeUtils.nextId();
-            orders.setId(id.intValue());
+            orders.setId(Math.abs(id.intValue()));
             orders.setUid(addOrdersRequest.getUid());
             orders.setPid(addOrdersRequest.getPid());
             orders.setHid(addOrdersRequest.getHid());

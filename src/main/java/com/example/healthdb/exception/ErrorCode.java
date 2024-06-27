@@ -17,7 +17,8 @@ public enum ErrorCode {
     NO_AUTH(40101, "无权限", ""),
     PASSWORD_WRONG(40002,"密码错误",""),
     TELEPHONE_WRONG(40003,"电话号码错误",""),
-    ID_WRONG(40004,"id参数错误","")
+    ID_WRONG(40004,"id参数错误",""),
+    ORDER_NOTFINISH(40005,"订单未完成","")
     ;
 
 

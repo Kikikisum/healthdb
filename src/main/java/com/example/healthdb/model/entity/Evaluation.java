@@ -10,9 +10,7 @@ public class Evaluation extends BaseEntity{
     @TableId(type = IdType.ASSIGN_ID)
     private Integer id;
 
-    private Integer hid;
-
-    private Integer uid;
+    private Integer oid;
 
     @TableField("star_level")
     private Integer starLevel;

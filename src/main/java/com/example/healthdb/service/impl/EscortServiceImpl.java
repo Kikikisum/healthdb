@@ -78,7 +78,7 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         escort.setCreateTime(new Date());
         escort.setIsDelete(0);
         escort.setUpdateTime(new Date());
-        escort.setCity(request.getCity());
+        escort.setAreaCode(request.getArea_code());
         save(escort);
     }
 

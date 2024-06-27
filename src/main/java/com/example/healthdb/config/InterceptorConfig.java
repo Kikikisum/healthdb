@@ -19,6 +19,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/orders/*")
                 .addPathPatterns("/escort/*")
                 .addPathPatterns("/admin/*")
+                .addPathPatterns("/evaluate/*")
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register");
         // 注册跨域拦截器,设置 order 为 -1
