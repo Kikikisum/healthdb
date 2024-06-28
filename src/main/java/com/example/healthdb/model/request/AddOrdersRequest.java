@@ -18,6 +18,8 @@ public class AddOrdersRequest {
 
     private Integer pid;
 
+    private Integer sid;
+
     private String startTime;
 
     private String endTime;

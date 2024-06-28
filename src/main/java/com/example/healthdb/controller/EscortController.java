@@ -1,6 +1,7 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.request.AddEscortRequest;
@@ -39,7 +40,7 @@ public class EscortController {
      * @return
      */
     @GetMapping("/query/by/{uid}")
-    public BaseResponse<List<OrdersDTO>> queryAvailableOrders(@PathVariable Integer uid){
+    public BaseResponse<List<OrdersAndEscortDTO>> queryAvailableOrders(@PathVariable Integer uid){
         return ResultUtils.success(ordersService.queryAvailableOrders(uid));
     }
 
