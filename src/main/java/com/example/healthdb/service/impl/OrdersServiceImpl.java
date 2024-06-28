@@ -59,6 +59,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
     @Resource
     private OrdersDao ordersDao;
 
+    @Resource
+    private ServerTypeService serverTypeService;
+
 
 
     /**
@@ -74,6 +77,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             orders.setUid(addOrdersRequest.getUid());
             orders.setPid(addOrdersRequest.getPid());
             orders.setHid(addOrdersRequest.getHid());
+            orders.setSid(orders.getSid());
             Date startTime = simpleDateFormat.parse(addOrdersRequest.getStartTime());
             orders.setStartTime(startTime);
             Date endTime = simpleDateFormat.parse(addOrdersRequest.getEndTime());
@@ -130,8 +134,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
-//            //TODO 根据订单查询服务类型
-            //ordersDTO.setServerType(orders.get);
+            ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
             ordersAndEscortDTO.setAge(patientService.getById(orders.getPid()).getAge());
@@ -198,8 +201,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
-            //TODO 根据订单查询服务类型
-            //ordersDTO.setServerType(orders.get);
+            ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
             ordersAndEscortDTO.setAge(patientService.getById(orders.getPid()).getAge());
@@ -227,7 +229,6 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         List<Hospital> hospitalList = hospitalService.getByAreaCode(escort.getAreaCode());
 
         List<Integer> hids = new ArrayList<>();
-
         hids.add(0);
 
         for (Hospital hospital : hospitalList){
@@ -246,9 +247,10 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
             ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
-            ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
-//            //TODO 根据订单查询服务类型
-            //ordersDTO.setServerType(orders.get);
+            if(ordersAndEscortService.queryByOid(orders.getId()) != null){
+                ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+            }
+            ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
             ordersAndEscortDTO.setAge(patientService.getById(orders.getPid()).getAge());
@@ -262,6 +264,4 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         }
         return ordersAndEscortDTOS;
     }
-
-
 }

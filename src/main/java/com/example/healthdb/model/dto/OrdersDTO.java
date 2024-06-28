@@ -21,6 +21,8 @@ public class OrdersDTO {
 
     private Integer pid;
 
+    private Integer sid;
+
     private String pname;
 
     private String hname;

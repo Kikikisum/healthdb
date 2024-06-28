@@ -42,6 +42,9 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
     @Override
     public void addOrdersAndEscort(AddOrderAndEscortRequest request) {
         OrdersAndEscort ordersAndEscort = new OrdersAndEscort();
+        if(queryByOid(request.getOid()) != null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
         Long id = snowFlakeUtils.nextId();
         ordersAndEscort.setId(Math.abs(id.intValue()));
         // 根据用户id得到陪诊师id

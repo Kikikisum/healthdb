@@ -30,8 +30,7 @@ public class Orders extends BaseEntity{
 
     private Integer pid;
 
-    @TableField("area_code")
-    private Integer areaCode;
+    private Integer sid;
 
     @TableField("start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

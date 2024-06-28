@@ -9,7 +9,7 @@ import java.util.Date;
  */
 @Data
 public class OrdersAndEscortDTO {
-    private Integer serverType;
+    private String serverType;
 
     private String pname;
 
