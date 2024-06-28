@@ -34,7 +34,7 @@ public interface OrdersService extends IService<Orders> {
      * @param isFinished
      * @return
      */
-    List<OrdersDTO> queryByIsFinished(Integer isFinished,Integer uid);
+    List<OrdersAndEscortDTO> queryByIsFinished(Integer isFinished,Integer uid);
 
     /**
      * 更新订单完成状态
@@ -60,5 +60,5 @@ public interface OrdersService extends IService<Orders> {
      * @param uid
      * @return
      */
-    List<OrdersDTO> queryAvailableOrders(Integer uid);
+    List<OrdersAndEscortDTO> queryAvailableOrders(Integer uid);
 }
