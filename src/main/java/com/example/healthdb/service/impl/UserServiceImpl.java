@@ -32,7 +32,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     public LoginVo login(LoginRequest loginRequest) {
         // 先查询电话信息是否正确
         LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(User::getTelephone,loginRequest.getTelephone());
+        lambdaQueryWrapper.eq(User::getTelephone,loginRequest.getTelephone())
+                .eq(User::getIsDelete,0);
         User user = userDao.selectOne(lambdaQueryWrapper);
         if (user==null)
         {
@@ -100,7 +101,13 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public void updateAvatar(UpdateAvatarRequest avatarRequest) {
-
+        User user=getById(avatarRequest.getUid());
+        if (user==null)
+        {
+            throw new BusinessException(ErrorCode.ID_WRONG);
+        }
+        user.setAvatar(avatarRequest.getAvatar());
+        updateById(user);
     }
 
     @Override

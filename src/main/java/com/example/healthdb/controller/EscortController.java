@@ -3,7 +3,7 @@ package com.example.healthdb.controller;
 import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
-import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.request.AddEscortRequest;
 import com.example.healthdb.service.EscortService;
 import com.example.healthdb.service.OrdersService;
@@ -42,5 +42,17 @@ public class EscortController {
     @GetMapping("/query/by/{uid}")
     public BaseResponse<List<OrdersAndEscortDTO>> queryAvailableOrders(@PathVariable Integer uid){
         return ResultUtils.success(ordersService.queryAvailableOrders(uid));
+    }
+
+
+    /**
+     * 查询陪诊师信息
+     * @param uid
+     * @return
+     */
+    @GetMapping("/get/my/{uid}")
+    public BaseResponse<Escort> getMyEscortInformation(@PathVariable Integer uid)
+    {
+        return ResultUtils.success(escortService.getEscortInformation(uid));
     }
 }

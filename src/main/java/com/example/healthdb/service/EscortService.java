@@ -27,4 +27,11 @@ public interface EscortService extends IService<Escort> {
      * @return
      */
     List<Escort> queryAll(HttpServletRequest request);
+
+    /**
+     * 获得指定id的陪诊师信息
+     * @param uid
+     * @return
+     */
+    Escort getEscortInformation(Integer uid);
 }

@@ -25,6 +25,7 @@ public class OSSFileUtil {
     private static final String ACCESS_KEY_SECRET = ConstantPropertiesUtil.ACCESS_KEY_SECRET;
     private static final String BUCKET_NAME = ConstantPropertiesUtil.BUCKET_NAME;
     private static final String URL_PREFIX = ConstantPropertiesUtil.URL_PREFIX;
+
     /**
      * OSS上的文件夹名
      */

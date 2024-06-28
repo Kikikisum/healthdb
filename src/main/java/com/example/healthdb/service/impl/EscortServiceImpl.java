@@ -115,4 +115,11 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         lambdaQueryWrapper.eq(Escort::getIsPassed,0);
         return list(lambdaQueryWrapper);
     }
+
+    @Override
+    public Escort getEscortInformation(Integer uid) {
+        LambdaQueryWrapper<Escort> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Escort::getUid,uid);
+        return getOne(lambdaQueryWrapper);
+    }
 }
