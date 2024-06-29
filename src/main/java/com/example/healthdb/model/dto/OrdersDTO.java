@@ -40,6 +40,6 @@ public class OrdersDTO {
 
     private String requirement;
 
-    @TableField("is_finished")
-    private Integer isFinished;
+    @TableField("status")
+    private Integer status;
 }

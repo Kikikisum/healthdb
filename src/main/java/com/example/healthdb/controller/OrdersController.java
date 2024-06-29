@@ -48,12 +48,12 @@ public class OrdersController {
     }
 
     /**
-     * 更新订单完成情况
+     * 更新订单状态
      * @param request
      * @return
      */
-    @PostMapping("/update/isFinished")
-    public BaseResponse<Void> updateOrdersIsFinished(@RequestBody UpdateOrdersRequest request){
+    @PostMapping("/update/stauts")
+    public BaseResponse<Void> updateOrdersStatus(@RequestBody UpdateOrdersRequest request){
         ordersService.checkOverTime();
         ordersService.updateOrders(request);
         return  ResultUtils.success(null);
@@ -62,13 +62,13 @@ public class OrdersController {
 
     /**
      * 根据订单完成状况查询订单
-     * @param isFinished
+     * @param status
      * @return
      */
-    @GetMapping("/isFinished")
-   public BaseResponse<List<OrdersAndEscortDTO>> queryByIsFinished(@RequestParam("isFinished") Integer isFinished,@RequestParam("uid") Integer uid){
+    @GetMapping("/status")
+   public BaseResponse<List<OrdersAndEscortDTO>> queryByStatus(@RequestParam("status") Integer status,@RequestParam("uid") Integer uid){
         ordersService.checkOverTime();
-        return ResultUtils.success(ordersService.queryByIsFinished(isFinished,uid));
+        return ResultUtils.success(ordersService.queryByStatus(status,uid));
    }
 
     /**

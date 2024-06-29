@@ -28,5 +28,5 @@ public class AddOrdersRequest {
 
     private String requirement;
 
-    private Integer isFinished;
+    private Integer status;
 }

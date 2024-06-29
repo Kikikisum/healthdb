@@ -6,18 +6,15 @@ import com.example.healthdb.dao.OrdersDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
-import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.Hospital;
 import com.example.healthdb.model.entity.Orders;
-import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -84,7 +81,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             orders.setEndTime(endTime);
             orders.setTelephoneNumber(addOrdersRequest.getTelephone());
             orders.setRequirement(addOrdersRequest.getRequirement());
-            orders.setIsFinished(addOrdersRequest.getIsFinished());
+            orders.setStatus(addOrdersRequest.getStatus());
             orders.setCreateTime(new Date());
             orders.setUpdateTime(new Date());
             orders.setIsDelete(0);
@@ -116,14 +113,14 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
 
     /**
      *根据订单完成状态查询订单
-     * @param isFinished
+     * @param status
      * @return
      */
     @Override
-    public List<OrdersAndEscortDTO> queryByIsFinished(Integer isFinished, Integer uid) {
+    public List<OrdersAndEscortDTO> queryByStatus(Integer status, Integer uid) {
 
         LambdaQueryWrapper<Orders> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Orders::getIsFinished,isFinished)
+        lambdaQueryWrapper.eq(Orders::getStatus,status)
                 .eq(Orders::getIsDelete,0)
                 .eq(Orders::getUid,uid);
 
@@ -131,7 +128,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         List<OrdersAndEscortDTO> ordersAndEscortDTOS = new ArrayList<>();
         for (Orders orders : ordersList){
             OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
-            ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
+            ordersAndEscortDTO.setStatus(orders.getStatus());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             if(ordersAndEscortService.queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
@@ -155,7 +152,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
 
 
     /**
-     * 订单完成
+     * 更新订单状态
      * @param request
      */
     @Override
@@ -164,7 +161,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         if (orders!=null)
         {
             orders.setUpdateTime(new Date());
-            orders.setIsFinished(1);
+            orders.setStatus(request.getStatus());
             updateById(orders);
         }else {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -181,7 +178,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         List<Orders> list=list(lambdaQueryWrapper);
         for (Orders order:list)
         {
-            order.setIsFinished(1);
+            order.setStatus(3);
         }
         for (Orders order:list)
         {
@@ -200,7 +197,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         OrdersAndEscortDTO ordersAndEscortDTO = null;
         if(orders != null){
             ordersAndEscortDTO = new OrdersAndEscortDTO();
-            ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
+            ordersAndEscortDTO.setStatus(orders.getStatus());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             if(ordersAndEscortService.queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
@@ -241,7 +238,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
 
         LambdaQueryWrapper<Orders> lambdaQueryWrapper1 = new LambdaQueryWrapper<>();
         lambdaQueryWrapper1.in(Orders::getHid,hids)
-                .eq(Orders::getIsFinished,0)
+                .eq(Orders::getStatus,0)
                 .eq(Orders::getIsDelete,0);
 
         List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper1);
@@ -249,7 +246,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
 
         for (Orders orders : ordersList){
             OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
-            ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
+            ordersAndEscortDTO.setStatus(orders.getStatus());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             if(ordersAndEscortService.queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
