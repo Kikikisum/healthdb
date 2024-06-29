@@ -48,7 +48,7 @@ public class ServerTypeController {
      * @return
      */
     @GetMapping("/query/by/{id}")
-    public BaseResponse<ServerType> queryById(@PathVariable Long id){
+    public BaseResponse<ServerType> queryById(@PathVariable Integer id){
         return  ResultUtils.success(serverTypeService.queryById(id));
     }
 

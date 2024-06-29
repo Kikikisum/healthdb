@@ -9,4 +9,6 @@ import lombok.Data;
 @Data
 public class AddServerTypeRequest {
     private String name;
+
+    private Integer limit;
 }

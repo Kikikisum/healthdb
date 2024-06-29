@@ -9,6 +9,7 @@ import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.Hospital;
 import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.model.entity.ServerType;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
@@ -19,9 +20,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -61,6 +65,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
 
 
 
+
     /**
      * 下单
      * @param addOrdersRequest
@@ -74,7 +79,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             orders.setUid(addOrdersRequest.getUid());
             orders.setPid(addOrdersRequest.getPid());
             orders.setHid(addOrdersRequest.getHid());
-            orders.setSid(orders.getSid());
+            orders.setSid(addOrdersRequest.getSid());
             Date startTime = simpleDateFormat.parse(addOrdersRequest.getStartTime());
             orders.setStartTime(startTime);
             Date endTime = simpleDateFormat.parse(addOrdersRequest.getEndTime());
@@ -85,8 +90,19 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             orders.setCreateTime(new Date());
             orders.setUpdateTime(new Date());
             orders.setIsDelete(0);
+
+            ServerType serverType = serverTypeService.queryById(orders.getSid());
+
+            //获取就诊时间范围(ms)
+            long differenceInMillis = endTime.getTime() - startTime.getTime();
+
+            //订单时间校验
+            if(differenceInMillis > serverType.getLimit()*3600*60){
+                throw new BusinessException(ErrorCode.ORDER_TIME_WRONG);
+            }
             save(orders);
             log.info("用户下单：{}",orders);
+
         }catch (ParseException e){
             e.printStackTrace();
         }

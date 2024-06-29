@@ -7,6 +7,8 @@ import com.example.healthdb.utils.ResultUtils;
 import io.micrometer.core.instrument.config.validate.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.healthdb.common.ErrorCode.*;
+
 
 /**
  * 全局异常处理器
@@ -85,6 +88,9 @@ public class GlobalExceptionHandler {
         if (businessException.getCode() == NOT_SET_PASSWORD.getCode()||businessException.getCode() == NOT_WX_REGISTER_ERROR.getCode()) {
             return ResultUtils.error(businessException.getCode(),businessException.getMessage(), businessException.getDescription());
         }
+        if(businessException.getCode() == ORDER_TIME_WRONG.getCode()){
+            return ResultUtils.error(businessException.getCode(), businessException.getMessage(), businessException.getDescription());
+        }
         return ResultUtils.error(PARAMS_ERROR, businessException.getDescription());
     }
 
@@ -103,4 +109,5 @@ public class GlobalExceptionHandler {
         // 这里可以屏蔽掉后台的异常栈信息，直接返回"server error"
         return ResultUtils.error(PARAMS_ERROR, exception.getLocalizedMessage());
     }
+
 }

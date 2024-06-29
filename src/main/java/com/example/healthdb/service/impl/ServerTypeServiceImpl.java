@@ -76,7 +76,7 @@ public class ServerTypeServiceImpl extends ServiceImpl<ServerTypeDao, ServerType
      * @return
      */
     @Override
-    public ServerType queryById(Long id) {
+    public ServerType queryById(Integer id) {
         LambdaQueryWrapper<ServerType> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(ServerType::getId,id);
 
