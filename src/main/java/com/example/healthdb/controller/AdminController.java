@@ -5,6 +5,7 @@ import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.Passage;
 import com.example.healthdb.model.request.AddPassageRequest;
 import com.example.healthdb.model.request.AudictEscortRequest;
+import com.example.healthdb.model.request.DeletePassageRequest;
 import com.example.healthdb.service.EscortService;
 import com.example.healthdb.service.PassageService;
 import com.example.healthdb.utils.ResultUtils;
@@ -54,16 +55,16 @@ public class AdminController {
     }
 
     @PostMapping("/passage/delete")
-    public BaseResponse<Void> deletePassage(HttpServletRequest httpServletRequest, Integer id)
+    public BaseResponse<Void> deletePassage(HttpServletRequest httpServletRequest, @RequestBody DeletePassageRequest request)
     {
-        passageService.deletePassage(httpServletRequest,id);
+        passageService.deletePassage(httpServletRequest,request);
         return ResultUtils.success(null);
     }
 
     @GetMapping("/passage/all")
-    public BaseResponse<List<Passage>> queryAllPassage()
+    public BaseResponse<List<Passage>> queryAllPassage(HttpServletRequest request)
     {
-        return ResultUtils.success(passageService.list());
+        return ResultUtils.success(passageService.getAllNoDeletedPassage(request));
     }
 
 

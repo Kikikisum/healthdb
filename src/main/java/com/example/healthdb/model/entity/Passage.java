@@ -14,6 +14,8 @@ public class Passage extends BaseEntity{
 
     private String title;
 
+    private String name;
+
     private String avatar;
 
     private String position;

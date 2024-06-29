@@ -9,6 +9,8 @@ public class AddPassageRequest {
 
     private String avatar;
 
+    private String name;
+
     private String position;
 
     private String photo;
