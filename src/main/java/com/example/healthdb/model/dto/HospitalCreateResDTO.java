@@ -22,5 +22,5 @@ public class HospitalCreateResDTO {
     /**
      * 导入的医院信息
      */
-    private List<HospitalCreateDTO> hospitalList;
+    private List<Hospital> hospitalList;
 }

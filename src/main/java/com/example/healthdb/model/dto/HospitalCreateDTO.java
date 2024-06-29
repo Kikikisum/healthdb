@@ -2,11 +2,17 @@ package com.example.healthdb.model.dto;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.PictureData;
 
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HospitalCreateDTO {
     @ExcelProperty("医院名称")
     private String name;
@@ -34,4 +40,5 @@ public class HospitalCreateDTO {
      */
     @ExcelIgnore
     private PictureData pictureData;
+
 }
