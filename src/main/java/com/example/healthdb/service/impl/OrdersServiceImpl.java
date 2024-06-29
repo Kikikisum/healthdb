@@ -133,7 +133,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
             ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
-            ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+            if(ordersAndEscortService.queryByOid(orders.getId()) != null){
+                ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+            }
             ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
@@ -200,7 +202,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTO = new OrdersAndEscortDTO();
             ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
-            ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+            if(ordersAndEscortService.queryByOid(orders.getId()) != null){
+                ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+            }
             ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());

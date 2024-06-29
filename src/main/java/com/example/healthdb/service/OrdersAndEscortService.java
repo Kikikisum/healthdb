@@ -1,9 +1,12 @@
 package com.example.healthdb.service;
 
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrderAndEscortRequest;
 import com.example.healthdb.model.request.DeleteOrdersAndEscortRequest;
+
+import java.util.List;
 
 /**
  * @author xwb
@@ -31,4 +34,12 @@ public interface OrdersAndEscortService {
      * @return
      */
     OrdersAndEscort queryByOid(Integer oid);
+
+    /**
+     * 根据陪诊师订单完成状况查询订单
+     * @param isFinished
+     * @param uid
+     * @return
+     */
+    List<OrdersAndEscortDTO> queryByIsFinished(Integer isFinished, Integer uid);
 }

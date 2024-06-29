@@ -3,24 +3,28 @@ package com.example.healthdb.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.dao.EscortDao;
 import com.example.healthdb.dao.OrdersAndEscortDao;
+import com.example.healthdb.dao.OrdersDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 
+import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrderAndEscortRequest;
 import com.example.healthdb.model.request.DeleteOrdersAndEscortRequest;
 
-import com.example.healthdb.service.EscortService;
-import com.example.healthdb.service.OrdersAndEscortService;
+import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author xwb
@@ -34,6 +38,28 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
 
     @Resource
     EscortService escortService;
+
+    @Resource
+    private EscortDao escortDao;
+
+    @Resource
+    private OrdersAndEscortDao ordersAndEscortDao;
+
+    @Resource
+    private OrdersDao ordersDao;
+
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private ServerTypeService serverTypeService;
+
+    @Resource
+    private PatientService patientService;
+
+    @Resource
+    private HospitalService hospitalService;
 
     /**
      * 下单
@@ -87,6 +113,59 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         lambdaQueryWrapper.eq(OrdersAndEscort::getOid,oid);
         OrdersAndEscort ordersAndEscort = getOne(lambdaQueryWrapper);
         return ordersAndEscort;
+    }
+
+
+    /**
+     * 根据陪诊师订单完成状况查询订单
+     * @param isFinished
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<OrdersAndEscortDTO> queryByIsFinished(Integer isFinished, Integer uid) {
+        LambdaQueryWrapper<Escort> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Escort::getUid,uid);
+
+        Escort escort = escortDao.selectOne(lambdaQueryWrapper);
+
+        LambdaQueryWrapper<OrdersAndEscort> lambdaQueryWrapper1 = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper1.eq(OrdersAndEscort::getEid,escort.getId());
+
+        List<OrdersAndEscort> ordersAndEscortList = ordersAndEscortDao.selectList(lambdaQueryWrapper1);
+        List<Integer> oids = new ArrayList<>();
+        for(OrdersAndEscort ordersAndEscort : ordersAndEscortList){
+            oids.add(ordersAndEscort.getOid());
+        }
+
+        LambdaQueryWrapper<Orders> lambdaQueryWrapper2 = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper2.in(Orders::getId,oids)
+                .eq(Orders::getIsFinished,isFinished);
+
+        List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper2);
+        List<OrdersAndEscortDTO> ordersAndEscortDTOS = new ArrayList<>();
+
+        for (Orders orders : ordersList){
+            OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
+            ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
+            ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
+            if(queryByOid(orders.getId()) != null){
+                ordersAndEscortDTO.setEname(userService.getById(escortService.getById(queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+            }
+            ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
+            ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
+            ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
+            ordersAndEscortDTO.setAge(patientService.getById(orders.getPid()).getAge());
+            ordersAndEscortDTO.setTelephoneNumber(patientService.getById(orders.getPid()).getTelephoneNumber());
+            ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
+            ordersAndEscortDTO.setStartTime(orders.getStartTime());
+            ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersAndEscortDTO.setOid(orders.getId());
+            ordersAndEscortDTO.setRequirement(orders.getRequirement());
+            ordersAndEscortDTOS.add(ordersAndEscortDTO);
+        }
+        return ordersAndEscortDTOS;
+
     }
 
 }
