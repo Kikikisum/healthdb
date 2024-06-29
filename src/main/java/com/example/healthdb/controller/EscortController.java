@@ -9,6 +9,7 @@ import com.example.healthdb.service.EscortService;
 import com.example.healthdb.service.OrdersService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -55,4 +56,5 @@ public class EscortController {
     {
         return ResultUtils.success(escortService.getEscortInformation(uid));
     }
+
 }

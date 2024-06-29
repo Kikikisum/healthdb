@@ -54,6 +54,7 @@ public class OrdersController {
      */
     @PostMapping("/update/isFinished")
     public BaseResponse<Void> updateOrdersIsFinished(@RequestBody UpdateOrdersRequest request){
+        ordersService.checkOverTime();
         ordersService.updateOrders(request);
         return  ResultUtils.success(null);
     }
@@ -66,7 +67,8 @@ public class OrdersController {
      */
     @GetMapping("/isFinished")
    public BaseResponse<List<OrdersAndEscortDTO>> queryByIsFinished(@RequestParam("isFinished") Integer isFinished,@RequestParam("uid") Integer uid){
-       return ResultUtils.success(ordersService.queryByIsFinished(isFinished,uid));
+        ordersService.checkOverTime();
+        return ResultUtils.success(ordersService.queryByIsFinished(isFinished,uid));
    }
 
     /**
@@ -76,7 +78,8 @@ public class OrdersController {
      */
    @GetMapping("/query/by/{id}")
    public BaseResponse<OrdersAndEscortDTO> queryById(@PathVariable Integer id){
-        return ResultUtils.success(ordersService.queryById(id));
+       ordersService.checkOverTime();
+       return ResultUtils.success(ordersService.queryById(id));
    }
 
 

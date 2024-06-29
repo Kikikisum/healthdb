@@ -1,11 +1,13 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.model.dto.HospitalCreateResDTO;
 import com.example.healthdb.model.entity.Hospital;
 import com.example.healthdb.model.request.AddHospitalRequest;
 import com.example.healthdb.service.HospitalService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -53,6 +55,17 @@ public class HospitalController {
     {
         hospitalService.addHospital(request);
         return ResultUtils.success(null);
+    }
+
+    /**
+     * 批量创建医院
+     * @param file
+     * @return
+     */
+    @PostMapping("/excel/add")
+    public BaseResponse<HospitalCreateResDTO> addByExcel(MultipartFile file)
+    {
+        return ResultUtils.success(hospitalService.addByExcel(file));
     }
 
 }
