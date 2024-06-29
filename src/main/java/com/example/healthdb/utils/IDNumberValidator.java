@@ -52,6 +52,10 @@ public class IDNumberValidator {
      */
     public static String getEncryption(String identity)
     {
+        if (identity==null)
+        {
+            return null;
+        }
         int length = identity.length();
         StringBuilder maskedPhoneNumber = new StringBuilder(identity);
         for (int i = 3; i < length - 4; i++) {
@@ -68,6 +72,10 @@ public class IDNumberValidator {
      */
     public static String getName(String name)
     {
+        if (name==null)
+        {
+            return null;
+        }
         int length = name.length();
         StringBuilder maskName=new StringBuilder(name);
         if (length == 2)
@@ -90,6 +98,10 @@ public class IDNumberValidator {
      */
     public static String getNumber(String telephone)
     {
+        if (telephone==null)
+        {
+            return null;
+        }
         int length = telephone.length();
         StringBuilder maskedPhoneNumber = new StringBuilder(telephone);
         for (int i = 3; i < length - 2; i++) {

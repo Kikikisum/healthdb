@@ -44,9 +44,19 @@ public interface OrdersService extends IService<Orders> {
     void updateOrders(UpdateOrdersRequest request);
 
     /**
+     * 自动检查时间，变化订单状态
+     */
+    void autoCheckTime();
+
+    /**
      * 检查订单是否已经完成
      */
     void checkOverTime();
+
+    /**
+     * 检查订单是否已经开始
+     */
+    void checkIntoStart();
 
     /**
      * 根据id查询订单

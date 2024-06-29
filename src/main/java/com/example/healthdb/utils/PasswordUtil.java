@@ -57,6 +57,10 @@ public class PasswordUtil {
 
     // 解密方法
     public static String decrypt(String encryptedText) {
+        if (encryptedText==null)
+        {
+            return null;
+        }
         // 使用Base64进行解码
         byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
         return new String(decodedBytes);

@@ -186,17 +186,44 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         }
     }
 
+    @Override
+    public void autoCheckTime() {
+        // 自动完成
+        checkOverTime();
+        // 是否进入
+        checkIntoStart();
+    }
+
     /**
      * 超时自动完成
      */
     @Override
     public void checkOverTime() {
         LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.in(Orders::getStatus, 1, 2);
         lambdaQueryWrapper.lt(Orders::getEndTime,new Date());
         List<Orders> list=list(lambdaQueryWrapper);
         for (Orders order:list)
         {
             order.setStatus(3);
+            order.setUpdateTime(new Date());
+        }
+        for (Orders order:list)
+        {
+            updateById(order);
+        }
+    }
+
+    @Override
+    public void checkIntoStart() {
+        LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Orders::getStatus,1);
+        lambdaQueryWrapper.lt(Orders::getStartTime,new Date());
+        List<Orders> list=list(lambdaQueryWrapper);
+        for (Orders order:list)
+        {
+            order.setStatus(2);
+            order.setUpdateTime(new Date());
         }
         for (Orders order:list)
         {

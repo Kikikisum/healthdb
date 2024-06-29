@@ -19,8 +19,8 @@ public class UpdatetFinishTasks {
      */
     @Scheduled(cron = "0 0 1 * * ?")
     public void update() {
-        // 调用订单服务方法来更新订单状态为已完成
-        ordersService.checkOverTime();
+        // 调用订单服务方法来更新订单状态
+        ordersService.autoCheckTime();
     }
 
 }

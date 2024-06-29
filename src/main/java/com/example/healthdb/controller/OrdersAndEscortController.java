@@ -35,7 +35,7 @@ public class OrdersAndEscortController {
     @PostMapping("/add")
     public BaseResponse<Void> addOrdersAndEscort(@RequestBody AddOrderAndEscortRequest request)
     {
-        ordersService.checkOverTime();
+        ordersService.autoCheckTime();
         ordersAndEscortService.addOrdersAndEscort(request);
         return ResultUtils.success(null);
     }
@@ -48,7 +48,7 @@ public class OrdersAndEscortController {
      */
     @PostMapping("/delete")
     public BaseResponse<Void> deleteOrdersAndEscort(@RequestBody DeleteOrdersAndEscortRequest request){
-        ordersService.checkOverTime();
+        ordersService.autoCheckTime();
         ordersAndEscortService.deleteOrders(request);
         return ResultUtils.success(null);
     }

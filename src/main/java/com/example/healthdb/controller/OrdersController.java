@@ -54,7 +54,7 @@ public class OrdersController {
      */
     @PostMapping("/update/stauts")
     public BaseResponse<Void> updateOrdersStatus(@RequestBody UpdateOrdersRequest request){
-        ordersService.checkOverTime();
+        ordersService.autoCheckTime();
         ordersService.updateOrders(request);
         return  ResultUtils.success(null);
     }
@@ -67,7 +67,7 @@ public class OrdersController {
      */
     @GetMapping("/status")
    public BaseResponse<List<OrdersAndEscortDTO>> queryByStatus(@RequestParam("status") Integer status,@RequestParam("uid") Integer uid){
-        ordersService.checkOverTime();
+        ordersService.autoCheckTime();
         return ResultUtils.success(ordersService.queryByStatus(status,uid));
    }
 
@@ -78,7 +78,7 @@ public class OrdersController {
      */
    @GetMapping("/query/by/{id}")
    public BaseResponse<OrdersAndEscortDTO> queryById(@PathVariable Integer id){
-       ordersService.checkOverTime();
+       ordersService.autoCheckTime();
        return ResultUtils.success(ordersService.queryById(id));
    }
 
@@ -91,6 +91,17 @@ public class OrdersController {
     public BaseResponse<List<OrdersAndEscortDTO>> queryByMultipleQuery(@RequestBody MutipleQueryOrdersRequest request)
     {
         return ResultUtils.success(ordersService.queryByMutipleConditions(request));
+    }
+
+    /**
+     * 手动更新订单状态
+     * @return
+     */
+    @PostMapping("/update")
+    public BaseResponse<Void> update()
+    {
+        ordersService.autoCheckTime();
+        return ResultUtils.success(null);
     }
 
 
