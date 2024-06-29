@@ -122,12 +122,12 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
             }
         });
 
-        List<HospitalCreateDTO> result = new ArrayList<>();
+        List<Hospital> result = new ArrayList<>();
         for (HospitalCreateDTO hospitalCreateDTO:readList)
         {
             try {
-                createHospital(hospitalCreateDTO);
-                result.add(hospitalCreateDTO);
+                Hospital hospital=createHospital(hospitalCreateDTO);
+                result.add(hospital);
             }catch (Throwable e)
             {
                 log.error("批量创建用户失败");
@@ -140,9 +140,11 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
                 .build();
     }
 
-    void createHospital(HospitalCreateDTO hospitalCreateDTO)
+    Hospital createHospital(HospitalCreateDTO hospitalCreateDTO)
     {
         Hospital hospital=new Hospital();
+        Long id = snowFlakeUtils.nextId();
+        hospital.setId(Math.abs(id.intValue()));
         hospital.setIsDelete(0);
         hospital.setCreateTime(new Date());
         hospital.setUpdateTime(new Date());
@@ -152,7 +154,8 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
         hospital.setIntroduction(hospitalCreateDTO.getIntroduction());
         hospital.setAreaCode(hospitalCreateDTO.getAreaCode());
         hospital.setDetailAddress(hospitalCreateDTO.getDetailAddress());
-        hospital.setPhoto(hospital.getPhoto());
+        hospital.setPhoto(hospitalCreateDTO.getPhotoUrl());
         save(hospital);
+        return hospital;
     }
 }

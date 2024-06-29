@@ -2,8 +2,6 @@ package com.example.healthdb.model.request;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class MutipleQueryOrdersRequest {
 

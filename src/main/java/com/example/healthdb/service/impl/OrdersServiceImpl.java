@@ -12,10 +12,12 @@ import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.entity.ServerType;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
+import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
 import com.example.healthdb.model.request.UpdateOrdersRequest;
 import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -23,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -278,5 +282,73 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTOS.add(ordersAndEscortDTO);
         }
         return ordersAndEscortDTOS;
+    }
+
+    @Override
+    public List<OrdersAndEscortDTO> queryByMutipleConditions(MutipleQueryOrdersRequest request) {
+        LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Orders::getUid,request.getUid());
+        Date startTime = null;
+        try {
+            startTime = simpleDateFormat.parse(request.getStartTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Date endTime=null;
+        try {
+            endTime = simpleDateFormat.parse(request.getEndTime());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        if (startTime!=null&&endTime!=null)
+        {
+            lambdaQueryWrapper.between(Orders::getStartTime,startTime,endTime);
+            lambdaQueryWrapper.between(Orders::getEndTime,startTime,endTime);
+        }
+        if (request.getSort()!=null)
+        {
+            if (request.getSort()==1)
+            {
+                lambdaQueryWrapper.orderByDesc(Orders::getStartTime);
+            }
+            else {
+                lambdaQueryWrapper.orderByAsc(Orders::getStartTime);
+            }
+        }
+        List<Orders> ordersList=ordersDao.selectList(lambdaQueryWrapper);
+        List<OrdersAndEscortDTO> ordersDTOList = new ArrayList<>();
+
+        for (Orders orders : ordersList){
+            OrdersAndEscortDTO ordersAndEscortDTO=new OrdersAndEscortDTO();
+            BeanUtils.copyProperties(orders,ordersAndEscortDTO);
+            ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
+            ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersAndEscortDTO.setEname(userService.getById(orders.getUid()).getRealname());
+            ordersAndEscortDTO.setOid(orders.getId());
+            // 查询陪诊师
+            LambdaQueryWrapper<Escort> escortLambdaQueryWrapper=new LambdaQueryWrapper<>();
+            escortLambdaQueryWrapper.eq(Escort::getUid,orders.getUid());
+            Escort escort=escortService.getOne(escortLambdaQueryWrapper);
+            if (escort!=null)
+            {
+                ordersAndEscortDTO.setGender(escort.getGender());
+                ordersAndEscortDTO.setAge(escort.getAge());
+            }
+            ordersDTOList.add(ordersAndEscortDTO);
+        }
+        if (request.getName()!=null)
+        {
+            // 就诊人名字模糊查询
+            Pattern p = Pattern.compile(".*"+request.getName()+".*");
+            for (OrdersAndEscortDTO ordersDTO:ordersDTOList)
+            {
+                Matcher m = p.matcher(ordersDTO.getPname());
+                if (!m.matches())
+                {
+                    ordersDTOList.remove(ordersDTO);
+                }
+            }
+        }
+        return ordersDTOList;
     }
 }

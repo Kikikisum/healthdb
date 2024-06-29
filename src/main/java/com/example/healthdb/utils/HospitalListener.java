@@ -3,10 +3,12 @@ package com.example.healthdb.utils;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.example.healthdb.model.dto.HospitalCreateDTO;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class HospitalListener extends AnalysisEventListener<HospitalCreateDTO> {
 
     private List<HospitalCreateDTO> hospitalCreateDTOs = new ArrayList<>();

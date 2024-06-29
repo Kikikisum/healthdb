@@ -63,7 +63,7 @@ public class HospitalController {
      * @return
      */
     @PostMapping("/excel/add")
-    public BaseResponse<HospitalCreateResDTO> addByExcel(MultipartFile file)
+    public BaseResponse<HospitalCreateResDTO> addByExcel(@RequestParam("file") MultipartFile file)
     {
         return ResultUtils.success(hospitalService.addByExcel(file));
     }
