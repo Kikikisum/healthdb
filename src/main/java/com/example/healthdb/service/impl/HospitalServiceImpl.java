@@ -58,9 +58,13 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
     }
 
     @Override
-    public List<Hospital> getByName(String name) {
+    public List<Hospital> getByName(String name, Integer area_code) {
         LambdaQueryWrapper<Hospital> hospitalLambdaQueryWrapper=new LambdaQueryWrapper<>();
         hospitalLambdaQueryWrapper.like(Hospital::getName,name);
+        if (area_code!=null)
+        {
+            hospitalLambdaQueryWrapper.eq(Hospital::getAreaCode,area_code);
+        }
         return list(hospitalLambdaQueryWrapper);
     }
 

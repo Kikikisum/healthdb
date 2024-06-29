@@ -10,10 +10,12 @@ import com.example.healthdb.service.PassageService;
 import com.example.healthdb.utils.JwtUtils;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+@Service
 public class PassageServiceImpl extends ServiceImpl<PassageDao, Passage> implements PassageService {
 
     @Autowired

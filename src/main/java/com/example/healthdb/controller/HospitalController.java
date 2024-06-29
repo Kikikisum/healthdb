@@ -46,8 +46,8 @@ public class HospitalController {
      * @return
      */
     @GetMapping("/query/name")
-    public BaseResponse<List<Hospital>> queryByName(@RequestParam String name) {
-        return ResultUtils.success(hospitalService.getByName(name));
+    public BaseResponse<List<Hospital>> queryByName(@RequestParam String name,@RequestParam Integer area_code) {
+        return ResultUtils.success(hospitalService.getByName(name,area_code));
     }
 
     @PostMapping("/add")

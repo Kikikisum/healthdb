@@ -22,6 +22,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/escort/query/*")
                 .addPathPatterns("/escort/get/*")
                 .addPathPatterns("/admin/*")
+                .addPathPatterns("/admin/passage/*")
                 .addPathPatterns("/evaluate/*")
                 .addPathPatterns("/file/*")
                 .excludePathPatterns("/user/login")

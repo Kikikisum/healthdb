@@ -31,7 +31,7 @@ public interface HospitalService extends IService<Hospital> {
      * @param name
      * @return
      */
-    List<Hospital> getByName(String name);
+    List<Hospital> getByName(String name,Integer area_code);
 
     /**
      * 添加医院
