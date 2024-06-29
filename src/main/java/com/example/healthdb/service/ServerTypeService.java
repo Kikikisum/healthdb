@@ -25,7 +25,7 @@ public interface ServerTypeService extends IService<ServerType> {
      * @param id
      * @return
      */
-    ServerType queryById(Long id);
+    ServerType queryById(Integer id);
 
 
 }

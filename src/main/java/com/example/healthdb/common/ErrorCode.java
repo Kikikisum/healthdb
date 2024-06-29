@@ -22,7 +22,8 @@ public enum ErrorCode {
     OPERATION_ERROR(50001, "操作失败",""),
     STATUS_ERROR(50002,"操作对象状态异常",""),
     TASK_ALLOCATION_ERROR(50003, "任务分配操作失败", ""),
-    USER_LOCATION_NOT_EXIT(50004, "用户常用位置未设置", "")
+    USER_LOCATION_NOT_EXIT(50004, "用户常用位置未设置", ""),
+    ORDER_TIME_WRONG(40500,"订单时长超出时限","");
     ;
 
     private final int code;

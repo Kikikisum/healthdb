@@ -14,4 +14,6 @@ public class ServerType extends BaseEntity{
     private Integer id;
 
     private String name;
+
+    private Integer limit;
 }
