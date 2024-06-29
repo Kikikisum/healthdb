@@ -6,8 +6,12 @@ import com.example.healthdb.model.request.AddServerTypeRequest;
 import com.example.healthdb.model.request.DeleteServerTypeRequest;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface ServerTypeService extends IService<ServerType> {
+
+    static ConcurrentHashMap<Integer,ServerType> cache = new ConcurrentHashMap<>();
+
     /**
      * 添加服务类型
      * @param request

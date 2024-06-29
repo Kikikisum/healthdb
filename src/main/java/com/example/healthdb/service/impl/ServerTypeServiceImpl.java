@@ -46,9 +46,9 @@ public class ServerTypeServiceImpl extends ServiceImpl<ServerTypeDao, ServerType
         newServerType.setCreateTime(new Date());
         newServerType.setUpdateTime(new Date());
         newServerType.setIsDelete(0);
-
         save(newServerType);
-
+        // 将新的服务类型放入缓存
+        cache.put(newServerType.getId(),newServerType);
     }
 
 
@@ -63,6 +63,8 @@ public class ServerTypeServiceImpl extends ServiceImpl<ServerTypeDao, ServerType
             serverType.setUpdateTime(new Date());
             serverType.setIsDelete(1);
             updateById(serverType);
+            // 从缓存中删除
+            cache.remove(serverType.getId());
         } else {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -77,10 +79,16 @@ public class ServerTypeServiceImpl extends ServiceImpl<ServerTypeDao, ServerType
      */
     @Override
     public ServerType queryById(Integer id) {
-        LambdaQueryWrapper<ServerType> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(ServerType::getId,id);
-
-        ServerType serverType = serverTypeDao.selectOne(lambdaQueryWrapper);
+        ServerType serverType=null;
+        if (cache.get(id)!=null)
+        {
+            serverType=cache.get(id);
+        }
+        else {
+            LambdaQueryWrapper<ServerType> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(ServerType::getId,id);
+            serverType = serverTypeDao.selectOne(lambdaQueryWrapper);
+        }
         return serverType;
     }
 
