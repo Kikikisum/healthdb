@@ -2,8 +2,11 @@ package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.model.entity.Escort;
+import com.example.healthdb.model.entity.Passage;
+import com.example.healthdb.model.request.AddPassageRequest;
 import com.example.healthdb.model.request.AudictEscortRequest;
 import com.example.healthdb.service.EscortService;
+import com.example.healthdb.service.PassageService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +20,9 @@ public class AdminController {
 
     @Resource
     private EscortService escortService;
+
+    @Resource
+    private PassageService passageService;
 
     /**
      * 审核陪诊师
@@ -40,6 +46,25 @@ public class AdminController {
         return ResultUtils.success(escortService.queryAll(httpServletRequest));
     }
 
+    @PostMapping("/passage/upload")
+    public BaseResponse<Void> uploadPassage(HttpServletRequest httpServletRequest, @RequestBody AddPassageRequest request)
+    {
+        passageService.addPassage(httpServletRequest,request);
+        return ResultUtils.success(null);
+    }
+
+    @PostMapping("/passage/delete")
+    public BaseResponse<Void> deletePassage(HttpServletRequest httpServletRequest, Integer id)
+    {
+        passageService.deletePassage(httpServletRequest,id);
+        return ResultUtils.success(null);
+    }
+
+    @GetMapping("/passage/all")
+    public BaseResponse<List<Passage>> queryAllPassage()
+    {
+        return ResultUtils.success(passageService.list());
+    }
 
 
 }

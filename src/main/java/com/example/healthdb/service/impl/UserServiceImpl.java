@@ -178,6 +178,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         userDTO.setIdNumber(IDNumberValidator.getEncryption(PasswordUtil.decrypt(user.getIdNumber())));
         userDTO.setTelephone(IDNumberValidator.getNumber(user.getTelephone()));
         userDTO.setRealname(IDNumberValidator.getName(user.getRealname()));
+        userDTO.setMoney(userDTO.getMoney());
         return userDTO;
     }
 

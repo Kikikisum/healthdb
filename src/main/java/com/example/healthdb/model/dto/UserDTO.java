@@ -21,4 +21,6 @@ public class UserDTO {
     private Integer status;
 
     private String telephone;
+
+    private Float money;
 }
