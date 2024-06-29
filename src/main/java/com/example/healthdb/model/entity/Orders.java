@@ -45,6 +45,9 @@ public class Orders extends BaseEntity{
 
     private String requirement;
 
-    @TableField("is_finished")
-    private Integer isFinished;
+    /**
+     * 0-成功下单,1-被接单,2-进行中，3-已完成
+     */
+    @TableField("status")
+    private Integer status;
 }
