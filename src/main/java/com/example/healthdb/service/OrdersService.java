@@ -31,13 +31,13 @@ public interface OrdersService extends IService<Orders> {
 
     /**
      * 根据订单状态查询
-     * @param isFinished
+     * @param status
      * @return
      */
-    List<OrdersAndEscortDTO> queryByIsFinished(Integer isFinished,Integer uid);
+    List<OrdersAndEscortDTO> queryByStatus(Integer status,Integer uid);
 
     /**
-     * 更新订单完成状态
+     * 更新订单状态
      * @param request
      */
     void updateOrders(UpdateOrdersRequest request);

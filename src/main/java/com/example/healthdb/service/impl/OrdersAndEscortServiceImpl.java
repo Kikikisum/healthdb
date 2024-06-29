@@ -2,7 +2,6 @@ package com.example.healthdb.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.dao.EscortDao;
 import com.example.healthdb.dao.OrdersAndEscortDao;
 import com.example.healthdb.dao.OrdersDao;
@@ -118,12 +117,12 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
 
     /**
      * 根据陪诊师订单完成状况查询订单
-     * @param isFinished
+     * @param status
      * @param uid
      * @return
      */
     @Override
-    public List<OrdersAndEscortDTO> queryByIsFinished(Integer isFinished, Integer uid) {
+    public List<OrdersAndEscortDTO> queryByStatus(Integer status, Integer uid) {
         LambdaQueryWrapper<Escort> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Escort::getUid,uid);
 
@@ -140,14 +139,14 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
 
         LambdaQueryWrapper<Orders> lambdaQueryWrapper2 = new LambdaQueryWrapper<>();
         lambdaQueryWrapper2.in(Orders::getId,oids)
-                .eq(Orders::getIsFinished,isFinished);
+                .eq(Orders::getStatus,status);
 
         List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper2);
         List<OrdersAndEscortDTO> ordersAndEscortDTOS = new ArrayList<>();
 
         for (Orders orders : ordersList){
             OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
-            ordersAndEscortDTO.setIsFinished(orders.getIsFinished());
+            ordersAndEscortDTO.setStatus(orders.getStatus());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             if(queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(queryByOid(orders.getId()).getEid()).getUid()).getRealname());

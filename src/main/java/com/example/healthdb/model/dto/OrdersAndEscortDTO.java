@@ -33,7 +33,7 @@ public class OrdersAndEscortDTO {
 
     private String requirement;
 
-    private Integer isFinished;
+    private Integer status;
 
     private String ename;
 

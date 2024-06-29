@@ -8,5 +8,7 @@ import lombok.Data;
 
 @Data
 public class UpdateOrdersRequest {
-    Integer id;
+    private Integer id;
+
+    private Integer status;
 }

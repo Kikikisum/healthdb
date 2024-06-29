@@ -37,7 +37,7 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
             throw new BusinessException(ErrorCode.ID_WRONG);
         }
         // 检查订单是否已完成
-        if (orders.getIsFinished()!=1)
+        if (orders.getStatus() != 3)
         {
             throw new BusinessException(ErrorCode.ORDER_NOTFINISH);
         }
@@ -85,7 +85,7 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         List<Evaluation> evaluations=new ArrayList<>();
         LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
         ordersLambdaQueryWrapper.eq(Orders::getUid,uid);
-        ordersLambdaQueryWrapper.eq(Orders::getIsFinished,1);
+        ordersLambdaQueryWrapper.eq(Orders::getStatus,3);
         List<Orders> ordersList =ordersService.list(ordersLambdaQueryWrapper);
         for (Orders orders:ordersList)
         {
@@ -105,7 +105,7 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         List<Evaluation> evaluations=new ArrayList<>();
         LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
         ordersLambdaQueryWrapper.eq(Orders::getHid,hid);
-        ordersLambdaQueryWrapper.eq(Orders::getIsFinished,1);
+        ordersLambdaQueryWrapper.eq(Orders::getStatus,3);
         List<Orders> ordersList =ordersService.list(ordersLambdaQueryWrapper);
         for (Orders orders:ordersList)
         {

@@ -37,9 +37,9 @@ public interface OrdersAndEscortService {
 
     /**
      * 根据陪诊师订单完成状况查询订单
-     * @param isFinished
+     * @param status
      * @param uid
      * @return
      */
-    List<OrdersAndEscortDTO> queryByIsFinished(Integer isFinished, Integer uid);
+    List<OrdersAndEscortDTO> queryByStatus(Integer status, Integer uid);
 }

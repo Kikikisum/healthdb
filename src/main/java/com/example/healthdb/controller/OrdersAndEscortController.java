@@ -55,12 +55,12 @@ public class OrdersAndEscortController {
 
     /**
      * 根据陪诊师订单完成状况查询陪诊师订单
-     * @param isFinished
+     * @param status
      * @return
      */
-    @GetMapping("/isFinished")
-    public BaseResponse<List<OrdersAndEscortDTO>> queryByIsFinished(@RequestParam("isFinished") Integer isFinished, @RequestParam("uid") Integer uid){
-        return ResultUtils.success(ordersAndEscortService.queryByIsFinished(isFinished,uid));
+    @GetMapping("/status")
+    public BaseResponse<List<OrdersAndEscortDTO>> queryByStatus(@RequestParam("status") Integer status, @RequestParam("uid") Integer uid){
+        return ResultUtils.success(ordersAndEscortService.queryByStatus(status,uid));
     }
 
 
