@@ -1,6 +1,7 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.entity.Orders;
 import com.example.healthdb.model.entity.OrdersAndEscort;
 import com.example.healthdb.model.request.AddOrderAndEscortRequest;
@@ -11,6 +12,7 @@ import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author xwb
@@ -49,6 +51,16 @@ public class OrdersAndEscortController {
         ordersService.checkOverTime();
         ordersAndEscortService.deleteOrders(request);
         return ResultUtils.success(null);
+    }
+
+    /**
+     * 根据陪诊师订单完成状况查询陪诊师订单
+     * @param isFinished
+     * @return
+     */
+    @GetMapping("/isFinished")
+    public BaseResponse<List<OrdersAndEscortDTO>> queryByIsFinished(@RequestParam("isFinished") Integer isFinished, @RequestParam("uid") Integer uid){
+        return ResultUtils.success(ordersAndEscortService.queryByIsFinished(isFinished,uid));
     }
 
 
