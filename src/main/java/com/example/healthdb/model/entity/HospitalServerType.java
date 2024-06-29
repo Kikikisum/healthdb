@@ -8,5 +8,6 @@ import lombok.Data;
 public class HospitalServerType extends BaseEntity{
     private Integer id;
     private Integer hid;
+    private Integer sid;
     private Integer sold_count;
 }
