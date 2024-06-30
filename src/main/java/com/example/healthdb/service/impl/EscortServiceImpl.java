@@ -44,7 +44,7 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         {
             throw new BusinessException(ErrorCode.TELEPHONE_WRONG);
         }
-        if (user.getIdNumber()!=null)
+        if (user.getIdNumber()==null&&request.getIdentity()!=null)
         {
             // 校验身份证信息
             if (IDNumberValidator.isValid(request.getIdentity()))

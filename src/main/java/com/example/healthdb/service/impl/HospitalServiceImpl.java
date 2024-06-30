@@ -73,8 +73,6 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
         Hospital hospital=new Hospital();
         Long id = snowFlakeUtils.nextId();
         hospital.setId(Math.abs(id.intValue()));
-        hospital.setHospitalLevel(request.getHospitalLevel());
-        hospital.setHospitalType(request.getHospitalType());
         hospital.setName(request.getName());
         hospital.setIntroduction(request.getIntroduction());
         hospital.setDetailAddress(request.getDetailAddress());
@@ -153,7 +151,6 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
         hospital.setCreateTime(new Date());
         hospital.setUpdateTime(new Date());
         hospital.setName(hospitalCreateDTO.getName());
-        hospital.setHospitalLevel(hospitalCreateDTO.getHospitalLevel());
         hospital.setHospitalType(hospitalCreateDTO.getHospitalType());
         hospital.setIntroduction(hospitalCreateDTO.getIntroduction());
         hospital.setAreaCode(hospitalCreateDTO.getAreaCode());
