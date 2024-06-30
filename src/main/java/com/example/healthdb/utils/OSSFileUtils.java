@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 @Slf4j
-public class OSSFileUtil {
+public class OSSFileUtils {
     private static final String END_POINT = ConstantPropertiesUtil.END_POINT;
     private static final String ACCESS_KEY_ID = ConstantPropertiesUtil.ACCESS_KEY_ID;
     private static final String ACCESS_KEY_SECRET = ConstantPropertiesUtil.ACCESS_KEY_SECRET;
@@ -79,7 +79,7 @@ public class OSSFileUtil {
             // 唯一的文件名称
             String fileName = UUID.randomUUID() + "." + StringUtils.substringAfterLast(originalFilename, ".");
             InputStream inputStream = file.getInputStream();
-            OSSFileUtil.uploadFileToOSS(inputStream, fileName);
+            OSSFileUtils.uploadFileToOSS(inputStream, fileName);
             String url = "https://" + URL_PREFIX + "/" + FILE_HOST + "/" + fileName;
             return url;
         } catch (Exception e) {

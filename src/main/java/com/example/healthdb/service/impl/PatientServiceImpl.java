@@ -57,6 +57,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientDao, Patient> impleme
     public List<Patient> queryByMy(Long id) {
         LambdaQueryWrapper<Patient> lambdaQueryWrapper =new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Patient::getUid,id);
+        lambdaQueryWrapper.eq(Patient::getIsDelete,0);
         return list(lambdaQueryWrapper);
     }
 }

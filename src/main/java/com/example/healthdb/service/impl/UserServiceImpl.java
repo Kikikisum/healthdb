@@ -40,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         // 检查密码
-        if (PasswordUtil.checkPassword(loginRequest.getPassword(),user.getPassword()))
+        if (PasswordUtils.checkPassword(loginRequest.getPassword(),user.getPassword()))
         {
             // 登录成功
             Map<String,String> map =new HashMap<>();
@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public void register(LoginRequest loginRequest) {
         // 检查密码规则，检查电话是否正确
-        if (!PasswordUtil.checkPasswordRule(loginRequest.getPassword()))
+        if (!PasswordUtils.checkPasswordRule(loginRequest.getPassword()))
         {
             throw new BusinessException(ErrorCode.PASSWORD_WRONG);
         }
@@ -89,7 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         User user=new User();
         Long userId = snowFlakeUtils.nextId();
         user.setId(Math.abs(userId.intValue()));
-        user.setPassword(PasswordUtil.getPassword(loginRequest.getPassword()));
+        user.setPassword(PasswordUtils.getPassword(loginRequest.getPassword()));
         user.setStatus(0);
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
@@ -117,9 +117,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         {
             // 只更新不为空的内容
             if (request.getPassword()!=null&&!request.getPassword().isEmpty()&&request.getPassword().length()!=0&&
-                    PasswordUtil.checkPasswordRule(request.getPassword()))
+                    PasswordUtils.checkPasswordRule(request.getPassword()))
             {
-                user.setPassword(PasswordUtil.getPassword(request.getPassword()));
+                user.setPassword(PasswordUtils.getPassword(request.getPassword()));
             }
             if (request.getNickname()!=null&&!request.getNickname().isEmpty()&&request.getNickname().length()!=0)
             {
@@ -137,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public void identify(IdentityRequest request){
-        if (IDNumberValidator.isValid(request.getIdentity()))
+        if (InformationUtils.isValid(request.getIdentity()))
         {
             // 校验身份证信息
             User user = userDao.selectById(request.getId());
@@ -145,7 +145,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
                 // 更新用户信息
                 user.setRealname(request.getName());
                 try {
-                    user.setIdNumber(PasswordUtil.encrypt(request.getIdentity()));
+                    user.setIdNumber(PasswordUtils.encrypt(request.getIdentity()));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -175,9 +175,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         userDTO.setAvatar(user.getAvatar());
         userDTO.setNickname(user.getNickname());
         userDTO.setStatus(user.getStatus());
-        userDTO.setIdNumber(IDNumberValidator.getEncryption(PasswordUtil.decrypt(user.getIdNumber())));
-        userDTO.setTelephone(IDNumberValidator.getNumber(user.getTelephone()));
-        userDTO.setRealname(IDNumberValidator.getName(user.getRealname()));
+        userDTO.setIdNumber(InformationUtils.getEncryption(PasswordUtils.decrypt(user.getIdNumber())));
+        userDTO.setTelephone(InformationUtils.getNumber(user.getTelephone()));
+        userDTO.setRealname(InformationUtils.getName(user.getRealname()));
         userDTO.setMoney(user.getMoney());
         return userDTO;
     }

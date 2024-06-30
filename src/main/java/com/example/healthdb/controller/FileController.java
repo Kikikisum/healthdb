@@ -2,7 +2,7 @@ package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.model.dto.FileUploadDTO;
-import com.example.healthdb.utils.OSSFileUtil;
+import com.example.healthdb.utils.OSSFileUtils;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +16,6 @@ public class FileController {
     @PostMapping("/upload")
     public BaseResponse<FileUploadDTO> uploadFile(MultipartFile[] files)
     {
-        return ResultUtils.success(new FileUploadDTO(OSSFileUtil.uploadFiles(files)));
+        return ResultUtils.success(new FileUploadDTO(OSSFileUtils.uploadFiles(files)));
     }
 }

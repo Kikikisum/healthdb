@@ -1,6 +1,6 @@
 package com.example.healthdb.utils;
 
-public class IDNumberValidator {
+public class InformationUtils {
 
     // 身份证号码长度
     private static final int ID_CARD_LENGTH = 18;

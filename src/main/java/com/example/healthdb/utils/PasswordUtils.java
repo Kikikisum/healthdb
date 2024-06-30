@@ -3,11 +3,9 @@ package com.example.healthdb.utils;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
-public class PasswordUtil {
+public class PasswordUtils {
 
     /**
      * 对密码进行BCrypt加密

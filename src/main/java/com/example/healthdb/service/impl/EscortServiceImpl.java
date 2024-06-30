@@ -11,9 +11,9 @@ import com.example.healthdb.model.request.AddEscortRequest;
 import com.example.healthdb.model.request.AudictEscortRequest;
 import com.example.healthdb.service.EscortService;
 import com.example.healthdb.service.UserService;
-import com.example.healthdb.utils.IDNumberValidator;
+import com.example.healthdb.utils.InformationUtils;
 import com.example.healthdb.utils.JwtUtils;
-import com.example.healthdb.utils.PasswordUtil;
+import com.example.healthdb.utils.PasswordUtils;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import org.springframework.stereotype.Service;
 
@@ -47,11 +47,11 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
         if (user.getIdNumber()==null&&request.getIdentity()!=null)
         {
             // 校验身份证信息
-            if (IDNumberValidator.isValid(request.getIdentity()))
+            if (InformationUtils.isValid(request.getIdentity()))
             {
                 // 更新用户信息
                 user.setRealname(request.getName());
-                user.setIdNumber(PasswordUtil.encrypt(request.getIdentity()));
+                user.setIdNumber(PasswordUtils.encrypt(request.getIdentity()));
                 user.setRealname(request.getName());
                 user.setUpdateTime(new Date());
             }
