@@ -29,7 +29,11 @@ public class HospitalServerTypeServiceImpl extends ServiceImpl<HospitalServerTyp
         lambdaQueryWrapper.eq(HospitalServerType::getHid,hid);
 
         List<HospitalServerType> hospitalServerTypeList = hospitalServerTypeDao.selectList(lambdaQueryWrapper);
+        List<ServerTypeDTO> serverTypeDTOList = new ArrayList<>();
 
+        if(hospitalServerTypeList.isEmpty()){
+            return  serverTypeDTOList;
+        }
         List<Integer> sids = new ArrayList<>();
         for(HospitalServerType hospitalServerType : hospitalServerTypeList){
             sids.add(hospitalServerType.getSid());
@@ -39,7 +43,7 @@ public class HospitalServerTypeServiceImpl extends ServiceImpl<HospitalServerTyp
         lambdaQueryWrapper1.in(ServerType::getId,sids);
 
         List<ServerType> serverTypeList = serverTypeDao.selectList(lambdaQueryWrapper1);
-        List<ServerTypeDTO> serverTypeDTOList = new ArrayList<>();
+
         for(ServerType serverType : serverTypeList){
             ServerTypeDTO serverTypeDTO = new ServerTypeDTO();
             serverTypeDTO.setId(serverType.getId());
