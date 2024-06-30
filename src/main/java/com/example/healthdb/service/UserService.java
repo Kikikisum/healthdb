@@ -59,4 +59,10 @@ public interface UserService extends IService<User> {
      * @param request
      */
     void recharge(RechargeRequest request);
+
+    /**
+     * 用户体现
+     * @param request
+     */
+    void deleteMoney(DeletePassageRequest request);
 }

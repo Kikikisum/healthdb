@@ -3,8 +3,7 @@ package com.example.healthdb.model.request;
 import lombok.Data;
 
 @Data
-public class DeletePassageRequest {
+public class DecreaseMoneyRequest {
     private Integer id;
-
     private Float money;
 }

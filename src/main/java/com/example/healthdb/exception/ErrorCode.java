@@ -20,7 +20,9 @@ public enum ErrorCode {
     ID_WRONG(40004,"id参数错误",""),
     ORDER_NOTFINISH(40005,"订单未完成",""),
 
-    ORDER_TIME_WRONG(40500,"订单时长超出时限","");
+    ORDER_TIME_WRONG(40500,"订单时长超出时限",""),
+
+    Money_WRONG(40006,"提现金额过多","");
 
 
 

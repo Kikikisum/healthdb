@@ -178,7 +178,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         userDTO.setIdNumber(IDNumberValidator.getEncryption(PasswordUtil.decrypt(user.getIdNumber())));
         userDTO.setTelephone(IDNumberValidator.getNumber(user.getTelephone()));
         userDTO.setRealname(IDNumberValidator.getName(user.getRealname()));
-        userDTO.setMoney(userDTO.getMoney());
+        userDTO.setMoney(user.getMoney());
         return userDTO;
     }
 
@@ -191,6 +191,22 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         }
         Float newMoney = user.getMoney();
         user.setMoney(newMoney+request.getMoney());
+        updateById(user);
+    }
+
+    @Override
+    public void deleteMoney(DeletePassageRequest request) {
+        User user = getById(request.getId());
+        if (user==null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Float newMoney = user.getMoney();
+        if (newMoney-request.getMoney()<0)
+        {
+            throw new BusinessException(ErrorCode.Money_WRONG);
+        }
+        user.setMoney(newMoney-request.getMoney());
         updateById(user);
     }
 }

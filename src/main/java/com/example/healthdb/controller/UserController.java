@@ -70,4 +70,11 @@ public class UserController {
         userService.recharge(request);
         return ResultUtils.success(null);
     }
+
+    @PostMapping("/decrease")
+    public BaseResponse<Void> decrease(@RequestBody DeletePassageRequest request)
+    {
+        userService.deleteMoney(request);
+        return ResultUtils.success(null);
+    }
 }
