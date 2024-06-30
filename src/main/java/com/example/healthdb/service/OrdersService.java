@@ -35,7 +35,7 @@ public interface OrdersService extends IService<Orders> {
      * @param status
      * @return
      */
-    List<OrdersAndEscortDTO> queryByStatus(Integer status,Integer uid);
+    List<OrdersDTO> queryByStatus(Integer status,Integer uid);
 
     /**
      * 更新订单状态
@@ -63,7 +63,7 @@ public interface OrdersService extends IService<Orders> {
      * @param id
      * @return
      */
-    OrdersAndEscortDTO queryById(Integer id);
+    OrdersDTO queryById(Integer id);
 
 
     /**

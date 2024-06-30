@@ -11,4 +11,6 @@ public class AddServerTypeRequest {
     private String name;
 
     private Integer limit;
+
+    private Float money;
 }
