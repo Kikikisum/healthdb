@@ -16,4 +16,6 @@ public class AddHospitalRequest {
     private Integer areaCode;
 
     private String detailAddress;
+
+    private String photo;
 }

@@ -74,6 +74,7 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
         Long id = snowFlakeUtils.nextId();
         hospital.setId(Math.abs(id.intValue()));
         hospital.setName(request.getName());
+        hospital.setPhoto(request.getPhoto());
         hospital.setIntroduction(request.getIntroduction());
         hospital.setDetailAddress(request.getDetailAddress());
         hospital.setAreaCode(request.getAreaCode());
