@@ -14,6 +14,9 @@ public class Hospital extends BaseEntity{
     private Integer id;
     private String name;
 
+    @TableField("hospital_level")
+    private Integer hospitalLevel;
+
     @TableField("hospital_type")
     private String hospitalType;
 

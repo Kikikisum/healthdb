@@ -77,6 +77,8 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
         hospital.setIntroduction(request.getIntroduction());
         hospital.setDetailAddress(request.getDetailAddress());
         hospital.setAreaCode(request.getAreaCode());
+        hospital.setHospitalLevel(request.getHospitalLevel());
+        hospital.setHospitalType(request.getHospitalType());
         hospital.setCreateTime(new Date());
         hospital.setUpdateTime(new Date());
         hospital.setIsDelete(0);
