@@ -61,11 +61,4 @@ public class AdminController {
         return ResultUtils.success(null);
     }
 
-    @GetMapping("/passage/all")
-    public BaseResponse<List<Passage>> queryAllPassage(HttpServletRequest request)
-    {
-        return ResultUtils.success(passageService.getAllNoDeletedPassage(request));
-    }
-
-
 }

@@ -3,10 +3,11 @@ package com.example.healthdb.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.example.healthdb.common.BaseEntity;
 import lombok.Data;
 
 @Data
-public class Evaluation extends BaseEntity{
+public class Evaluation extends BaseEntity {
     @TableId(type = IdType.ASSIGN_ID)
     private Integer id;
 

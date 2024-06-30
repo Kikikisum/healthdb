@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.healthdb.common.BaseEntity;
 import lombok.Data;
 
 @Data
 @TableName("user")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @TableId(type = IdType.ASSIGN_ID)
     private Integer id;

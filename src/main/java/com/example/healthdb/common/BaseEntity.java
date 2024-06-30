@@ -1,4 +1,4 @@
-package com.example.healthdb.model.entity;
+package com.example.healthdb.common;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
-public class ByteArrayMultipartFile implements MultipartFile {
+public class ByteArrayMultipartFileUtils implements MultipartFile {
 
     private final byte[] content;
     private final String filename;
     private final String contentType;
 
-    public ByteArrayMultipartFile(byte[] content, String originalFilename, String contentType) {
+    public ByteArrayMultipartFileUtils(byte[] content, String originalFilename, String contentType) {
         this.content = content;
         this.filename = originalFilename;
         this.contentType = contentType;

@@ -9,7 +9,10 @@ public class UpdatetFinishTasks {
 
     private final OrdersService ordersService;
 
-    // 注入订单服务
+    /**
+     * 注入订单服务类
+     * @param ordersService
+     */
     public UpdatetFinishTasks(OrdersService ordersService) {
         this.ordersService = ordersService;
     }

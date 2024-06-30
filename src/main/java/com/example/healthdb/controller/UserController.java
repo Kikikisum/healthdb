@@ -1,8 +1,10 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.model.dto.UserDTO;
+import com.example.healthdb.model.entity.Passage;
 import com.example.healthdb.model.request.*;
 import com.example.healthdb.model.vo.LoginVo;
+import com.example.healthdb.service.PassageService;
 import com.example.healthdb.service.UserService;
 import com.example.healthdb.common.BaseResponse;
 import com.example.healthdb.utils.ResultUtils;
@@ -10,12 +12,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Resource
     private UserService userService;
+
+    @Resource
+    private PassageService passageService;
 
     @PostMapping("/login")
     public BaseResponse<LoginVo> login(@RequestBody LoginRequest loginRequest)
@@ -76,5 +82,11 @@ public class UserController {
     {
         userService.deleteMoney(request);
         return ResultUtils.success(null);
+    }
+
+    @GetMapping("/passage/all")
+    public BaseResponse<List<Passage>> queryAllPassage(HttpServletRequest request)
+    {
+        return ResultUtils.success(passageService.getAllNoDeletedPassage(request));
     }
 }

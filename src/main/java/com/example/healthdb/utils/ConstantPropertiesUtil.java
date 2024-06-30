@@ -30,8 +30,6 @@ public class ConstantPropertiesUtil implements InitializingBean {
 
     public static String URL_PREFIX;
 
-    public static String ENCRYPT_STR_SECRET_KEY;
-
 
     @Override
     public void afterPropertiesSet() {

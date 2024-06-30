@@ -15,7 +15,7 @@ import com.example.healthdb.model.dto.HospitalCreateResDTO;
 import com.example.healthdb.model.entity.Hospital;
 import com.example.healthdb.model.request.AddHospitalRequest;
 import com.example.healthdb.service.HospitalService;
-import com.example.healthdb.utils.ByteArrayMultipartFile;
+import com.example.healthdb.utils.ByteArrayMultipartFileUtils;
 import com.example.healthdb.listener.HospitalListener;
 import com.example.healthdb.utils.OSSFileUtils;
 import com.example.healthdb.utils.SnowFlakeUtils;
@@ -114,7 +114,7 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
                     // 获取文件扩展名
                     String fileExt = each.getPictureData().getMimeType().split(StrUtil.SLASH)[1];
                     // 创建临时的 MultipartFile 对象
-                    MultipartFile multipartFile = new ByteArrayMultipartFile(each.getPictureData().getData(), "temp_file." + fileExt, fileExt);
+                    MultipartFile multipartFile = new ByteArrayMultipartFileUtils(each.getPictureData().getData(), "temp_file." + fileExt, fileExt);
                     // 上传文件到 OSS 并获取 URL
                     String url = OSSFileUtils.uploadFile(multipartFile);
                     // 设置上传后的 URL 到 each 对象的 photoUrl 属性中

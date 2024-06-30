@@ -65,11 +65,6 @@ public class PassageServiceImpl extends ServiceImpl<PassageDao, Passage> impleme
 
     @Override
     public List<Passage> getAllNoDeletedPassage(HttpServletRequest request) {
-        // 检查权限
-        if (!JwtUtils.getRoleFromToken(request.getHeader("token")).equals(JwtUtils.ADMIN))
-        {
-            throw new BusinessException(ErrorCode.NO_AUTH);
-        }
         LambdaQueryWrapper<Passage> passageLambdaQueryWrapper=new LambdaQueryWrapper<>();
         passageLambdaQueryWrapper.eq(Passage::getIsDelete,0);
         return list(passageLambdaQueryWrapper);
