@@ -16,4 +16,6 @@ public class ServerType extends BaseEntity{
     private String name;
 
     private Integer limit;
+
+    private Float money;
 }

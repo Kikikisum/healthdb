@@ -1,6 +1,7 @@
 package com.example.healthdb.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.informix.lang.Decimal;
 import lombok.Data;
 import java.util.Date;
 
@@ -24,8 +25,7 @@ public class OrdersAndEscortDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private Date endTime;
+    private Float money;
 
     private String hname;
 

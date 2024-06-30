@@ -3,6 +3,7 @@ package com.example.healthdb.controller;
 import com.example.healthdb.common.BaseResponse;
 
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
+import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
 import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
@@ -52,7 +53,7 @@ public class OrdersController {
      * @param request
      * @return
      */
-    @PostMapping("/update/stauts")
+    @PostMapping("/update/status")
     public BaseResponse<Void> updateOrdersStatus(@RequestBody UpdateOrdersRequest request){
         ordersService.autoCheckTime();
         ordersService.updateOrders(request);
@@ -66,7 +67,7 @@ public class OrdersController {
      * @return
      */
     @GetMapping("/status")
-   public BaseResponse<List<OrdersAndEscortDTO>> queryByStatus(@RequestParam("status") Integer status,@RequestParam("uid") Integer uid){
+   public BaseResponse<List<OrdersDTO>> queryByStatus(@RequestParam("status") Integer status,@RequestParam("uid") Integer uid){
         ordersService.autoCheckTime();
         return ResultUtils.success(ordersService.queryByStatus(status,uid));
    }
@@ -77,7 +78,7 @@ public class OrdersController {
      * @return
      */
    @GetMapping("/query/by/{id}")
-   public BaseResponse<OrdersAndEscortDTO> queryById(@PathVariable Integer id){
+   public BaseResponse<OrdersDTO> queryById(@PathVariable Integer id){
        ordersService.autoCheckTime();
        return ResultUtils.success(ordersService.queryById(id));
    }

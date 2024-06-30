@@ -44,6 +44,8 @@ public class HospitalServerTypeServiceImpl extends ServiceImpl<HospitalServerTyp
             ServerTypeDTO serverTypeDTO = new ServerTypeDTO();
             serverTypeDTO.setId(serverType.getId());
             serverTypeDTO.setName(serverType.getName());
+            serverTypeDTO.setMoney(serverType.getMoney());
+            serverTypeDTO.setLimit(serverType.getLimit());
            serverTypeDTOList.add(serverTypeDTO);
         }
 
