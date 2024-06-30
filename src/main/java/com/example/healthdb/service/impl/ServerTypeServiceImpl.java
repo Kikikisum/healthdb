@@ -43,6 +43,7 @@ public class ServerTypeServiceImpl extends ServiceImpl<ServerTypeDao, ServerType
         Long id = snowFlakeUtils.nextId();
         newServerType.setId(Math.abs(id.intValue()));
         newServerType.setName(request.getName());
+        newServerType.setMoney(request.getMoney());
         newServerType.setCreateTime(new Date());
         newServerType.setUpdateTime(new Date());
         newServerType.setIsDelete(0);

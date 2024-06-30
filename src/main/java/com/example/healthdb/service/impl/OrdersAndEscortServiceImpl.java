@@ -61,7 +61,7 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
     private HospitalService hospitalService;
 
     /**
-     * 下单
+     * 陪诊师接单
      * @param request
      */
     @Override
@@ -70,10 +70,14 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         if(queryByOid(request.getOid()) != null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        System.out.println(request.getUid());
         Long id = snowFlakeUtils.nextId();
         ordersAndEscort.setId(Math.abs(id.intValue()));
         // 根据用户id得到陪诊师id
-        Escort escort = escortService.getById(request.getUid());
+        LambdaQueryWrapper<Escort> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Escort::getUid,request.getUid());
+        Escort escort = escortDao.selectOne(lambdaQueryWrapper);
+        System.out.println(escort);
         ordersAndEscort.setEid(escort.getId());
         ordersAndEscort.setOid(request.getOid());
         ordersAndEscort.setCreateTime(new Date());
@@ -151,6 +155,7 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
             if(queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(queryByOid(orders.getId()).getEid()).getUid()).getRealname());
             }
+            ordersAndEscortDTO.setMoney(serverTypeService.getById(orders.getSid()).getMoney());
             ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());

@@ -27,6 +27,12 @@ public class OrdersDTO {
 
     private String hname;
 
+    private String serverType;
+
+    private Float money;
+
+    private String relationship;
+
     @TableField("start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;

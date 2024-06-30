@@ -11,4 +11,8 @@ public class ServerTypeDTO {
     private Integer id;
 
     private String name;
+
+    private Float money;
+
+    private Integer limit;
 }
