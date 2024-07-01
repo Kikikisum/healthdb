@@ -378,8 +378,11 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             BeanUtils.copyProperties(orders,ordersAndEscortDTO);
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
-            ordersAndEscortDTO.setEname(userService.getById(orders.getUid()).getRealname());
-            ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());
+            if(ordersAndEscortService.queryByOid(orders.getId()) != null){
+                ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+                ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());
+            }
+            ordersAndEscortDTO.setEndTime(orders.getEndTime());
             ordersAndEscortDTO.setOid(orders.getId());
             // 查询陪诊师
             LambdaQueryWrapper<Escort> escortLambdaQueryWrapper=new LambdaQueryWrapper<>();
