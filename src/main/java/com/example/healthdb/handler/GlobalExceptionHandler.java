@@ -91,6 +91,9 @@ public class GlobalExceptionHandler {
         if(businessException.getCode() == ORDER_TIME_WRONG.getCode()){
             return ResultUtils.error(businessException.getCode(), businessException.getMessage(), businessException.getDescription());
         }
+        if(businessException.getCode() == NOT_ESCORT.getCode()){
+            return  ResultUtils.error(businessException.getCode(), businessException.getMessage(), businessException.getDescription());
+        }
         return ResultUtils.error(PARAMS_ERROR, businessException.getDescription());
     }
 

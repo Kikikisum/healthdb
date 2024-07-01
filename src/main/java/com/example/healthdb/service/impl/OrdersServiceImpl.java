@@ -3,6 +3,7 @@ package com.example.healthdb.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.dao.OrdersDao;
+import com.example.healthdb.dao.UserDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
@@ -65,6 +66,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
     @Resource
     private ServerTypeService serverTypeService;
 
+    @Resource
+    private UserDao userDao;
+
 
 
 
@@ -96,6 +100,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             orders.setStatus(0);
             ServerType serverType = serverTypeService.queryById(orders.getSid());
             user.setMoney(user.getMoney() - serverType.getMoney());
+            userDao.updateById(user);
 
             //获取就诊时间范围(ms)
             long differenceInMillis = endTime.getTime() - startTime.getTime();

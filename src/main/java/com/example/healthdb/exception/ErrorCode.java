@@ -21,8 +21,8 @@ public enum ErrorCode {
     ORDER_NOTFINISH(40005,"订单未完成",""),
 
     ORDER_TIME_WRONG(40500,"订单时长超出时限",""),
-
-    Money_WRONG(40006,"提现金额过多","");
+    Money_WRONG(40006,"提现金额过多",""),
+    NOT_ESCORT(40600,"当前用户为成为陪诊师","");
 
 
 
