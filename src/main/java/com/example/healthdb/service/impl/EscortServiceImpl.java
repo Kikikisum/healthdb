@@ -46,7 +46,7 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
             }
             LambdaQueryWrapper<Escort> escortLambdaQueryWrapper=new LambdaQueryWrapper<>();
             escortLambdaQueryWrapper.eq(Escort::getUid,request.getUid());
-            escortLambdaQueryWrapper.eq(Escort::getIsPassed,0);
+            escortLambdaQueryWrapper.eq(Escort::getIsPassed,1);
             Escort escorts=getOne(escortLambdaQueryWrapper);
             // 防止重复申请
             if (escorts!=null)
@@ -81,7 +81,7 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
             escort.setUid(request.getUid());
             escort.setTelephone(request.getTelephone());
             escort.setAvatar(request.getAvatar());
-            escort.setIsPassed(0);
+            escort.setIsPassed(1);
             escort.setWorkSection(request.getWorkSection());
             if (request.getIsMedicalWorker()==1)
             {
