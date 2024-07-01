@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -159,20 +160,20 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         ordersLambdaQueryWrapper.eq(Orders::getUid,uid);
         ordersLambdaQueryWrapper.eq(Orders::getStatus,3);
         List<Orders> ordersList =ordersService.list(ordersLambdaQueryWrapper);
-        for (Orders orders:ordersList)
-        {
-            LambdaQueryWrapper<Evaluation> lambdaQueryWrapper=new LambdaQueryWrapper<>();
-            lambdaQueryWrapper.eq(Evaluation::getOid,orders.getUid());
-            Evaluation evaluation=getOne(lambdaQueryWrapper);
-            if (evaluation!=null)
-            {
-                ordersList.remove(orders);
+        Iterator<Orders> iterator = ordersList.iterator();
+        while (iterator.hasNext()) {
+            Orders orders = iterator.next();
+            LambdaQueryWrapper<Evaluation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(Evaluation::getOid, orders.getUid());
+            Evaluation evaluation = getOne(lambdaQueryWrapper);
+            if (evaluation != null) {
+                iterator.remove(); // 使用迭代器的 remove 方法安全删除元素
             }
-            if (ordersList.isEmpty())
-            {
+            if (ordersList.isEmpty()) {
                 break;
             }
         }
+
         for (Orders orders : ordersList){
             OrdersAndEscortDTO ordersAndEscortDTO=new OrdersAndEscortDTO();
             BeanUtils.copyProperties(orders,ordersAndEscortDTO);

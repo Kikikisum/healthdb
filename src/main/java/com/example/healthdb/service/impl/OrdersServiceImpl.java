@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -377,7 +378,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
                 lambdaQueryWrapper.orderByAsc(Orders::getStartTime);
             }
         }
-        List<Orders> ordersList=ordersDao.selectList(lambdaQueryWrapper);
+        List<Orders> ordersList=list(lambdaQueryWrapper);
         List<OrdersAndEscortDTO> ordersDTOList = new ArrayList<>();
 
         for (Orders orders : ordersList){
@@ -408,19 +409,19 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         if (request.getName()!=null&&!request.getName().isEmpty())
         {
             // 就诊人名字模糊查询
-            Pattern p = Pattern.compile(".*"+request.getName()+".*");
-            for (OrdersAndEscortDTO ordersDTO:ordersDTOList)
-            {
+            Pattern p = Pattern.compile(".*" + request.getName() + ".*");
+            Iterator<OrdersAndEscortDTO> iterator = ordersDTOList.iterator();
+            while (iterator.hasNext()) {
+                OrdersAndEscortDTO ordersDTO = iterator.next();
                 Matcher m = p.matcher(ordersDTO.getPname());
-                if (!m.matches())
-                {
-                    ordersDTOList.remove(ordersDTO);
+                if (!m.matches()) {
+                    iterator.remove(); // 使用迭代器的 remove 方法安全删除元素
                 }
-                if (ordersDTOList.isEmpty())
-                {
+                if (ordersDTOList.isEmpty()) {
                     break;
                 }
             }
+
         }
         return ordersDTOList;
     }
