@@ -1,6 +1,7 @@
 package com.example.healthdb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.healthdb.model.dto.EscortDTO;
 import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.request.AddEscortRequest;
 import com.example.healthdb.model.request.AudictEscortRequest;
@@ -33,5 +34,5 @@ public interface EscortService extends IService<Escort> {
      * @param eid
      * @return
      */
-    Escort getEscortInformation(Integer eid);
+    EscortDTO getEscortInformation(Integer eid);
 }

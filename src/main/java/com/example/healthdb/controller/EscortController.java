@@ -1,6 +1,7 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.model.dto.EscortDTO;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Escort;
@@ -52,7 +53,7 @@ public class EscortController {
      * @return
      */
     @GetMapping("/get/my/{eid}")
-    public BaseResponse<Escort> getMyEscortInformation(@PathVariable Integer eid)
+    public BaseResponse<EscortDTO> getMyEscortInformation(@PathVariable Integer eid)
     {
         return ResultUtils.success(escortService.getEscortInformation(eid));
     }

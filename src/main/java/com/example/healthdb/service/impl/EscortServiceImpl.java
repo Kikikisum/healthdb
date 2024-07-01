@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.healthdb.dao.EscortDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
+import com.example.healthdb.model.dto.EscortDTO;
 import com.example.healthdb.model.entity.Escort;
 import com.example.healthdb.model.entity.User;
 import com.example.healthdb.model.request.AddEscortRequest;
@@ -15,6 +16,7 @@ import com.example.healthdb.utils.InformationUtils;
 import com.example.healthdb.utils.JwtUtils;
 import com.example.healthdb.utils.PasswordUtils;
 import com.example.healthdb.utils.SnowFlakeUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -141,7 +143,11 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
     }
 
     @Override
-    public Escort getEscortInformation(Integer eid) {
-        return getById(eid);
+    public EscortDTO getEscortInformation(Integer eid) {
+        EscortDTO escortDTO = new EscortDTO();
+        Escort escort = getById(eid);
+        BeanUtils.copyProperties(escort,escortDTO);
+        escortDTO.setEname(userService.getById(escort.getUid()).getRealname());
+        return escortDTO;
     }
 }
