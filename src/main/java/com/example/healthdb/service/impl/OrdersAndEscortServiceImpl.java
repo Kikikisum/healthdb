@@ -131,11 +131,18 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         lambdaQueryWrapper.eq(Escort::getUid,uid);
 
         Escort escort = escortDao.selectOne(lambdaQueryWrapper);
+        if(escort == null){
+            throw new BusinessException(ErrorCode.NOT_ESCORT);
+        }
 
         LambdaQueryWrapper<OrdersAndEscort> lambdaQueryWrapper1 = new LambdaQueryWrapper<>();
         lambdaQueryWrapper1.eq(OrdersAndEscort::getEid,escort.getId());
 
         List<OrdersAndEscort> ordersAndEscortList = ordersAndEscortDao.selectList(lambdaQueryWrapper1);
+
+        if(ordersAndEscortList.isEmpty()){
+            return null;
+        }
         List<Integer> oids = new ArrayList<>();
         for(OrdersAndEscort ordersAndEscort : ordersAndEscortList){
             oids.add(ordersAndEscort.getOid());
@@ -156,6 +163,7 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
             OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
             ordersAndEscortDTO.setStatus(orders.getStatus());
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
+
             if(queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(queryByOid(orders.getId()).getEid()).getUid()).getRealname());
                 ordersAndEscortDTO.setEid(escortService.getById(queryByOid(orders.getId()).getEid()).getId());
