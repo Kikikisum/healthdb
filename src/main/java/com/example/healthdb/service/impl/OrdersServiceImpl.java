@@ -262,6 +262,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTO.setTelephoneNumber(patientService.getById(orders.getPid()).getTelephoneNumber());
             ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
             ordersAndEscortDTO.setStartTime(orders.getStartTime());
+            ordersAndEscortDTO.setEndTime(orders.getEndTime());
             ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
             ordersAndEscortDTO.setOid(orders.getId());
             ordersAndEscortDTO.setRequirement(orders.getRequirement());
@@ -316,6 +317,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTO.setTelephoneNumber(patientService.getById(orders.getPid()).getTelephoneNumber());
             ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
             ordersAndEscortDTO.setStartTime(orders.getStartTime());
+            ordersAndEscortDTO.setEndTime(orders.getEndTime());
             ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
             ordersAndEscortDTO.setOid(orders.getId());
             ordersAndEscortDTO.setRequirement(orders.getRequirement());
