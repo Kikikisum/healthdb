@@ -2,17 +2,20 @@ package com.example.healthdb.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.healthdb.config.SnowFlakeConfig;
 import com.example.healthdb.dao.EvaluationDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
+import com.example.healthdb.model.dto.EvaluationDTO;
 import com.example.healthdb.model.entity.Evaluation;
 import com.example.healthdb.model.entity.Orders;
+import com.example.healthdb.model.entity.User;
 import com.example.healthdb.model.request.AddEvaluationRequest;
 import com.example.healthdb.model.request.DeleteEvaluationRequest;
-import com.example.healthdb.service.EvalutaionService;
+import com.example.healthdb.service.EvaluationService;
 import com.example.healthdb.service.OrdersService;
+import com.example.healthdb.service.UserService;
 import com.example.healthdb.utils.SnowFlakeUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +24,16 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation> implements EvalutaionService {
+public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation> implements EvaluationService {
 
     @Autowired
     private OrdersService ordersService;
 
     @Autowired
     private SnowFlakeUtils snowFlakeUtils;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void addEvaluation(AddEvaluationRequest request) {
@@ -81,8 +87,8 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
     }
 
     @Override
-    public List<Evaluation> queryMyEvaluation(Integer uid) {
-        List<Evaluation> evaluations=new ArrayList<>();
+    public List<EvaluationDTO> queryMyEvaluation(Integer uid) {
+        List<EvaluationDTO> evaluationsDTO=new ArrayList<>();
         LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
         ordersLambdaQueryWrapper.eq(Orders::getUid,uid);
         ordersLambdaQueryWrapper.eq(Orders::getStatus,3);
@@ -94,15 +100,15 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
             Evaluation evaluation=getOne(evaluationLambdaQueryWrapper);
             if (evaluation!=null)
             {
-                evaluations.add(evaluation);
+                evaluationsDTO.add(changeFromEvalutationToDTO(evaluation));
             }
         }
-        return evaluations;
+        return evaluationsDTO;
     }
 
     @Override
-    public List<Evaluation> queryByHospital(Integer hid) {
-        List<Evaluation> evaluations=new ArrayList<>();
+    public List<EvaluationDTO> queryByHospital(Integer hid) {
+        List<EvaluationDTO> evaluationsDTO=new ArrayList<>();
         LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
         ordersLambdaQueryWrapper.eq(Orders::getHid,hid);
         ordersLambdaQueryWrapper.eq(Orders::getStatus,3);
@@ -114,9 +120,20 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
             Evaluation evaluation=getOne(evaluationLambdaQueryWrapper);
             if (evaluation!=null)
             {
-                evaluations.add(evaluation);
+                evaluationsDTO.add(changeFromEvalutationToDTO(evaluation));
             }
         }
-        return evaluations;
+        return evaluationsDTO;
+    }
+
+    @Override
+    public EvaluationDTO changeFromEvalutationToDTO(Evaluation evaluation) {
+        EvaluationDTO evaluationDTO =new EvaluationDTO();
+        BeanUtils.copyProperties(evaluation,evaluationDTO);
+        User user = userService.getById(ordersService.getById(evaluation.getOid()).getUid());
+        evaluationDTO.setAvatar(user.getAvatar());
+        evaluationDTO.setNickname(user.getNickname());
+        evaluationDTO.setUid(user.getId());
+        return evaluationDTO;
     }
 }

@@ -1,10 +1,11 @@
 package com.example.healthdb.controller;
 
 import com.example.healthdb.common.BaseResponse;
+import com.example.healthdb.model.dto.EvaluationDTO;
 import com.example.healthdb.model.entity.Evaluation;
 import com.example.healthdb.model.request.AddEvaluationRequest;
 import com.example.healthdb.model.request.DeleteEvaluationRequest;
-import com.example.healthdb.service.EvalutaionService;
+import com.example.healthdb.service.EvaluationService;
 import com.example.healthdb.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class EvaluationController {
 
     @Resource
-    private EvalutaionService evalutaionService;
+    private EvaluationService evalutaionService;
 
     @PostMapping("/add")
     public BaseResponse<Void> addEvaluation(@RequestBody AddEvaluationRequest request)
@@ -33,14 +34,14 @@ public class EvaluationController {
     }
 
     @GetMapping("/query/all/{uid}")
-    public BaseResponse<List<Evaluation>> queryAll(@PathVariable Integer uid)
+    public BaseResponse<List<EvaluationDTO>> queryAll(@PathVariable Integer uid)
     {
         return ResultUtils.success(evalutaionService.queryMyEvaluation(uid));
     }
 
     @GetMapping("/query/hospital/{hid}")
-    public BaseResponse<List<Evaluation>> queryByHospitalId(@PathVariable Integer hid)
+    public BaseResponse<List<EvaluationDTO>> queryByHospitalId(@PathVariable Integer hid)
     {
-        return ResultUtils.success(evalutaionService.queryMyEvaluation(hid));
+        return ResultUtils.success(evalutaionService.queryByHospital(hid));
     }
 }

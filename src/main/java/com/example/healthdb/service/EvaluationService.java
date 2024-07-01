@@ -1,13 +1,14 @@
 package com.example.healthdb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.healthdb.model.dto.EvaluationDTO;
 import com.example.healthdb.model.entity.Evaluation;
 import com.example.healthdb.model.request.AddEvaluationRequest;
 import com.example.healthdb.model.request.DeleteEvaluationRequest;
 
 import java.util.List;
 
-public interface EvalutaionService extends IService<Evaluation> {
+public interface EvaluationService extends IService<Evaluation> {
 
     /**
      * 添加对完成订单的评价
@@ -26,12 +27,19 @@ public interface EvalutaionService extends IService<Evaluation> {
      * @param uid
      * @return
      */
-    List<Evaluation> queryMyEvaluation(Integer uid);
+    List<EvaluationDTO> queryMyEvaluation(Integer uid);
 
     /**
      * 查询医院对应的评价
      * @param hid
      * @return
      */
-    List<Evaluation> queryByHospital(Integer hid);
+    List<EvaluationDTO> queryByHospital(Integer hid);
+
+    /**
+     * 添加用户名和用户头像字段
+     * @param evaluation
+     * @return
+     */
+    EvaluationDTO changeFromEvalutationToDTO(Evaluation evaluation);
 }
