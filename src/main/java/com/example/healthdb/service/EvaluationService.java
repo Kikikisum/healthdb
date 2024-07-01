@@ -51,4 +51,11 @@ public interface EvaluationService extends IService<Evaluation> {
      * @return
      */
     List<OrdersAndEscortDTO> queryISEvaluation(Integer uid);
+
+    /**
+     * 根据订单id查询评论
+     * @param oid
+     * @return
+     */
+    EvaluationDTO queryByOid(Integer oid);
 }

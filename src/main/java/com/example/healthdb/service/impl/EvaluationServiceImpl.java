@@ -200,4 +200,11 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         }
         return ordersDTOList;
     }
+
+    @Override
+    public EvaluationDTO queryByOid(Integer oid) {
+        LambdaQueryWrapper<Evaluation> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Evaluation::getOid,oid);
+        return changeFromEvalutationToDTO(getOne(queryWrapper));
+    }
 }

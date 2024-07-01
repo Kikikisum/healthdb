@@ -74,7 +74,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
      * @param addOrdersRequest
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addOrders(AddOrdersRequest addOrdersRequest) {
         try {
             Orders orders= new Orders();

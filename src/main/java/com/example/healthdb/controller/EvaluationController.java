@@ -22,9 +22,6 @@ public class EvaluationController {
     @Resource
     private EvaluationService evalutaionService;
 
-    @Resource
-    private OrdersService ordersService;
-
     @PostMapping("/add")
     public BaseResponse<Void> addEvaluation(@RequestBody AddEvaluationRequest request)
     {
@@ -55,5 +52,11 @@ public class EvaluationController {
     public BaseResponse<List<OrdersAndEscortDTO>> queryOrders(@RequestParam("uid") Integer uid)
     {
         return ResultUtils.success(evalutaionService.queryISEvaluation(uid));
+    }
+
+    @GetMapping("/query/oid")
+    public BaseResponse<EvaluationDTO> queryOid(@RequestParam("oid") Integer oid)
+    {
+        return ResultUtils.success(evalutaionService.queryByOid(oid));
     }
 }
