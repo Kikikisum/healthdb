@@ -67,7 +67,14 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         {
             throw new BusinessException(ErrorCode.NO_AUTH);
         }
-        //todo 重复评论的检查
+        // 重复评论的检查
+        LambdaQueryWrapper<Evaluation> evaluationLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        evaluationLambdaQueryWrapper.eq(Evaluation::getOid,request.getOrder_id());
+        evaluationLambdaQueryWrapper.eq(Evaluation::getIsDelete,0);
+        if (getOne(evaluationLambdaQueryWrapper)!=null)
+        {
+            throw new BusinessException(ErrorCode.valueOf("重复评论！"));
+        }
         Evaluation evaluation = new Evaluation();
         Long id = snowFlakeUtils.nextId();
         evaluation.setId(Math.abs(id.intValue()));
@@ -159,14 +166,15 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
         ordersLambdaQueryWrapper.eq(Orders::getUid,uid);
         ordersLambdaQueryWrapper.eq(Orders::getStatus,3);
-        List<Orders> ordersList =ordersService.list(ordersLambdaQueryWrapper);
+        ordersLambdaQueryWrapper.eq(Orders::getIsDelete,0);
+        List<Orders> ordersList = ordersService.list(ordersLambdaQueryWrapper);
         Iterator<Orders> iterator = ordersList.iterator();
         while (iterator.hasNext()) {
             Orders orders = iterator.next();
             LambdaQueryWrapper<Evaluation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-            lambdaQueryWrapper.eq(Evaluation::getOid, orders.getUid());
+            lambdaQueryWrapper.eq(Evaluation::getOid, orders.getId());
             Evaluation evaluation = getOne(lambdaQueryWrapper);
-            if (evaluation != null) {
+            if (evaluation == null) {
                 iterator.remove(); // 使用迭代器的 remove 方法安全删除元素
             }
             if (ordersList.isEmpty()) {
