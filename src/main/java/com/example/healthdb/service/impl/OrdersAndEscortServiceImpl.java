@@ -60,6 +60,7 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
     @Resource
     private HospitalService hospitalService;
 
+
     /**
      * 陪诊师接单
      * @param request
@@ -70,7 +71,6 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         if(queryByOid(request.getOid()) != null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        System.out.println(request.getUid());
         Long id = snowFlakeUtils.nextId();
         ordersAndEscort.setId(Math.abs(id.intValue()));
         // 根据用户id得到陪诊师id
@@ -80,6 +80,12 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         System.out.println(escort);
         ordersAndEscort.setEid(escort.getId());
         ordersAndEscort.setOid(request.getOid());
+        LambdaQueryWrapper<Orders> lambdaQueryWrapper1 = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper1.eq(Orders::getId,request.getOid());
+        Orders orders = ordersDao.selectOne(lambdaQueryWrapper1);
+        orders.setStatus(1);
+        ordersDao.updateById(orders);
+        System.out.println(orders);
         ordersAndEscort.setCreateTime(new Date());
         ordersAndEscort.setUpdateTime(new Date());
         ordersAndEscort.setIsDelete(0);
