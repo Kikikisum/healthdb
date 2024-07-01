@@ -48,13 +48,13 @@ public class EscortController {
 
     /**
      * 查询陪诊师信息
-     * @param uid
+     * @param eid
      * @return
      */
     @GetMapping("/get/my/{uid}")
-    public BaseResponse<Escort> getMyEscortInformation(@PathVariable Integer uid)
+    public BaseResponse<Escort> getMyEscortInformation(@PathVariable Integer eid)
     {
-        return ResultUtils.success(escortService.getEscortInformation(uid));
+        return ResultUtils.success(escortService.getEscortInformation(eid));
     }
 
 }

@@ -30,8 +30,8 @@ public interface EscortService extends IService<Escort> {
 
     /**
      * 获得指定id的陪诊师信息
-     * @param uid
+     * @param eid
      * @return
      */
-    Escort getEscortInformation(Integer uid);
+    Escort getEscortInformation(Integer eid);
 }

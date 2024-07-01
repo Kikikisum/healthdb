@@ -42,7 +42,11 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
             {
                 throw new BusinessException(ErrorCode.ID_WRONG);
             }
-            Escort escorts=getById(request.getUid());
+            LambdaQueryWrapper<Escort> escortLambdaQueryWrapper=new LambdaQueryWrapper<>();
+            escortLambdaQueryWrapper.eq(Escort::getUid,request.getUid());
+            escortLambdaQueryWrapper.eq(Escort::getIsPassed,0);
+            Escort escorts=getOne(escortLambdaQueryWrapper);
+            // 防止重复申请
             if (escorts!=null)
             {
                 throw new BusinessException(ErrorCode.ID_WRONG);
@@ -137,9 +141,7 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
     }
 
     @Override
-    public Escort getEscortInformation(Integer uid) {
-        LambdaQueryWrapper<Escort> lambdaQueryWrapper=new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Escort::getUid,uid);
-        return getOne(lambdaQueryWrapper);
+    public Escort getEscortInformation(Integer eid) {
+        return getById(eid);
     }
 }
