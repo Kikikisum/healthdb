@@ -42,6 +42,11 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
             {
                 throw new BusinessException(ErrorCode.ID_WRONG);
             }
+            Escort escorts=getById(request.getUid());
+            if (escorts!=null)
+            {
+                throw new BusinessException(ErrorCode.ID_WRONG);
+            }
             // 检查电话是否正确
             if (request.getTelephone().length()!=11)
             {

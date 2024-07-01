@@ -393,6 +393,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
                 ordersAndEscortDTO.setGender(escort.getGender());
                 ordersAndEscortDTO.setAge(escort.getAge());
             }
+            ordersAndEscortDTO.setMoney(serverTypeService.getById(orders.getSid()).getMoney());
             ordersDTOList.add(ordersAndEscortDTO);
         }
         if (request.getName()!=null&&!request.getName().isEmpty())
