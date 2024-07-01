@@ -178,6 +178,8 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
             BeanUtils.copyProperties(orders,ordersAndEscortDTO);
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
+            ordersAndEscortDTO.setServerType(serverTypeService.queryById(orders.getSid()).getName());
             if(ordersAndEscortService.queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
                 ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());

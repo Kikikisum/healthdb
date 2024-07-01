@@ -51,8 +51,8 @@ public class EvaluationController {
         return ResultUtils.success(evalutaionService.queryByHospital(hid));
     }
 
-    @PostMapping ("/query/orders")
-    public BaseResponse<List<OrdersAndEscortDTO>> queryOrders(Integer uid)
+    @GetMapping ("/query/orders")
+    public BaseResponse<List<OrdersAndEscortDTO>> queryOrders(@RequestParam("uid") Integer uid)
     {
         return ResultUtils.success(evalutaionService.queryISEvaluation(uid));
     }
