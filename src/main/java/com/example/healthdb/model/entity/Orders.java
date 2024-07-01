@@ -33,11 +33,11 @@ public class Orders extends BaseEntity {
     private Integer sid;
 
     @TableField("start_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date startTime;
 
     @TableField("end_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endTime;
 
     @TableField("telephone_number")
