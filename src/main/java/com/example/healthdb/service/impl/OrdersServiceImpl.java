@@ -241,29 +241,33 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
      * @return
      */
     @Override
-    public OrdersDTO queryById(Integer id) {
+    public OrdersAndEscortDTO queryById(Integer id) {
         Orders orders = getById(id);
-        OrdersDTO ordersDTO = null;
+        OrdersAndEscortDTO ordersAndEscortDTO = new OrdersAndEscortDTO();
         if(orders != null){
-            ordersDTO = new OrdersDTO();
-            ordersDTO.setId(orders.getId());
-            ordersDTO.setUid(orders.getUid());
-            ordersDTO.setHid(orders.getHid());
-            ordersDTO.setPid(orders.getPid());
-            ordersDTO.setSid(orders.getSid());
-            ordersDTO.setPname(patientService.getById(orders.getPid()).getName());
-            ordersDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
-            ordersDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
-            ordersDTO.setStatus(orders.getStatus());
-            ordersDTO.setMoney(serverTypeService.getById(orders.getSid()).getMoney());
-            ordersDTO.setTelephoneNumber(patientService.getById(orders.getPid()).getTelephoneNumber());
-            ordersDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
-            ordersDTO.setStartTime(orders.getStartTime());
-            ordersDTO.setEndTime(orders.getEndTime());
-            ordersDTO.setRequirement(orders.getRequirement());
+            ordersAndEscortDTO.setStatus(orders.getStatus());
+            ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
+            if(ordersAndEscortService.queryByOid(orders.getId()) != null){
+                ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+                ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());
+            }
+            ordersAndEscortDTO.setMoney(serverTypeService.getById(orders.getSid()).getMoney());
+            ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
+            ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
+            ordersAndEscortDTO.setGender(patientService.getById(orders.getPid()).getGender());
+            ordersAndEscortDTO.setAge(patientService.getById(orders.getPid()).getAge());
+            ordersAndEscortDTO.setTelephoneNumber(patientService.getById(orders.getPid()).getTelephoneNumber());
+            ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
+            ordersAndEscortDTO.setStartTime(orders.getStartTime());
+            ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersAndEscortDTO.setOid(orders.getId());
+            ordersAndEscortDTO.setRequirement(orders.getRequirement());
+            return ordersAndEscortDTO;
+        }else {
+            return  null;
         }
 
-        return ordersDTO;
+
     }
 
     /**
@@ -299,6 +303,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             if(ordersAndEscortService.queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+                ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());
             }
             ordersAndEscortDTO.setMoney(serverTypeService.getById(orders.getSid()).getMoney());
             ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());
@@ -356,6 +361,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
             ordersAndEscortDTO.setEname(userService.getById(orders.getUid()).getRealname());
+            ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());
             ordersAndEscortDTO.setOid(orders.getId());
             // 查询陪诊师
             LambdaQueryWrapper<Escort> escortLambdaQueryWrapper=new LambdaQueryWrapper<>();

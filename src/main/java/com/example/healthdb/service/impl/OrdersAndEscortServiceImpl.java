@@ -158,6 +158,7 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
             ordersAndEscortDTO.setUpdateTime(orders.getUpdateTime());
             if(queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+                ordersAndEscortDTO.setEid(escortService.getById(queryByOid(orders.getId()).getEid()).getId());
             }
             ordersAndEscortDTO.setMoney(serverTypeService.getById(orders.getSid()).getMoney());
             ordersAndEscortDTO.setServerType(serverTypeService.getById(orders.getSid()).getName());

@@ -37,6 +37,8 @@ public class OrdersAndEscortDTO {
 
     private String ename;
 
+    private Integer eid;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 }
