@@ -142,8 +142,12 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         }
 
         LambdaQueryWrapper<Orders> lambdaQueryWrapper2 = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper2.in(Orders::getId,oids)
-                .eq(Orders::getStatus,status);
+        if(status == 4){
+            lambdaQueryWrapper2.in(Orders::getId,oids);
+        }else {
+            lambdaQueryWrapper2.in(Orders::getId,oids)
+                    .eq(Orders::getStatus,status);
+        }
 
         List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper2);
         List<OrdersAndEscortDTO> ordersAndEscortDTOS = new ArrayList<>();

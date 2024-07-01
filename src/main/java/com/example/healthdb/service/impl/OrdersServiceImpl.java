@@ -7,10 +7,7 @@ import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
-import com.example.healthdb.model.entity.Escort;
-import com.example.healthdb.model.entity.Hospital;
-import com.example.healthdb.model.entity.Orders;
-import com.example.healthdb.model.entity.ServerType;
+import com.example.healthdb.model.entity.*;
 import com.example.healthdb.model.request.AddOrdersRequest;
 import com.example.healthdb.model.request.DeleteOrdersRequest;
 import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
@@ -80,6 +77,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             Long id = snowFlakeUtils.nextId();
             orders.setId(Math.abs(id.intValue()));
             orders.setUid(addOrdersRequest.getUid());
+            User user = userService.getById(addOrdersRequest.getUid());
             orders.setPid(addOrdersRequest.getPid());
             orders.setHid(addOrdersRequest.getHid());
             orders.setSid(addOrdersRequest.getSid());
@@ -94,8 +92,8 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             orders.setUpdateTime(new Date());
             orders.setIsDelete(0);
             orders.setStatus(0);
-
             ServerType serverType = serverTypeService.queryById(orders.getSid());
+            user.setMoney(user.getMoney() - serverType.getMoney());
 
             //获取就诊时间范围(ms)
             long differenceInMillis = endTime.getTime() - startTime.getTime();
@@ -104,6 +102,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
                 throw new BusinessException(ErrorCode.ORDER_TIME_WRONG);
             }
             save(orders);
+
             log.info("用户下单：{}",orders);
 
         }catch (ParseException e){
@@ -139,9 +138,13 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
     public List<OrdersDTO> queryByStatus(Integer status, Integer uid) {
 
         LambdaQueryWrapper<Orders> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Orders::getStatus,status)
-                .eq(Orders::getIsDelete,0)
-                .eq(Orders::getUid,uid);
+        if(status == 4){
+            lambdaQueryWrapper.eq(Orders::getUid,uid);
+        } else {
+            lambdaQueryWrapper.eq(Orders::getStatus,status)
+                    .eq(Orders::getIsDelete,0)
+                    .eq(Orders::getUid,uid);
+        }
 
         List<Orders> ordersList = ordersDao.selectList(lambdaQueryWrapper);
         List<OrdersDTO> ordersDTOList = new ArrayList<>();
