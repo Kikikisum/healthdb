@@ -293,7 +293,6 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         lambdaQueryWrapper.eq(Escort::getUid,uid);
         Escort escort = escortService.getOne(lambdaQueryWrapper);
         List<Hospital> hospitalList = hospitalService.getByAreaCode(escort.getAreaCode());
-
         List<Integer> hids = new ArrayList<>();
         hids.add(0);
 
