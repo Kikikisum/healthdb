@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.Orders;
-import com.example.healthdb.model.request.AddOrdersRequest;
-import com.example.healthdb.model.request.DeleteOrdersRequest;
-import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
-import com.example.healthdb.model.request.UpdateOrdersRequest;
+import com.example.healthdb.model.request.*;
 
 import java.util.List;
 

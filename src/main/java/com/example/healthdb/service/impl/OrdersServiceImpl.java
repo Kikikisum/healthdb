@@ -9,10 +9,7 @@ import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.OrdersAndEscortDTO;
 import com.example.healthdb.model.dto.OrdersDTO;
 import com.example.healthdb.model.entity.*;
-import com.example.healthdb.model.request.AddOrdersRequest;
-import com.example.healthdb.model.request.DeleteOrdersRequest;
-import com.example.healthdb.model.request.MutipleQueryOrdersRequest;
-import com.example.healthdb.model.request.UpdateOrdersRequest;
+import com.example.healthdb.model.request.*;
 import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +74,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
      * @param addOrdersRequest
      */
     @Override
+    @Transactional
     public void addOrders(AddOrdersRequest addOrdersRequest) {
         try {
             Orders orders= new Orders();
@@ -99,6 +97,10 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             orders.setIsDelete(0);
             orders.setStatus(0);
             ServerType serverType = serverTypeService.queryById(orders.getSid());
+            if (user.getMoney() - serverType.getMoney()<0)
+            {
+                throw new BusinessException(ErrorCode.MONEY_NOT);
+            }
             user.setMoney(user.getMoney() - serverType.getMoney());
             userDao.updateById(user);
 
@@ -383,6 +385,8 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             BeanUtils.copyProperties(orders,ordersAndEscortDTO);
             ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
             ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
+            ordersAndEscortDTO.setServerType(serverTypeService.queryById(orders.getSid()).getName());
             if(ordersAndEscortService.queryByOid(orders.getId()) != null){
                 ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
                 ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());

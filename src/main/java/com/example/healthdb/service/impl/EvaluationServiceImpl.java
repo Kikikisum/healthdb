@@ -6,14 +6,12 @@ import com.example.healthdb.dao.EvaluationDao;
 import com.example.healthdb.exception.BusinessException;
 import com.example.healthdb.exception.ErrorCode;
 import com.example.healthdb.model.dto.EvaluationDTO;
-import com.example.healthdb.model.entity.Evaluation;
-import com.example.healthdb.model.entity.Orders;
-import com.example.healthdb.model.entity.User;
+import com.example.healthdb.model.dto.OrdersAndEscortDTO;
+import com.example.healthdb.model.entity.*;
 import com.example.healthdb.model.request.AddEvaluationRequest;
 import com.example.healthdb.model.request.DeleteEvaluationRequest;
-import com.example.healthdb.service.EvaluationService;
-import com.example.healthdb.service.OrdersService;
-import com.example.healthdb.service.UserService;
+import com.example.healthdb.model.request.QueryEvauationRequest;
+import com.example.healthdb.service.*;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,21 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PatientService patientService;
+
+    @Autowired
+    private HospitalService hospitalService;
+
+    @Autowired
+    private OrdersAndEscortService ordersAndEscortService;
+
+    @Autowired
+    private EscortService escortService;
+
+    @Autowired
+    private ServerTypeService serverTypeService;
 
     @Override
     public void addEvaluation(AddEvaluationRequest request) {
@@ -137,5 +150,54 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         evaluationDTO.setUid(user.getId());
         evaluationDTO.setCreateTime(evaluation.getCreateTime());
         return evaluationDTO;
+    }
+
+    @Override
+    public List<OrdersAndEscortDTO> queryISEvaluation(Integer uid) {
+        List<OrdersAndEscortDTO> ordersDTOList = new ArrayList<>();
+        LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        ordersLambdaQueryWrapper.eq(Orders::getUid,uid);
+        ordersLambdaQueryWrapper.eq(Orders::getStatus,3);
+        List<Orders> ordersList =ordersService.list(ordersLambdaQueryWrapper);
+        for (Orders orders:ordersList)
+        {
+            LambdaQueryWrapper<Evaluation> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(Evaluation::getOid,orders.getUid());
+            Evaluation evaluation=getOne(lambdaQueryWrapper);
+            if (evaluation!=null)
+            {
+                ordersList.remove(orders);
+            }
+            if (ordersList.isEmpty())
+            {
+                break;
+            }
+        }
+        for (Orders orders : ordersList){
+            OrdersAndEscortDTO ordersAndEscortDTO=new OrdersAndEscortDTO();
+            BeanUtils.copyProperties(orders,ordersAndEscortDTO);
+            ordersAndEscortDTO.setPname(patientService.getById(orders.getPid()).getName());
+            ordersAndEscortDTO.setHname(hospitalService.getByID(orders.getHid()).getName());
+            ordersAndEscortDTO.setRelationship(patientService.getById(orders.getPid()).getRelationship());
+            ordersAndEscortDTO.setServerType(serverTypeService.queryById(orders.getSid()).getName());
+            if(ordersAndEscortService.queryByOid(orders.getId()) != null){
+                ordersAndEscortDTO.setEname(userService.getById(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getUid()).getRealname());
+                ordersAndEscortDTO.setEid(escortService.getById(ordersAndEscortService.queryByOid(orders.getId()).getEid()).getId());
+            }
+            ordersAndEscortDTO.setEndTime(orders.getEndTime());
+            ordersAndEscortDTO.setOid(orders.getId());
+            // 查询陪诊师
+            LambdaQueryWrapper<Escort> escortLambdaQueryWrapper=new LambdaQueryWrapper<>();
+            escortLambdaQueryWrapper.eq(Escort::getUid,orders.getUid());
+            Escort escort=escortService.getOne(escortLambdaQueryWrapper);
+            if (escort!=null)
+            {
+                ordersAndEscortDTO.setGender(escort.getGender());
+                ordersAndEscortDTO.setAge(escort.getAge());
+            }
+            ordersAndEscortDTO.setMoney(serverTypeService.getById(orders.getSid()).getMoney());
+            ordersDTOList.add(ordersAndEscortDTO);
+        }
+        return ordersDTOList;
     }
 }
