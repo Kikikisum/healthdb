@@ -2,6 +2,8 @@ package com.example.healthdb.model.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class EvaluationDTO {
     private Integer id;
@@ -21,4 +23,6 @@ public class EvaluationDTO {
     private String nickname;
 
     private String avatar;
+
+    private Date createTime;
 }

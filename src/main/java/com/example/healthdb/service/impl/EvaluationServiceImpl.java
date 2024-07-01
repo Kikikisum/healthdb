@@ -135,6 +135,7 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationDao, Evaluation
         evaluationDTO.setAvatar(user.getAvatar());
         evaluationDTO.setNickname(user.getNickname());
         evaluationDTO.setUid(user.getId());
+        evaluationDTO.setCreateTime(evaluation.getCreateTime());
         return evaluationDTO;
     }
 }
