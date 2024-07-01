@@ -73,6 +73,7 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
                     throw new BusinessException(ErrorCode.PARAMS_ERROR);
                 }
             }
+            user.setStatus(2);
             userService.updateById(user);
             // 陪诊师信息插入
             Escort escort = new Escort();
