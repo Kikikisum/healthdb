@@ -63,7 +63,7 @@ public interface OrdersService extends IService<Orders> {
      * @param id
      * @return
      */
-    OrdersDTO queryById(Integer id);
+    OrdersAndEscortDTO queryById(Integer id);
 
 
     /**

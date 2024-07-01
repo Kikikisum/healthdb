@@ -78,7 +78,7 @@ public class OrdersController {
      * @return
      */
    @GetMapping("/query/by/{id}")
-   public BaseResponse<OrdersDTO> queryById(@PathVariable Integer id){
+   public BaseResponse<OrdersAndEscortDTO> queryById(@PathVariable Integer id){
        ordersService.autoCheckTime();
        return ResultUtils.success(ordersService.queryById(id));
    }
