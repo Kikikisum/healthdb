@@ -51,7 +51,7 @@ public class EscortController {
      * @param eid
      * @return
      */
-    @GetMapping("/get/my/{uid}")
+    @GetMapping("/get/my/{eid}")
     public BaseResponse<Escort> getMyEscortInformation(@PathVariable Integer eid)
     {
         return ResultUtils.success(escortService.getEscortInformation(eid));

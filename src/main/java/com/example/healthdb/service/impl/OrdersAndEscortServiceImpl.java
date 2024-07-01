@@ -60,9 +60,6 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
     @Resource
     private HospitalService hospitalService;
 
-    @Resource
-    private OrdersService ordersService;
-
     /**
      * 陪诊师接单
      * @param request
@@ -87,9 +84,9 @@ public class OrdersAndEscortServiceImpl extends ServiceImpl<OrdersAndEscortDao, 
         ordersAndEscort.setUpdateTime(new Date());
         ordersAndEscort.setIsDelete(0);
         save(ordersAndEscort);
-        Orders orders = ordersService.getById(request.getOid());
+        Orders orders = ordersDao.selectById(request.getOid());
         orders.setStatus(1);
-        ordersService.updateById(orders);
+        ordersDao.updateById(orders);
     }
 
     /**
