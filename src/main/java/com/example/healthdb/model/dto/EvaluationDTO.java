@@ -1,5 +1,6 @@
 package com.example.healthdb.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -24,5 +25,6 @@ public class EvaluationDTO {
 
     private String avatar;
 
+    @JsonFormat(pattern = ("yyyy-MM-dd HH:mm:ss"))
     private Date createTime;
 }
