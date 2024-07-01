@@ -354,7 +354,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             lambdaQueryWrapper.between(Orders::getEndTime,startTime,endTime);
         } else if (startTime!=null)
         {
-            lambdaQueryWrapper.lt(Orders::getStartTime,startTime);
+            lambdaQueryWrapper.ge(Orders::getStartTime,startTime);
         }
         if (request.getStatus()!=null&&request.getStatus()!=4)
         {
@@ -405,6 +405,10 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
                 if (!m.matches())
                 {
                     ordersDTOList.remove(ordersDTO);
+                }
+                if (ordersDTOList.isEmpty())
+                {
+                    break;
                 }
             }
         }
