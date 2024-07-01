@@ -24,7 +24,7 @@ public enum ErrorCode {
     TASK_ALLOCATION_ERROR(50003, "任务分配操作失败", ""),
     USER_LOCATION_NOT_EXIT(50004, "用户常用位置未设置", ""),
     ORDER_TIME_WRONG(40500,"订单时长超出时限",""),
-    NOT_ESCORT(40600,"当前用户为成为陪诊师","");
+    NOT_ESCORT(40600,"当前用户未成为陪诊师","");
     ;
 
     private final int code;
