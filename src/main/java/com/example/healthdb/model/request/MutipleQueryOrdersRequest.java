@@ -20,4 +20,6 @@ public class MutipleQueryOrdersRequest {
      * 排序标识: 1-从近到远，0-从远到近
      */
     private Integer sort;
+
+    private Integer status;
 }

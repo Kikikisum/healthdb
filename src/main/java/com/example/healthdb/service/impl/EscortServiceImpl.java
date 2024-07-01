@@ -16,6 +16,7 @@ import com.example.healthdb.utils.JwtUtils;
 import com.example.healthdb.utils.PasswordUtils;
 import com.example.healthdb.utils.SnowFlakeUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -33,75 +34,89 @@ public class EscortServiceImpl extends ServiceImpl<EscortDao, Escort> implements
 
 
     @Override
+    @Transactional(rollbackFor = BusinessException.class)
     public void addEscort(AddEscortRequest request) {
-        User user = userService.getById(request.getUid());
-        if (user==null)
-        {
-            throw new BusinessException(ErrorCode.ID_WRONG);
-        }
-        // 检查电话是否正确
-        if (request.getTelephone().length()!=11)
-        {
-            throw new BusinessException(ErrorCode.TELEPHONE_WRONG);
-        }
-        if (user.getIdNumber()==null&&request.getIdentity()!=null)
-        {
-            // 校验身份证信息
-            if (InformationUtils.isValid(request.getIdentity()))
+        try {
+            User user = userService.getById(request.getUid());
+            if (user==null)
             {
-                // 更新用户信息
-                user.setRealname(request.getName());
-                user.setIdNumber(PasswordUtils.encrypt(request.getIdentity()));
-                user.setRealname(request.getName());
-                user.setUpdateTime(new Date());
+                throw new BusinessException(ErrorCode.ID_WRONG);
             }
-            else {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            // 检查电话是否正确
+            if (request.getTelephone().length()!=11)
+            {
+                throw new BusinessException(ErrorCode.TELEPHONE_WRONG);
             }
+            if (user.getIdNumber()==null&&request.getIdentity()!=null)
+            {
+                // 校验身份证信息
+                if (InformationUtils.isValid(request.getIdentity()))
+                {
+                    // 更新用户信息
+                    user.setRealname(request.getName());
+                    user.setIdNumber(PasswordUtils.encrypt(request.getIdentity()));
+                    user.setRealname(request.getName());
+                    user.setUpdateTime(new Date());
+                }
+                else {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR);
+                }
+            }
+            userService.updateById(user);
+            // 陪诊师信息插入
+            Escort escort = new Escort();
+            Long id = snowFlakeUtils.nextId();
+            escort.setId(Math.abs(id.intValue()));
+            escort.setUid(request.getUid());
+            escort.setTelephone(request.getTelephone());
+            escort.setAvatar(request.getAvatar());
+            escort.setIsPassed(0);
+            escort.setWorkSection(request.getWorkSection());
+            if (request.getIsMedicalWorker()==1)
+            {
+                escort.setIsMedicalWorker(request.getIsMedicalWorker());
+            }
+            escort.setAge(request.getAge());
+            escort.setGender(request.getGender());
+            escort.setCreateTime(new Date());
+            escort.setIsDelete(0);
+            escort.setUpdateTime(new Date());
+            escort.setAreaCode(request.getArea_code());
+            save(escort);
         }
-        userService.updateById(user);
-        // 陪诊师信息插入
-        Escort escort = new Escort();
-        Long id = snowFlakeUtils.nextId();
-        escort.setId(Math.abs(id.intValue()));
-        escort.setUid(request.getUid());
-        escort.setTelephone(request.getTelephone());
-        escort.setAvatar(request.getAvatar());
-        escort.setIsPassed(0);
-        escort.setWorkSection(request.getWorkSection());
-        if (request.getIsMedicalWorker()==1)
+        catch (Exception e)
         {
-            escort.setIsMedicalWorker(request.getIsMedicalWorker());
+            log.error("执行事务异常，需要回滚",e);
         }
-        escort.setAge(request.getAge());
-        escort.setGender(request.getGender());
-        escort.setCreateTime(new Date());
-        escort.setIsDelete(0);
-        escort.setUpdateTime(new Date());
-        escort.setAreaCode(request.getArea_code());
-        save(escort);
     }
 
     @Override
+    @Transactional(rollbackFor = BusinessException.class)
     public void audictEscort(AudictEscortRequest request,String token) {
-        // 检查权限
-        if (!JwtUtils.getRoleFromToken(token).equals(JwtUtils.ADMIN))
+        try {
+            // 检查权限
+            if (!JwtUtils.getRoleFromToken(token).equals(JwtUtils.ADMIN))
+            {
+                throw new BusinessException(ErrorCode.NO_AUTH);
+            }
+            Escort escort=getById(request.getId());
+            if (escort==null)
+            {
+                throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            }
+            escort.setIsPassed(request.getIsPassed());
+            if (escort.getIsPassed()==1)
+            {
+                User user=userService.getById(escort.getUid());
+                user.setStatus(2);
+                userService.updateById(user);
+            }
+            updateById(escort);
+        }catch (Exception e)
         {
-            throw new BusinessException(ErrorCode.NO_AUTH);
+            log.error("执行事务异常，需要回滚",e);
         }
-        Escort escort=getById(request.getId());
-        if (escort==null)
-        {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        escort.setIsPassed(request.getIsPassed());
-        if (escort.getIsPassed()==1)
-        {
-            User user=userService.getById(escort.getUid());
-            user.setStatus(2);
-            userService.updateById(user);
-        }
-        updateById(escort);
+
     }
 
     @Override

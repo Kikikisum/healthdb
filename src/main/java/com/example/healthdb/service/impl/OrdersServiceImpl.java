@@ -17,6 +17,8 @@ import com.example.healthdb.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -202,6 +204,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
      * 超时自动完成
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void checkOverTime() {
         LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
         lambdaQueryWrapper.in(Orders::getStatus, 1, 2);
@@ -326,21 +329,34 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
         LambdaQueryWrapper<Orders> lambdaQueryWrapper=new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Orders::getUid,request.getUid());
         Date startTime = null;
-        try {
-            startTime = simpleDateFormat.parse(request.getStartTime());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        if (request.getStartTime()!=null)
+        {
+            try {
+                startTime = simpleDateFormat.parse(request.getStartTime());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
         Date endTime=null;
-        try {
-            endTime = simpleDateFormat.parse(request.getEndTime());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        if (request.getEndTime()!=null)
+        {
+            try {
+                endTime = simpleDateFormat.parse(request.getEndTime());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (startTime!=null&&endTime!=null)
         {
             lambdaQueryWrapper.between(Orders::getStartTime,startTime,endTime);
             lambdaQueryWrapper.between(Orders::getEndTime,startTime,endTime);
+        } else if (startTime!=null)
+        {
+            lambdaQueryWrapper.lt(Orders::getStartTime,startTime);
+        }
+        if (request.getStatus()!=null&&request.getStatus()!=4)
+        {
+            lambdaQueryWrapper.eq(Orders::getStatus,request.getStatus());
         }
         if (request.getSort()!=null)
         {
@@ -374,7 +390,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
             }
             ordersDTOList.add(ordersAndEscortDTO);
         }
-        if (request.getName()!=null)
+        if (request.getName()!=null&&!request.getName().isEmpty())
         {
             // 就诊人名字模糊查询
             Pattern p = Pattern.compile(".*"+request.getName()+".*");

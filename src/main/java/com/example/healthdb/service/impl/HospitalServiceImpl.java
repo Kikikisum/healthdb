@@ -24,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -86,6 +87,7 @@ public class HospitalServiceImpl extends ServiceImpl<HospitalDao, Hospital> impl
     }
 
     @Override
+    @Transactional(rollbackFor = BusinessException.class)
     public HospitalCreateResDTO addByExcel(MultipartFile file) {
         List<HospitalCreateDTO> readList;
         ExcelReader reader;
